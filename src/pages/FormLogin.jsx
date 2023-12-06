@@ -72,38 +72,44 @@ const FormLogin = () => {
   if (cargando) return <Loading />;
 
   return (
-    <div className="container-from">
-      {error && (
-        <span className=" bg-red-600 flex w-11/12 items-center justify-center m-auto text-white font-bold text-sm rounded-md h-8">
-          {error}
-        </span>
-      )}
-      <div className="heading">Sign In</div>
-      <form onSubmit={handelSubmit} className="form">
-        <input
-          className="input"
-          type="email"
-          name="email"
-          id="email"
-          value={email}
-          placeholder="E-mail"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          className="input"
-          type="password"
-          name="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
-        <span className="forgot-password">
-          <a href="#">Forgot Password ?</a>
-        </span>
-        <input className="login-button" type="submit" defaultValue="Sign In" />
-      </form>
-    </div>
+    <main className=" flex justify-center items-center main__content-form">
+      <div className="container-from">
+        {error && (
+          <span className=" bg-red-600 flex w-11/12 items-center justify-center m-auto text-white font-bold text-sm rounded-md h-8">
+            {error}
+          </span>
+        )}
+        <div className="heading">Sign In</div>
+        <form onSubmit={handelSubmit} className="form">
+          <input
+            className="input"
+            type="email"
+            name="email"
+            id="email"
+            value={email}
+            placeholder="E-mail"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            className="input"
+            type="password"
+            name="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+          />
+          <span className="forgot-password">
+            <a href="#">Forgot Password ?</a>
+          </span>
+          <input
+            className="login-button"
+            type="submit"
+            defaultValue="Sign In"
+          />
+        </form>
+      </div>
+    </main>
   );
 };
 

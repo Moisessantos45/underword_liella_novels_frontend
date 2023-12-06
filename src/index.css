@@ -93,11 +93,11 @@
   margin: 10px auto;
 }
 
-.lineHeigth{
+.lineHeigth {
   line-height: 2;
 }
 
-.backgraoud{
+.backgraoud {
   width: 90%;
   display: flex;
   flex-wrap: wrap;
@@ -105,18 +105,34 @@
   margin: 20px auto;
 }
 
-.backgraoud img{
+.backgraoud img {
   width: 100%;
   height: 500px;
 }
 
-.modal_confirm{
+.modal_confirm {
   position: fixed;
   height: 100vh;
   width: 100%;
   z-index: 7000;
 }
 
-.color{
-  background: #20202C;
+.color {
+  background: #20202c;
+}
+
+.main__container_perfil {
+  min-height: 105vh;
+}
+
+@media (max-width: 768px) {
+  .backgraoud img {
+    width: 100%;
+    height: 250px;
+  }
+
+  .main__container_perfil {
+    /* max-height:90vh; */
+    min-height: 69vh;
+  }
 }

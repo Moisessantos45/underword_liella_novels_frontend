@@ -3,9 +3,9 @@ import bg from "../img/Otonari_1.jpg";
 const Nosotros = () => {
   return (
     <section className=" w-11/12 flex-col flex-wrap justify-center gap-2 flex text-center margin">
-      <h1 className=" text-xl">TRADUCCIONES DE NOVELAS LIGERAS, MANGAS Y NOVELAS WEB.</h1>
+      <h1 className=" sm:text-xl">TRADUCCIONES DE NOVELAS LIGERAS, MANGAS Y NOVELAS WEB.</h1>
       <p>Light novels, Mangas and Web Novels translations by fans for fans.</p>
-      <img className=" w-7/12 self-center m-2 h-80" src={bg} alt="" />
+      <img className=" sm:w-7/12 w-11/12 self-center m-2 sm:h-80 h-64" src={bg} alt="" />
       <h1 className=" text-xl">NOSOTROS, UNDERWORD LIELLA NOVELS</h1>
       <pre className=" whitespace-pre-line font-bold text-sm w-9/12 margin lineHeigth">
         {" "}

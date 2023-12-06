@@ -84,14 +84,14 @@ const Perfil = () => {
         className={`content bg-zinc-100 text-black ${activeDark ? "dark" : ""}`}
       >
         <NavbarSlider />
-        <section className="w-full flex flex-wrap justify-center">
+        <section className="w-full flex flex-wrap sm:justify-center justify-evenly sm:items-start items-center main__container_perfil">
           <div className="w-full flex justify-center h-11">
             <span className="text-indigo-600 font-bold text-2xl m-3">
               Informacion Personal
             </span>
           </div>
           <div
-            className={`w-10/12 flex shadow rounded-lg heigth-div ${
+            className={`sm:w-10/12 w-11/12 flex shadow rounded-lg heigth-div ${
               activeDark ? "bg-slate-950" : "bg-white "
             }`}
           >
@@ -110,14 +110,14 @@ const Perfil = () => {
                 <input
                   type="text"
                   name="nombre"
-                  className={`"border bg-gray-50 w-8/12 p-2 mt-5 rounded-lg ${
+                  className={`"border bg-gray-50 sm:w-8/12 w-11/12 p-2 mt-5 rounded-lg ${
                     activeDark ? "text-white" : "text-black"
                   }"`}
                   value={name_user}
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
-              <div className="my-3 w-10/12 flex justify-center flex-wrap items-center">
+              <div className="my-3 sm:w-10/12 w-11/12 flex justify-center flex-wrap items-center">
                 <label
                   className={`"uppercase font-bold ${
                     activeDark ? "text-white" : "text-gray-600"
@@ -128,14 +128,14 @@ const Perfil = () => {
                 <input
                   type="email"
                   name="email"
-                  className={`"border bg-gray-50 w-8/12 p-2 mt-5 rounded-lg ${
+                  className={`"border bg-gray-50 sm:w-8/12 w-11/12 p-2 mt-5 rounded-lg ${
                     activeDark ? "text-white" : "text-black"
                   }"`}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              <div className="my-3 w-10/12 flex justify-center flex-wrap items-center">
+              <div className="my-3 sm:w-10/12  w-11/12 flex justify-center flex-wrap items-center">
                 <label
                   className={`"uppercase font-bold ${
                     activeDark ? "text-white" : "text-gray-600"

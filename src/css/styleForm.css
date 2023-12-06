@@ -1,4 +1,4 @@
-.header_logon{
+.header_logon {
   width: 100%;
   margin: 0 auto;
   display: flex;
@@ -8,9 +8,13 @@
   height: 70px;
 }
 
-.header_logon_title{
+.header_logon_title {
   font-size: 1.5rem;
   font-weight: bolder;
+}
+
+.main__content-form {
+  min-height: 60vh;
 }
 
 .container-from {
@@ -109,4 +113,8 @@
   box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 15px 10px -10px;
 }
 
-
+@media (max-width: 768px) {
+  .main__content-form {
+    min-height: 90vh;
+  }
+}

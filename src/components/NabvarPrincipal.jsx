@@ -24,7 +24,7 @@ const NabvarPrincipal = () => {
         }}
       >
         <div className="header-content">
-          <h1 className="flex"> UnderwordLiellaNovels</h1>
+          <h1 className="flex sm:text-2xl text-xl"> UnderwordLiellaNovels</h1>
         </div>
       </header>
     </>

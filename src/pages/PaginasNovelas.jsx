@@ -36,11 +36,11 @@ const PaginasNovelas = () => {
       }
     };
     peticion();
-  }, []);
+  }, [clave]);
   useEffect(() => {
     document.title = novela.info?.titulo || "UnderWordLiellaNovels";
     // document.querySelector("body").classList.toggle("color");
-  }, []);
+  }, [clave]);
   if (!loader) return <Loading />;
   return (
     <>

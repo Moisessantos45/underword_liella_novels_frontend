@@ -110,4 +110,9 @@
   .header-content {
     margin-bottom: 20px;
   }
+
+  .header-content h1 {
+    color: black;
+    font-size: 8vmin;
+  }
 }

@@ -90,7 +90,7 @@ const FormRegistrer = () => {
     <>
       <section className={`content bg-zinc-100 ${activeDark ? "dark" : ""}`}>
         <NavbarSlider />
-        <section className="flex justify-center m-auto">
+        <section className="flex justify-center sm:items-start items-center m-auto main__container_perfil">
           <form
             className="form_add form_add-heigth-reg font-bold"
             onSubmit={handelSubmit}
