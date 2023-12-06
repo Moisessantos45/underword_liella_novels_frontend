@@ -100,7 +100,7 @@ const FormRegistrer = () => {
                 htmlFor="name"
                 className={` ${activeDark ? "text-white" : "text-black"}`}
               >
-                Email
+                Name
               </label>
               <input
                 type="name"
@@ -184,7 +184,7 @@ const FormRegistrer = () => {
             </div>
             <input
               type="submit"
-              value={id ? "Actulizar capitulo" : "Agrega un capitulo"}
+              value={id_user ? "Actulizar Usuario" : "Agrega un usuario"}
               className="btn_submit"
             />
           </form>

@@ -22,7 +22,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const autenticar = async () => {
       const token = localStorage.getItem("token");
-      console.log("token",token)
+      // console.log("token",token)
       if (!token) {
         setCargando(false);
         return <redirect to="/login-admin" />;
@@ -40,7 +40,7 @@ const AuthProvider = ({ children }) => {
           confi
         ); 
         setUserType(data.usuario.tipo);
-        console.log(data);
+        // console.log(data);
         setAuth(data.usuario);
         setCont(data.totalUsuarios);
         // setWebIlustraciones(data.ilusNovelas);

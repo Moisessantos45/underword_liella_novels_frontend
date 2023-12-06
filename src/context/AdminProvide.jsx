@@ -223,7 +223,7 @@ export const AdminProvider = ({ children }) => {
   };
 
   const registrar = async (user) => {
-    console.log("registrando usuario", user);
+    // console.log("registrando usuario", user);
     const { email, password, tipo, id, foto_perfil, name_user, id_user } = user;
     const token = localStorage.getItem("token");
     const confi = {
@@ -233,7 +233,7 @@ export const AdminProvider = ({ children }) => {
       },
       data: { token },
     };
-    if (id_user) {
+    if (!user.id_user) {
       try {
         await urlAxios.post(
           `/underwordliellanovels/agregar-users`,
