@@ -30,40 +30,8 @@ import Prueba from "./components/prueba";
 // import LayoutSlider from "./layout/LayoutSlider";
 import ContentCapit from "./components/ContentCapit";
 import Slider from "./components/Slider";
-import Content_list from "./components/content_list";
+import Content_list from "./components/Content_list";
 import Teams from "./pages/Teams";
-
-// function App() {
-//   return (
-//     <BrowserRouter>
-//       <AuthProvider>
-//         <AdminProvider>
-//           <Routes>
-//             <Route path="/" element={<LayoutInicio />}>
-//               <Route index element={<Cards />} />
-//               <Route path="novela/:clave" element={<PaginasNovelas />} />
-//             </Route>
-//             <Route path="/login-admin" element={<LayoutLogin />}>
-//               <Route index element={<FormLogin />} />
-//             </Route>
-//             <Route path="/dashboard" element={<LayoutAdmin />}>
-//               <Route index element={<ContainerPrincipal />} />
-//               <Route path="agregar" element={<Container_admin />} />
-//               <Route path="agregar-volumen" element={<Container_card />} />
-//               <Route
-//                 path="agregar-capitulo"
-//                 element={<Container_captitulo />}
-//               />
-//               <Route path="agregar-novela" element={<Container_novela/>} />
-//             </Route>
-//           </Routes>
-//         </AdminProvider>
-//       </AuthProvider>
-//     </BrowserRouter>
-//   );
-// }
-
-// export default App;
 
 export const router = createBrowserRouter([
   {
