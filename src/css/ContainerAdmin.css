@@ -1,0 +1,203 @@
+.main_container {
+  position: absolute;
+  width: calc(100% - 100px);
+  left: 100px;
+  top: 0;
+  margin: 0;
+  margin-top: 70px;
+  height: 90vh;
+  display: flex;
+  background: #2c2449;
+  color: black;
+  /* margin-top: 70px; */
+  z-index: 150;
+  transition: width 0.5;
+  /* align-items: center; */
+  justify-content: center;
+  overflow-x: auto;
+}
+
+.main_container-h {
+  height: 87vh;
+}
+
+.div-img {
+  width: 90px;
+  height: 90px;
+  position: absolute;
+  background-position: center center;
+  background-size: cover;
+  /* background-image: url(../img/nueva_portda_shigatsu.png); */
+}
+
+.main_container::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* .main_container::-webkit-scrollbar-track {
+  background: rgb(188, 185, 185);
+} */
+
+.active_container {
+  width: calc(100% - 200px);
+  left: 200px;
+}
+
+.form_add {
+  max-width: 480px;
+  min-height: 780px;
+  /* background: #3b3364; */
+  background: #ffffff;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  /* flex-direction: column; */
+  margin: 10px auto;
+  border-radius: 20px;
+  box-shadow: 1px 1px 15px 1px rgb(139, 138, 138);
+}
+
+.content.dark .form_add{
+  background: #0c0c1e;
+  color: #ffffff;
+}
+
+.form_add-heigth {
+  min-height: 550px;
+  max-width: 530px;
+}
+
+.content.dark .form_add-heigth{
+  background: #0c0c1e;
+  color: #ffffff;
+}
+
+.form_add-heigth-reg {
+  min-height: 450px;
+  max-height: 420px;
+  max-width: 370px;
+  margin: 10px auto;
+}
+
+.form_add_novel {
+  min-height: 990px;
+}
+
+.form_add_content {
+  width: 95%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+label {
+  width: 90%;
+  height: 30px;
+  color: white;
+  font-size: 15px;
+  border: none;
+  outline: none;
+  margin: 0;
+}
+
+.input_from {
+  border: none;
+  width: 90%;
+  height: 30px;
+  border-radius: 5px;
+  padding: 5px;
+  color: black;
+}
+
+input[type="submit"] {
+  background: dodgerblue;
+  height: 35px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 10px;
+  width: 60%;
+  color: white;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+/* .scroll-table{
+  overflow-x: auto;
+} */
+
+.scroll_hori {
+  overflow-x: auto;
+}
+
+/* .min-hieg{
+
+} */
+
+.scroll_items {
+  width: 99%;
+  /* height: 100vh; */
+}
+.content.dark .scroll_items{
+  background: #060714;
+}
+
+.scroll_items::-webkit-scrollbar {
+  width: 5px;
+  display: none;
+}
+
+.scroll_vertical {
+  width: 97%;
+  margin: 10px auto;
+}
+
+.scroll_vertical::-webkit-scrollbar {
+  width: 10px;
+}
+
+.heigth {
+  width: 350px;
+  /* height: 400px; */
+}
+
+.heigth-div {
+  width: 55%;
+  justify-content: center;
+  align-items: center;
+  height: 450px;
+}
+
+.darkMode .text_color h1 {
+  color: black;
+}
+
+@media only screen and (max-width: 965px) {
+  .heigth-div {
+    width: 65%;
+  }
+}
+
+@media only screen and (max-width: 765px) {
+  .main_container {
+    width: 100%;
+    left: initial;
+    position: initial;
+  }
+
+  .main_container.active_container {
+    width: 100%;
+    left: initial;
+    transition: width 0.2s;
+  }
+
+  .heigth-div {
+    width: 75%;
+  }
+
+  .form_add {
+    max-width: 370px;
+  }
+}

@@ -1,0 +1,128 @@
+/* *{
+  background: #20202c;
+} */
+
+.minfo {
+  width: 95%;
+  height: auto;
+  margin: 10px auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  justify-content: space-evenly;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  font-size: 15px;
+}
+
+.minfo_title {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  color: rgb(0, 0, 0);
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}
+
+.darkMode .title {
+  color: rgb(176, 171, 171);
+}
+
+.line3 {
+  display: flex;
+  width: 95%;
+  height: 4px;
+  background: #fc036b;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.line2 {
+  display: flex;
+  width: 95%;
+  height: 4px;
+  background: #fc036b;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.content_portada {
+  width: 90%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  text-align: center;
+  color: white;
+  margin: 10px auto;
+}
+
+.minfo img {
+  display: flex;
+  margin: 10px;
+  /* box-shadow: 1px 5px 5px 2px #dfeffe; */
+  width: 25%;
+  height: 350px;
+  align-self: center;
+  /* border-radius: 20px; */
+}
+
+.info {
+  display: flex;
+  width: 85%;
+  margin: 30px auto;
+}
+
+.info table {
+  width: 100%;
+}
+
+.info table tr {
+  width: 100%;
+}
+
+.info table tr .sinop {
+  display: flex;
+  align-self: baseline;
+}
+
+.info table th {
+  width: 20%;
+  height: 40px;
+  text-align: start;
+}
+
+.info table tr td {
+  width: 85%;
+}
+
+@media only screen and (max-width: 600px) {
+  .minfo img {
+    width: 45%;
+    height: 200px;
+  }
+  .info {
+    border: none;
+  }
+  .info table,
+  th,
+  td {
+    border: none;
+  }
+  .title h1 {
+    font-size: 15px;
+  }
+
+  .info table tr .sinop {
+    text-align: center;
+    display: revert;
+  }
+}

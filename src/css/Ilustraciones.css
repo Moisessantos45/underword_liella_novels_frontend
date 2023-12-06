@@ -1,0 +1,69 @@
+.tours {
+  display: flex;
+  margin: 30px auto;
+  width: 95%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-col {
+  display: flex;
+  justify-content: center;
+  width: 95%;
+  height: 120px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.line4 {
+  justify-content: center;
+  display: flex;
+  width: 95%;
+  height: 4px;
+  background: #fc036b;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.line5 {
+  display: flex;
+  width: 95%;
+  height: 4px;
+  background: #fc036b;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.image-col {
+  display: flex;
+  flex-wrap: wrap;
+  width: 95%;
+  justify-content: space-around;
+}
+
+.image-col img {
+  width: 300px;
+  margin: 10px;
+  object-fit: contain;
+}
+
+.content-col h1 {
+  text-align: center;
+  font-size: 40px;
+  color: #484872;
+}
+
+.darkMode .content-col  h1 {
+  color: white;
+}
+
+.darkMode h1 {
+  color: white;
+}
+
+@media only screen and (max-width: 600px) {
+    .content-col h1 {
+      font-size: 20px;
+    }
+}

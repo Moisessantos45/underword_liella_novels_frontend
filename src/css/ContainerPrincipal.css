@@ -1,0 +1,37 @@
+*{
+  transition: .5s;
+}
+.container_principal {
+  position: relative;
+  display: flex;
+  height: 86vh;
+  width: calc(100% - 100px);
+  left: 100px;
+  /* margin-top: 100px; */
+  background: #f1f5f9;
+}
+
+.container_principal.active_container {
+  width: calc(100% - 200px);
+  left: 200px;
+}
+
+.margin{
+  margin: 10px auto;
+}
+
+@media only screen and (max-width: 765px){
+  .container_principal {
+    width: 100%;
+    left: initial;
+  }
+
+  .card{
+    display: flex;
+    width: 90%;
+  }
+
+  .scroll-post{
+    overflow-y: auto;
+  }
+}

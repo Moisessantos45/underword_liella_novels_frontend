@@ -1,0 +1,29 @@
+.personajes {
+  width: 90%;
+  height: auto;
+  margin: 50px auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  justify-content: space-evenly;
+}
+
+.personajes .conteper {
+  padding: 10px;
+  height: auto;
+  width: 250px;
+  display: flex;
+  margin: 5px;
+  flex-direction: column;
+  text-align: center;
+}
+
+.conteper img {
+  position: relative;
+  display: flex;
+  width: 60%;
+  height: 115px;
+  align-self: center;
+  outline: 2px solid #fc036b;
+  border-radius: 10px;
+}
