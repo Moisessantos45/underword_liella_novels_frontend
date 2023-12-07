@@ -15,12 +15,12 @@ const ContentCapit = ({ capi }) => {
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-
+  capitulosArray.sort((a, b) => Number(a.capitulo) - Number(b.capitulo));
   const gruposDeCapitulos = [];
   for (let i = 0; i < capitulosArray.length; i += 10) {
     gruposDeCapitulos.push(capitulosArray.slice(i, i + 10));
   }
-
+  console.log(capitulosArray);
   return (
     <>
       <div className=" w-10/12 flex flex-col" style={{ margin: "20px auto" }}>

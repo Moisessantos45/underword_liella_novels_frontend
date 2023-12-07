@@ -31,7 +31,11 @@ function formatearTextoConImagenes(texto) {
   const fragmentos = texto.split("\nhttps://i.ibb.co");
   return fragmentos.flatMap((fragmento, i) => {
     if (i === 0) {
-      return [<pre key={i}>{fragmento}</pre>];
+      return [
+        <pre className="whitespace-pre-line" key={i}>
+          {fragmento}
+        </pre>,
+      ];
     } else {
       const indiceEspacio = fragmento.indexOf("\n");
       const url = `https://i.ibb.co${
@@ -60,13 +64,15 @@ const PaginasCapitulos = () => {
   // setTitleNabvar({title:capit[cont]?.titulo})
   const obtenerCapitulo = async (clave, capitulo) => {
     try {
-      const { data } = await urlAxios(`/pagina/capitulo/${clave}/${capitulo}`);
-      console.log(data);
+      const { data } = await urlAxios(
+        `/pagina/capitulo/${clave}/${capitulo.toString()}`
+      );
+      // console.log(data);
       setTitleNabvar({ title: `${data.data?.titulo}` });
       setCapi(data.data);
-      setCont(data.data.capitulo);
-      setTamanio(data.cont);
-      setPrimer(data.primer);
+      setCont(Number(data.data.capitulo));
+      setTamanio(Number(data.cont));
+      // setPrimer(data.primer);
       setLoader(true);
     } catch (error) {
       console.log(error);
@@ -89,12 +95,12 @@ const PaginasCapitulos = () => {
   return (
     <>
       <NavbarChapters />
-      <section className="margin w-11/12 flex justify-center color flex-col items-center">
+      <section className="margin w-11/12 flex justify-center flex-col items-center">
         <div className="line bg-white"></div>
         <h1 className=" text-center sm:text-xl font-bold">{capit.titulo}</h1>
         <div className="line bg-white"></div>
       </section>
-      <section className="container_capi color">
+      <section className="container_capi">
         {/* <pre>{capit[cont]?.contenido}</pre> */}
         {contenidoFormateado}
         <div className="line"></div>

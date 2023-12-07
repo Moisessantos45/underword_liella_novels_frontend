@@ -1,7 +1,7 @@
 import "../css/Tabla.css";
 
 const TablaInfo = ({ datos }) => {
-  console.log(datos);
+  // console.log(datos);
   const {
     nombre,
     generos,

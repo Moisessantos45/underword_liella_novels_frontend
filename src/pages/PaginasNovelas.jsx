@@ -24,7 +24,7 @@ const PaginasNovelas = () => {
       try {
         const respuesta = await urlAxios(`/paginas/novela/${clave}`);
         setNovela(respuesta.data);
-        console.log(respuesta);
+        // console.log(respuesta);
         const bg = `${respuesta.data.info.backgroud}`;
         setBackg(bg);
         setTitleNabvar({ title: respuesta.data.info.titulo });

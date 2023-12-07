@@ -65,10 +65,10 @@ const Content_novelas = () => {
                   className="w-14 h-16 rounded-lg m-1"
                   alt=""
                 />
-                <h3 className="m-1 text-black text-xs">
+                {/* <h3 className="m-1 text-black text-xs">
                   <span className="font-bold text-sm">Nombres:</span>{" "}
                   {item.nombre}
-                </h3>
+                </h3> */}
                 <h3 className="m-1 text-black text-xs">
                   <span className="font-bold text-sm">Titulo:</span>{" "}
                   {item.titulo}

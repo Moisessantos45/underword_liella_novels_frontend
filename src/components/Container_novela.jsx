@@ -23,9 +23,9 @@ const Container_novela = () => {
   const [tipo, setTipo] = useState("");
   const [backgroud, setBackgroud] = useState("");
   const [imagen, setImagen] = useState("");
-  const [ilustrador, setIlustrador] = useState("");
+  const [ilustrador, setIlustrador] = useState("?");
   const [generos, setGeneros] = useState("");
-  const [autor, setAutor] = useState("");
+  const [autor, setAutor] = useState("?");
   const [encargados, setEncargados] = useState("");
   const [activo, setActivo] = useState(false);
   const [sinopsis, setSinopsis] = useState("");
@@ -103,9 +103,9 @@ const Container_novela = () => {
     setTipo("");
     setBackgroud("");
     setImagen("");
-    setIlustrador("");
+    setIlustrador("?");
     setGeneros("");
-    setAutor("");
+    setAutor("?");
     setEncargados("");
     setActivo(false);
     setSinopsis("");

@@ -11,7 +11,7 @@ const CardsVol = ({ datos, info }) => {
             <h1 className="title">Volumenes</h1>
             <div className="line2"></div>
           </div> */}
-          {datos.map((vol) => (
+          {datos.sort((a, b) => Number(a.volumen) - Number(b.volumen)).map((vol) => (
             <figure className="volumes_content" key={vol.id}>
               <img src={vol.imagen} alt="" />
               <div className="vol">
