@@ -34,6 +34,7 @@ const Container_novela = () => {
   const [clave, setClave] = useState("dato");
   const [id, setId] = useState(null);
   const [dataTipo, setType] = useState("novela");
+
   useEffect(() => {
     if (datosEdit?.id && datosEdit?.sinopsis) {
       setTitulo(datosEdit.titulo);
@@ -113,6 +114,10 @@ const Container_novela = () => {
     setClave("");
     setId(null);
   };
+  // const handleChange = (event) => {
+  //   setAge(event.target.value);
+  // };
+
   const { msg } = alerta;
   return (
     <>
@@ -282,7 +287,7 @@ const Container_novela = () => {
               type="text"
               placeholder="sinopsis"
               id="sinopsis"
-              className="input_from text-slate-700"
+              className="input_from text-slate-700 h-20 sm:h-14"
               value={sinopsis}
               onChange={(e) => setSinopsis(e.target.value)}
             />

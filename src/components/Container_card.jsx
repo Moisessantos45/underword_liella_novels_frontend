@@ -4,6 +4,10 @@ import useAdmin from "../hooks/useAdmin";
 import NavbarSlider from "./NavbarSlider";
 import Alerta from "./Alerta";
 import Swal from "sweetalert2";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import Button from "@mui/material/Button";
 
 const mostrarAlerta = (texto) => {
   Swal.fire({
@@ -30,6 +34,7 @@ const Container_card = () => {
   const [megaEpub, setMegaEpub] = useState("");
   const [mediafireEpub, setMediafireEpub] = useState("");
   const [clave, setClave] = useState("dato");
+  const [open, setOpen] = useState(false);
 
   const tipo = "cards";
   const handelSubmit = async (e) => {
@@ -44,7 +49,7 @@ const Container_card = () => {
 
     if (camposVacios.length > 0) {
       mostrarAlerta(`Los siguientes campos están vacíos: ${camposVacios}`);
-      return
+      return;
     }
     enviarDatos(
       {
@@ -70,6 +75,14 @@ const Container_card = () => {
     setMediafireEpub("");
     setMegaEpub("");
   };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
   const { msg } = alerta;
   return (
     <>
@@ -77,38 +90,57 @@ const Container_card = () => {
         {msg && <Alerta alerta={alerta} />}
         <NavbarSlider />
         <form className="form_add font-bold" onSubmit={handelSubmit}>
-          <div className="form_add_content">
-            <label
-              htmlFor="nombre"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
+          <div className="form_add_content p-1 flex-col relative items-center">
+            <Button
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                mt: 1,
+                height: 25,
+                width: "25%",
+                position: "absolute",
+                top: 0,
+                right: 1,
+                background: "dodgerblue",
+                color: "white",
+              }}
+              onClick={handleOpen}
+            >
+              Open
+            </Button>
+            <InputLabel
+              sx={{
+                m: 1,
+                width: "50%",
+                color: "#475569",
+                fontWeight: "bold",
+                fontSize: "17px",
+              }}
+              id="demo-controlled-open-select-label"
             >
               Nombre de la novela
-            </label>
-            {/* <input
-              type="text"
-              placeholder="titulo"
-              id="nombre"
-              className="input_from"
+            </InputLabel>
+            <Select
+              labelId="demo-controlled-open-select-label"
+              id="demo-controlled-open-select"
+              open={open}
+              onClose={handleClose}
+              onOpen={handleOpen}
               value={nombreClave}
-              onChange={(e) => setNombre(e.target.value)}
-            /> */}
-            <select
-              id="nombre"
-              type="text"
-              className="input_from text-black h-8"
-              value={nombreClave}
+              label="Age"
+              sx={{ width: "90%", height: 35 }}
               onChange={(e) => setNombre(e.target.value)}
             >
               {novelasInfo.map((chart, i) => (
-                <option
+                <MenuItem
                   key={i}
                   value={`${chart.titulo.split(" ").slice(0, 4).join(" ")}`}
                   className=" overflow-hidden text-ellipsis whitespace-nowrap text-slate-600"
                 >
                   {chart.titulo.split(" ").slice(0, 4).join(" ")}
-                </option>
+                </MenuItem>
               ))}
-            </select>
+            </Select>
           </div>
           <div className="form_add_content">
             <label
@@ -147,7 +179,7 @@ const Container_card = () => {
               htmlFor="disponible"
               className={` ${activeDark ? "text-white" : "text-slate-600"}`}
             >
-              Esta para descarga
+              Esta para descargar
             </label>
             <input
               type="text"

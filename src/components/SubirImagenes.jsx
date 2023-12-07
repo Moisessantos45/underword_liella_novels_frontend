@@ -8,7 +8,7 @@ const SubirImagenes = () => {
   const apiKey = import.meta.env.VITE_URL_APIKEY;
   const [files, setFiles] = useState([]);
   const [urls, setUrls] = useState([]);
-  const { active,activeDark } = useAdmin();
+  const { active, activeDark } = useAdmin();
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -41,14 +41,16 @@ const SubirImagenes = () => {
 
   return (
     <>
-     <section className={`content bg-zinc-100 text-black ${activeDark?"dark":""}`}>
-      <NavbarSlider/>
+      <section
+        className={`content bg-zinc-100 text-black ${activeDark ? "dark" : ""}`}
+      >
+        <NavbarSlider />
         <section className="container bg-slate-200 shadow-md shadow-slate-100">
+          <h1 className="title text-lg sm:text-2xl">Subir imágenes a ImgBB</h1>
           <form
             className="gap-3 justify-center items-center flex flex-col form_file"
             onSubmit={handleSubmit}
           >
-            <h1 className="title text-black">Subir imágenes a ImgBB</h1>
             <label
               htmlFor="file-input"
               className="label_file flex justify-center items-center rounded-lg"
@@ -70,7 +72,12 @@ const SubirImagenes = () => {
               <div key={index} className="container_url-links">
                 <strong className=" text-black">URL {index + 1}:</strong>
                 <p className="urlimg text-black">{url}</p>
-                <button onClick={() => copyToClipboard(url)} className="copy text-black">Copiar URL</button>
+                <button
+                  onClick={() => copyToClipboard(url)}
+                  className="copy text-black"
+                >
+                  Copiar URL
+                </button>
               </div>
             ))}
           </div>

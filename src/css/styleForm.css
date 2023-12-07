@@ -117,4 +117,20 @@
   .main__content-form {
     min-height: 90vh;
   }
+  .container-from {
+    min-height: 550px;
+    padding: 20px;
+  }
+  .form {
+    width: 100%;
+    height: 400px;
+  }
+
+  .form .input{
+    border-radius: 10px;
+  }
+
+  .form .login-button{
+    border-radius: 10px;
+  }
 }

@@ -6,6 +6,10 @@ import Alerta from "../components/Alerta";
 import axios from "axios";
 import Swal from "sweetalert2";
 const apiKey = import.meta.env.VITE_URL_APIKEY;
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import Button from "@mui/material/Button";
 
 const mostrarAlerta = (texto) => {
   Swal.fire({
@@ -34,6 +38,8 @@ const FormRegistrer = () => {
   const [tipo, setTipo] = useState("administrador");
   const [foto, setFoto] = useState(null);
   const [name_user, setName] = useState("");
+  const [open, setOpen] = useState(false);
+
   // const [foto_perfil,setFotoPerfil]=useState()
 
   const [id, setId] = useState(null);
@@ -85,6 +91,14 @@ const FormRegistrer = () => {
       return;
     }
     registrar({ email, password, tipo, id, foto_perfil, name_user, id_user });
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
   };
   return (
     <>
@@ -143,28 +157,51 @@ const FormRegistrer = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <div className="form_add_content">
-              <label
-                htmlFor="tipo"
-                className={` ${activeDark ? "text-white" : "text-black"}`}
+            <div className="form_add_content p-1 flex-wrap justify-evenly items-center">
+                <Button
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  mt: 1,
+                  height: 25,
+                  width: "25%",
+                  // position: "absolute",
+                  // top: 0,
+                  // right: 1,
+                  background: "dodgerblue",
+                  color: "white",
+                }}
+                onClick={handleOpen}
+              >
+                Open
+              </Button>
+              <InputLabel
+                sx={{
+                  m: 1,
+                  width: "50%",
+                  color: "#475569",
+                  fontWeight: "bold",
+                  fontSize: "17px",
+                  textAlign:"center"
+                }}
+                id="demo-controlled-open-select-label"
               >
                 Tipo
-              </label>
-              <select
-                type="text"
-                placeholder="capitulo"
-                id="tipo"
-                className="input_from text-black h-8"
+              </InputLabel>
+              <Select
+                labelId="demo-controlled-open-select-label"
+                id="demo-controlled-open-select"
+                open={open}
+                onClose={handleClose}
+                onOpen={handleOpen}
                 value={tipo}
+                label="Age"
+                sx={{ width: "90%", height: 35,margin:1 }}
                 onChange={(e) => setTipo(e.target.value)}
               >
-                <option value="administrador" className="text-black">
-                  Administrador
-                </option>
-                <option value="colaborador" className="text-black">
-                  Colaborador
-                </option>
-              </select>
+                <MenuItem value="administrador">Administrador</MenuItem>
+                <MenuItem value="colaborador">Colaborador</MenuItem>
+              </Select>
             </div>
             <div className="form_add_content">
               <label
