@@ -112,7 +112,7 @@ const FormRegistrer = () => {
             <div className="form_add_content">
               <label
                 htmlFor="name"
-                className={` ${activeDark ? "text-white" : "text-black"}`}
+                className={` ${activeDark ? "text-white" : "text-slate-700"}`}
               >
                 Name
               </label>
@@ -120,7 +120,7 @@ const FormRegistrer = () => {
                 type="name"
                 placeholder="name"
                 id="name"
-                className="input_from h-8"
+                className="input_from h-9 outline-none bg-gray-100"
                 value={name_user}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -128,7 +128,7 @@ const FormRegistrer = () => {
             <div className="form_add_content">
               <label
                 htmlFor="email"
-                className={` ${activeDark ? "text-white" : "text-black"}`}
+                className={` ${activeDark ? "text-white" : "text-slate-700"}`}
               >
                 Email
               </label>
@@ -136,7 +136,7 @@ const FormRegistrer = () => {
                 type="email"
                 placeholder="email"
                 id="email"
-                className="input_from h-8"
+                className="input_from h-9 outline-none bg-gray-100"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -144,7 +144,7 @@ const FormRegistrer = () => {
             <div className="form_add_content">
               <label
                 htmlFor="password"
-                className={` ${activeDark ? "text-white" : "text-black"}`}
+                className={` ${activeDark ? "text-white" : "text-slate-700"}`}
               >
                 Contraseña
               </label>
@@ -152,7 +152,7 @@ const FormRegistrer = () => {
                 type="password"
                 placeholder="password"
                 id="password"
-                className="input_from h-8"
+                className="input_from h-9 outline-none bg-gray-100"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -196,7 +196,7 @@ const FormRegistrer = () => {
                 onOpen={handleOpen}
                 value={tipo}
                 label="Age"
-                sx={{ width: "90%", height: 35,margin:1 }}
+                sx={{ width: "90%", height: 35,margin:1,background:"#f3f4f6" }}
                 onChange={(e) => setTipo(e.target.value)}
               >
                 <MenuItem value="administrador">Administrador</MenuItem>
@@ -207,7 +207,7 @@ const FormRegistrer = () => {
               <label
                 htmlFor="file-input"
                 className={` ${
-                  activeDark ? "text-white" : "text-black"
+                  activeDark ? "text-white" : "text-white"
                 } label_file flex justify-center items-center rounded-lg`}
               >
                 Foto perfil

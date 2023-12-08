@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useAdmin from "../hooks/useAdmin";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import NavbarSlider from "./NavbarSlider";
 import urlAxios from "../config/urlAxios";
@@ -52,10 +52,17 @@ const Content_novelas = () => {
         <NavbarSlider />
         <section className="justify-evenly flex flex-wrap overflow-y-auto scroll_vertical">
           {novelasInfo.map((item, index) => (
-            <div className="mb-2 w-60 text_color" key={index}>
+            <div className="mb-2 sm:w-60 w-44 text_color" key={index}>
               <div className="w-full bg-gray-50 relative flex justify-center flex-wrap rounded-lg items-center">
+                <Link
+                  to={`/novela/${item.clave}`}
+                  className="bg-blue-700 text-white rounded-lg h-7 w-9 flex items-center justify-center absolute left-1 top-1"
+                >
+                  {" "}
+                  <i className="fas fa-arrow-right"></i>
+                </Link>
                 <button
-                  className="bg-blue-700 text-white rounded-lg h-7 w-12 flex items-center justify-center absolute right-1 top-1"
+                  className="bg-blue-700 text-white rounded-lg h-7 w-10 flex items-center justify-center absolute right-1 top-1"
                   onClick={() => handelClick(item.clave, !item.activo)}
                 >
                   {item.activo ? "off" : "on"}
@@ -74,7 +81,7 @@ const Content_novelas = () => {
                   {item.titulo}
                 </h3>
                 <NavLink
-                  className="bg-blue-600 rounded-lg h-7 w-16 m-1 flex items-center justify-center"
+                  className="bg-blue-600 text-white rounded-lg h-7 w-16 m-1 flex items-center justify-center"
                   to="/dashboard/agregar-novela"
                   onClick={() => obtenerDatos(item)}
                 >
@@ -87,7 +94,7 @@ const Content_novelas = () => {
                   Eliminar
                 </button> */}
                 <button
-                  className={`bg-rose-700 rounded-lg h-7 w-16 m-1 flex justify-center items-center ${
+                  className={`bg-rose-700 text-white rounded-lg h-7 w-18 m-1 flex justify-center items-center ${
                     userType === "administrador"
                       ? ""
                       : "bg-rose-400 cursor-not-allowed"

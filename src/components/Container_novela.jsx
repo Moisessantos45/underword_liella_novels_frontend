@@ -21,8 +21,8 @@ const Container_novela = () => {
   const [alerta, setAlerta] = useState({});
   const [titulo, setTitulo] = useState("");
   const [tipo, setTipo] = useState("");
-  const [backgroud, setBackgroud] = useState("");
-  const [imagen, setImagen] = useState("");
+  const [backgroud, setBackgroud] = useState("?");
+  const [imagen, setImagen] = useState("https://i.ibb.co/WvKyKrk/no-disponibles.jpg");
   const [ilustrador, setIlustrador] = useState("?");
   const [generos, setGeneros] = useState("");
   const [autor, setAutor] = useState("?");
@@ -101,8 +101,8 @@ const Container_novela = () => {
     );
     setTitulo("");
     setTipo("");
-    setBackgroud("");
-    setImagen("");
+    setBackgroud("?");
+    setImagen("https://i.ibb.co/WvKyKrk/no-disponibles.jpg");
     setIlustrador("?");
     setGeneros("");
     setAutor("?");
@@ -143,7 +143,7 @@ const Container_novela = () => {
               type="text"
               placeholder="titulo"
               id="titulo"
-              className="input_from text-slate-700"
+              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
               value={titulo}
               onChange={(e) => setTitulo(e.target.value)}
             />
@@ -159,7 +159,7 @@ const Container_novela = () => {
               type="text"
               placeholder="tipo"
               id="tipo"
-              className="input_from text-slate-700"
+              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
               value={tipo}
               onChange={(e) => setTipo(e.target.value)}
             />
@@ -175,7 +175,7 @@ const Container_novela = () => {
               type="text"
               placeholder="backgroud"
               id="backgroud"
-              className="input_from text-slate-700"
+              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
               value={backgroud}
               onChange={(e) => setBackgroud(e.target.value)}
             />
@@ -191,7 +191,7 @@ const Container_novela = () => {
               type="text"
               placeholder="imagen"
               id="imagen"
-              className="input_from text-slate-700"
+              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
               value={imagen}
               onChange={(e) => setImagen(e.target.value)}
             />
@@ -207,7 +207,7 @@ const Container_novela = () => {
               type="text"
               placeholder="nombre"
               id="nombre"
-              className="input_from text-slate-700"
+              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
               value={ilustrador}
               onChange={(e) => setIlustrador(e.target.value)}
             />
@@ -223,7 +223,7 @@ const Container_novela = () => {
               type="text"
               placeholder="generos"
               id="generos"
-              className="input_from text-slate-700"
+              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
               value={generos}
               onChange={(e) => setGeneros(e.target.value)}
             />
@@ -239,7 +239,7 @@ const Container_novela = () => {
               type="text"
               placeholder="autor"
               id="autor"
-              className="input_from text-slate-700"
+              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
               value={autor}
               onChange={(e) => setAutor(e.target.value)}
             />
@@ -255,7 +255,7 @@ const Container_novela = () => {
               type="text"
               placeholder="encargados"
               id="volumen"
-              className="input_from text-slate-700"
+              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
               value={encargados}
               onChange={(e) => setEncargados(e.target.value)}
             />
@@ -271,7 +271,7 @@ const Container_novela = () => {
               type="text"
               placeholder="activo"
               id="activo"
-              className="input_from text-slate-700"
+              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
               value={activo}
               onChange={(e) => setActivo(e.target.value)}
             />
@@ -287,7 +287,7 @@ const Container_novela = () => {
               type="text"
               placeholder="sinopsis"
               id="sinopsis"
-              className="input_from text-slate-700 h-20 sm:h-14"
+              className="input_from text-slate-700 h-20 sm:h-14 outline-none bg-gray-100"
               value={sinopsis}
               onChange={(e) => setSinopsis(e.target.value)}
             />
@@ -316,7 +316,7 @@ const Container_novela = () => {
               type="text"
               placeholder="capitulos"
               id="capitulos"
-              className="input_from text-slate-700"
+              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
               value={capitulos}
               onChange={(e) => setCapitulos(e.target.value)}
             />
@@ -332,7 +332,7 @@ const Container_novela = () => {
               type="text"
               placeholder="clave"
               id="clave"
-              className="input_from text-slate-700"
+              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
               value={clave}
               onChange={(e) => setClave(e.target.value)}
             />

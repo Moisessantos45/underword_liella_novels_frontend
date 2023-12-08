@@ -121,7 +121,7 @@ const Container_captitulo = () => {
               onOpen={handleOpen}
               value={nombre}
               label="Age"
-              sx={{ width: "90%", height: 35 }}
+              sx={{ width: "90%", height: 35,background:"#f3f4f6" }}
               onChange={(e) => setNombre(e.target.value)}
             >
               {novelasInfo.map((chart, i) => (
@@ -140,13 +140,13 @@ const Container_captitulo = () => {
               htmlFor="titulo"
               className={` ${activeDark ? "text-white" : "text-slate-600"}`}
             >
-              El titulo del capitulo
+              Titulo del capitulo
             </label>
             <input
               type="text"
               placeholder="titulo"
               id="titulo"
-              className="input_from h-8 text-slate-700"
+              className="input_from h-8 text-slate-700 outline-none bg-gray-100"
               value={titulo}
               onChange={(e) => setTitulo(e.target.value)}
             />
@@ -162,7 +162,7 @@ const Container_captitulo = () => {
               type="number"
               placeholder="capitulo"
               id="capitulo"
-              className="input_from h-8 text-slate-700"
+              className="input_from h-8 text-slate-700 outline-none bg-gray-100"
               value={capitulo}
               onChange={(e) => setCapitulos(e.target.value)}
             />
@@ -170,7 +170,7 @@ const Container_captitulo = () => {
           <div className="form_add_content">
             <label
               htmlFor="contenido"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
+              className={` ${activeDark ? "text-white" : "text-slate-600"} `}
             >
               El contenido
             </label>
@@ -180,7 +180,7 @@ const Container_captitulo = () => {
               rows="5"
               placeholder="contenido"
               id="contenido"
-              className="input_from h-24 sm:h-14 w-11/12 text-slate-700"
+              className="input_from h-24 sm:h-14 w-11/12 text-slate-700 outline-none bg-gray-100"
               value={contenido}
               onChange={(e) => setContenido(e.target.value)}
             />
@@ -196,14 +196,14 @@ const Container_captitulo = () => {
               type="text"
               placeholder="clave"
               id="clave"
-              className="input_from h-8 text-slate-700"
+              className="input_from h-8 text-slate-700 outline-none bg-gray-100"
               value={clave}
               onChange={(e) => setClave(e.target.value)}
             />
           </div>
           <input
             type="submit"
-            value={id ? "Actulizar capitulo" : "Agrega un capitulo"}
+            value={id ? "Actulizar capitulo" : "Agrega el capitulo"}
             className="btn_submit"
           />
         </form>

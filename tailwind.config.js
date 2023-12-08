@@ -7,7 +7,12 @@ export default {
   ],
   darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      spacing:{
+        "12/12":"95%",
+        "18":"70px"
+      }
+    },
   },
   plugins: [],
 }
