@@ -133,4 +133,8 @@
   .form .login-button{
     border-radius: 10px;
   }
+  .header_logon_title {
+    font-size: 1.2rem;
+    font-weight: bolder;
+  }
 }
