@@ -11,7 +11,8 @@ const TablaInfo = ({ datos }) => {
     sinopsis,
     ilustrador,
     titulo,
-    tipo
+    tipo,
+    encargados
   } = datos;
   return (
     <>
@@ -53,7 +54,7 @@ const TablaInfo = ({ datos }) => {
             </tr>
             <tr>
               <th>Traductor del Inglés al Español:</th>
-              <td>TornanV / Frikigami</td>{" "}
+              <td>{encargados}</td>{" "}
             </tr>
             <tr>
               <th>activo:</th>
