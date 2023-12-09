@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const Content_list = () => {
   const { activeDark, novelasInfo } = useAdmin();
-  const { userCont, ultimosCapitulo, ultimosCards,visitas_actuales } = useAuth();
+  const { userCont, ultimosCapitulo, ultimosCards,visitas_actuales,userAuth } = useAuth();
   const fecha = (fecha) => {
     const fechaActual = new Date(fecha);
     const dia = fechaActual.getDate().toString().padStart(2, "0");

@@ -82,7 +82,7 @@ const Content_novelas = () => {
                 </h3>
                 <NavLink
                   className="bg-blue-600 text-white rounded-lg h-7 w-16 m-1 flex items-center justify-center"
-                  to="/dashboard/agregar-novela"
+                  to={`/dashboard/${userAuth.id}/agregar-novela`}
                   onClick={() => obtenerDatos(item)}
                 >
                   Editar

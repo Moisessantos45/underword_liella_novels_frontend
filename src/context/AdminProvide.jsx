@@ -166,7 +166,7 @@ export const AdminProvider = ({ children }) => {
   };
 
   const obtenerDatos = async (data) => {
-    console.log("data de novel o capi", data);
+    // console.log("data de novel o capi", data);
     setDatos(data);
   };
 

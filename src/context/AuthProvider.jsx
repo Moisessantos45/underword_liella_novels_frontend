@@ -16,7 +16,7 @@ const AuthProvider = ({ children }) => {
   const [webIlustraciones, setWebIlustraciones] = useState([]);
   const storedCount = parseInt(localStorage.getItem("counter")) || 600;
   const [count, setCount] = useState(storedCount);
-  const[visitas_actuales,setVisitas]=useState(0)
+  const [visitas_actuales, setVisitas] = useState(0);
   // const location = useLocation();
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const AuthProvider = ({ children }) => {
         const { data } = await urlAxios(
           `/underwordliellanovels/panel-administracion`,
           confi
-        ); 
+        );
         setUserType(data.usuario.tipo);
         // console.log(data);
         setAuth(data.usuario);
@@ -46,7 +46,7 @@ const AuthProvider = ({ children }) => {
         // setWebIlustraciones(data.ilusNovelas);
         setEndChapters(data.ultimosCapitulos);
         setEndCards(data.ultimasCards);
-        setVisitas(data.visistas_actuales)
+        setVisitas(data.visistas_actuales);
       } catch (error) {
         setAuth({});
         localStorage.removeItem("token");
@@ -56,7 +56,6 @@ const AuthProvider = ({ children }) => {
     };
     autenticar();
   }, []);
-  // console.log(userCont);
   // useEffect(() => {
   //   const currentPathname = window.location.pathname;
 
@@ -94,7 +93,7 @@ const AuthProvider = ({ children }) => {
         ultimosCards,
         count,
         setCargando,
-        visitas_actuales
+        visitas_actuales,
       }}
     >
       {children}

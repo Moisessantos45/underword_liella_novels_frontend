@@ -15,24 +15,24 @@ import ModalConfirm from "./ModalConfirm";
 
 const columns = [
   { id: "name", label: "Nombre", minWidth: 170 },
-  { id: "code", label: "titulo", minWidth: 50 },
+  { id: "code", label: "Titulo", minWidth: 50 },
   {
     id: "population",
-    label: "capitulo",
+    label: "Capitulo",
     minWidth: 170,
     align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "size",
-    label: "contenido",
+    label: "Contenido",
     minWidth: 170,
     align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "funciones",
-    label: "Funciones",
+    label: "Opcions",
     minWidth: 170,
     align: "right",
     format: (value) => value.toFixed(2),
@@ -70,7 +70,7 @@ const llenar = (
           onClick={() => {
             obtenerDatos(item);
           }}
-          to="/dashboard/agregar-capitulo"
+          to={`/dashboard/${userAuth.id}/agregar-capitulo`}
         >
           <i className="fa-solid fa-pencil text-base text-yellow-500"></i>
           {/* Editar */}
@@ -149,7 +149,7 @@ const Content_capitulos = () => {
           <Paper
             sx={{
               width: "100%",
-              height: "80vh",
+              // height: "80vh",
               overflow: "hidden",
               backgroundColor: "#2c2449",
               marginTop: 2,

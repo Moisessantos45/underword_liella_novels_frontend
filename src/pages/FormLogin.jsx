@@ -37,7 +37,7 @@ const FormLogin = () => {
 
   useEffect(() => {
     if (userAuth?.activo) {
-      navigate("/dashboard");
+      navigate(`/dashboard/${userAuth?.id}`);
     }
   }, [userAuth, navigate]);
 
@@ -62,7 +62,7 @@ const FormLogin = () => {
       localStorage.setItem("token", data.token);
       toastify("Inicio exitoso", true);
       setCargando(false);
-      navigate("/dashboard");
+      navigate(`/dashboard/${data?.id}`);
     } catch (error) {
       toastify(error.response.data.msg, false);
       setError(error.response.data.msg);
@@ -112,7 +112,7 @@ const FormLogin = () => {
         </form>
       </div> */}
       <form
-        className="relative space-y-1 sm:h-88 h-105 rounded-md bg-white p-3 shadow-xl lg:p-10 border border-gray-100 margin"
+        className="relative space-y-1 sm:h-88 h-105 rounded-md bg-white p-3 shadow-xl lg:p-10 border border-gray-100 margin sm:w-auto w-11/12"
         onSubmit={handelSubmit}
       >
         <p className="text-xl font-semibold lg:text-3xl text-gray-500 text-center">

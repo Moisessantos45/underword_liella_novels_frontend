@@ -188,7 +188,7 @@ const Teams = () => {
                         <td className="border-b border-gray-200 flex justify-center flex-wrap bg-white px-0 py-6 text-sm">
                           <Link
                             className="m-1 whitespace-no-wrap flex justify-center items-center text-white w-20 h-6 bg-blue-600 rounded-md"
-                            to="/dashboard/agregar-user"
+                            to={`/dashboard/${userAuth.id}/agregar-user`}
                             onClick={() => obtenerDatosUser(item)}
                           >
                             Editar

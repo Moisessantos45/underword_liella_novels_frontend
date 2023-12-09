@@ -67,7 +67,7 @@ export const router = createBrowserRouter([
   //   element:<ContentCapit/>
   // },
   {
-    path: "/dashboard",
+    path: "/dashboard/:id",
     element: <LayoutAdmin />,
     children: [
       // {

@@ -8,7 +8,7 @@ const NavbarSlider = () => {
   const { active, setActive, activeDark, setDark } = useAdmin();
   const [addClass, setClass] = useState(false);
   const [check, setCheck] = useState(false);
-  const { count } = useAuth;
+  const { count, userAuth } = useAuth();
   // const [activeDark,setDark]=useState(false)
   const handelActive = () => {
     setClass(!addClass);
@@ -27,6 +27,7 @@ const NavbarSlider = () => {
   const handeSubmit = (e) => {
     e.preventDefault();
   };
+  // console.log(userAuth?.id)
   return (
     <>
       <nav>
@@ -54,7 +55,7 @@ const NavbarSlider = () => {
           onChange={handelChange}
         />
         <label htmlFor="switch-mode" className="switch-mode"></label>
-        <Link to="/dashboard/perfil" className="profile">
+        <Link to={`/dashboard/${userAuth?.id}/perfil`} className="profile">
           <i className="fa-regular fa-user"></i>
           Perfil
         </Link>

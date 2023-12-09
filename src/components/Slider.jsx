@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "../css/slider.css";
-import useAdmin from "../hooks/useAdmin"
-import { NavLink, useNavigate } from "react-router-dom";
+import useAdmin from "../hooks/useAdmin";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import urlAxios from "../config/urlAxios";
 import Loading from "./Loading";
@@ -12,12 +12,16 @@ const Slider = () => {
   // const [activeDark,setDark]=useState(false)
   const navigate = useNavigate();
   // const [email, setEmail] = useState("");
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const location = useLocation();
+  const pathParts = location.pathname.split("/");
+  const lastPart = pathParts[pathParts.length - 1];
+  console.log(lastPart);
   const menuItems = [
     {
       text: "Inicio",
       icon: "fas fa-border-all",
-      url: "/dashboard",
+      url: `/dashboard/${userAuth.id}`,
       tipo: "user",
     },
     {
@@ -74,7 +78,12 @@ const Slider = () => {
     //   url: "Ilustraciones_web",
     //   tipo: "user",
     // },
-    { text: "Team", icon: "fas fa-people-group", tipo: "administrador",url: "colaboradores" },
+    {
+      text: "Team",
+      icon: "fas fa-people-group",
+      tipo: "administrador",
+      url: "colaboradores",
+    },
   ];
   useEffect(() => {
     document.title = "Panel de administracion";
@@ -87,7 +96,7 @@ const Slider = () => {
   }, [userAuth, navigate]);
 
   const handelClick = async () => {
-    const email=userAuth.email
+    const email = userAuth.email;
     // await setEmail(userAuth.email);
     try {
       await urlAxios.post("/underwordliellanovels/logout", {
@@ -120,7 +129,12 @@ const Slider = () => {
               (item.tipo === "user" || userType === "administrador") && (
                 <li
                   key={index}
-                  className={index === activeIndex ? "actives" : ""}
+                  className={
+                    (lastPart === `${userAuth.id}` && item.text === "Inicio") ||
+                    (lastPart === item.url && item.text !== "Inicio")
+                      ? "actives"
+                      : ""
+                  }
                 >
                   <NavLink
                     to={item.url}

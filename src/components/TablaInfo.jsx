@@ -11,7 +11,8 @@ const TablaInfo = ({ datos }) => {
     sinopsis,
     ilustrador,
     titulo,
-    tipo
+    tipo,
+    encargados,
   } = datos;
   return (
     <>
@@ -38,26 +39,26 @@ const TablaInfo = ({ datos }) => {
             </tr>
             <tr>
               <th>Autor</th>
-              <td>{autor}</td>
+              <td className=" p-3 sm:p-0">{autor}</td>
             </tr>
             <tr>
               <th>Ilustrador:</th>
-              <td>{ilustrador}</td>
+              <td className=" p-3 sm:p-0">{ilustrador}</td>
             </tr>
             <tr>
               <th>Tipo:</th>
-              <td>{tipo}</td>
+              <td className=" p-3 sm:p-0">{tipo}</td>
             </tr>
             <tr>
               <th>Encargados de la Traducción:</th>
             </tr>
             <tr>
               <th>Traductor del Inglés al Español:</th>
-              <td>TornanV / Frikigami</td>{" "}
+              <td className=" p-3">{encargados}</td>{" "}
             </tr>
             <tr>
               <th>activo:</th>
-              <td>{activo ? "si" : "no"}</td>
+              <td className=" p-3 sm:p-0">{activo ? "si" : "no"}</td>
             </tr>
             <tr>
               <th className="sinop" colSpan={2}>
