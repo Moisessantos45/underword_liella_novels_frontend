@@ -54,7 +54,7 @@ const TablaInfo = ({ datos }) => {
             </tr>
             <tr>
               <th>Traductor del Inglés al Español:</th>
-              <td className=" p-3">{encargados}</td>{" "}
+              <td className=" p-3">{encargados}</td>
             </tr>
             <tr>
               <th>activo:</th>
