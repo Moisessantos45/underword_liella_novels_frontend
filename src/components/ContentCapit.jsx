@@ -31,9 +31,10 @@ const ContentCapit = ({ capi }) => {
           <Accordion
             key={i}
             sx={{
-              backgroundColor: "#3b3364",
+              backgroundColor: "#111827",
               "&:active": { borderRadius: "0 0 10px 10px" },
               margin: "5px",
+              transition:"all"
             }}
             expanded={expanded === `panel${i}`}
             onChange={handleChange(`panel${i}`)}
@@ -52,7 +53,7 @@ const ContentCapit = ({ capi }) => {
               <AccordionDetails
                 key={char.id}
                 sx={{
-                  backgroundColor: "#2c2449",
+                  backgroundColor: "#00008B",
                   borderRadius: "0 0 10px 10px",
                   margin: "5px auto",
                 }}

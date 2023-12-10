@@ -187,7 +187,7 @@ const Content_cards = () => {
               // maxHeight:500
             }}
           >
-            <TableContainer sx={{ maxHeight: 390 }}>
+            <TableContainer sx={{minHeight:490 }}>
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>

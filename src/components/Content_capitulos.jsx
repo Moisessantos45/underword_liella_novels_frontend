@@ -156,7 +156,9 @@ const Content_capitulos = () => {
               // maxHeight:500
             }}
           >
-            <TableContainer sx={{ maxHeight: 390 }}>
+            <TableContainer
+              sx={{ maxHeight: 490, minHeight: 400, transition: "all" }}
+            >
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>

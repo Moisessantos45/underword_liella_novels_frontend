@@ -11,6 +11,7 @@ import ContentCapit from "../components/ContentCapit";
 import Recomendaciones from "../components/Recomendaciones";
 import Personajes from "../components/Personajes";
 import Comentarios from "../components/Comentarios";
+import NavbarPage from "../components/NavbarPage";
 
 const PaginasNovelas = () => {
   const [loader, setLoader] = useState(false);
@@ -70,6 +71,7 @@ const PaginasNovelas = () => {
         ""
       )}
       <Comentarios />
+      <NavbarPage/>
     </>
   );
 };
