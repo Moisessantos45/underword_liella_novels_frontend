@@ -63,7 +63,7 @@ const Container_captitulo = () => {
     setContenido("");
     setCapitulos(0);
     setNombre("");
-    setClave("");
+    // setClave("");
     setId(null);
   };
   const handleClose = () => {
