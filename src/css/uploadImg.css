@@ -1,59 +1,59 @@
-.container{
-    width: 95%;
-    display: flex;
-    margin: 10px auto;
-    /* flex-direction: column; */
-    flex-wrap: wrap;
-    height: 430px;
-    justify-content: center;
-    align-items: center;
-    background: #EEE;
-    text-align: center;
-    overflow-y: auto;
-    border-radius: 10px;
+.container_upload {
+  width: 100%;
+  display: flex;
+  margin: 10px auto;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
+  /* height: 430px; */
+  justify-content: center;
+  align-items: center;
+  /* background: #eee; */
+  text-align: center;
+  overflow-y: auto;
+  /* border-radius: 10px; */
 }
 
-.form_file{
-    width: 90%;
-    height:100px;
-    margin: 10px auto;
+.form_file {
+  width: 90%;
+  height: 100px;
+  margin: 10px auto;
 }
 
-.container .title{
-    display: flex;
-    margin: 10px;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    color: rgb(94, 93, 93);
+.container .title {
+  display: flex;
+  margin: 10px;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: rgb(94, 93, 93);
 }
 
-.label_file{
-    width: 180px;
-    height: 30px;
-    background: dodgerblue;
+.label_file {
+  width: 180px;
+  height: 30px;
+  background: dodgerblue;
 }
 
-#file-input{
-    display: none;
+#file-input {
+  display: none;
 }
 
-#upload-btn{
-    display: flex;
-    border: none;
-    width: 170px;
-    height: 30px;
-    text-transform: capitalize;
-    font-weight: bold;
-    justify-content: center;
-    align-items: center;
-    margin: 5px;
-    align-self: center;
-    border-radius: 10px;
-    background: white;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, .10);
-    cursor: pointer;
-    color: black;
+#upload-btn {
+  display: flex;
+  border: none;
+  width: 170px;
+  height: 30px;
+  text-transform: capitalize;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  align-self: center;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  color: black;
 }
 
 /* #output{
@@ -66,59 +66,76 @@
     line-height: 2;
 } */
 
-.url{
-    display: flex;
-    flex-direction: column;
+.url {
+  display: flex;
+  flex-direction: column;
 }
 
-.container_url{
-    display: flex;
+.container_url {
+  display: flex;
+  width: 45%;
+  overflow-y: auto;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 10px auto;
+  flex-direction: column;
+}
+
+.content.dark .container {
+  background: #060714;
+}
+
+.container_url-links {
+  display: flex;
+  /* flex-direction: column; */
+  /* justify-content: space-between; */
+  align-items: center;
+  margin: 10px;
+  gap: 5px;
+  width: 90%;
+}
+
+.copy {
+  display: flex;
+  border: none;
+  outline: none;
+  align-items: center;
+  justify-content: center;
+  /* align-self: flex-end; */
+  font-weight: bold;
+  background: white;
+  width: 35px;
+  height: 35px;
+  margin: 2px;
+  cursor: pointer;
+  border-radius: 20px;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+@media only screen and (max-width: 600px) {
+  h1 {
+    font-size: 35px;
+  }
+  .container {
+    height: auto;
+    justify-content: space-around;
+  }
+  .form_file {
     width: 90%;
-    overflow-y: auto;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 10px auto;
-    /* flex-direction: column; */
-}
+    height: 150px;
+  }
 
-.content.dark .container{
-    background: #060714;
-}
+  .container_url {
+    width: 95%;
+    word-wrap: break-word;
+  }
 
-.container_url-links{
-    display: flex;
-    flex-direction: column;
-    margin: 10px;
-}
-
-.copy{
-    display: flex;
-    border: none;
-    outline: none;
-    align-items: center;
-    justify-content: center;
-    align-self: center;
-    font-weight: bold;
-    background: white;
-    width: 105px;
-    height: 25px;
-    margin: 2px;
-    cursor: pointer;
-    border-radius: 10px;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, .10);
-}
-
-@media only screen and (max-width: 600px){
-    h1{
-        font-size: 35px;
-    }
-    .container{
-        height: auto;
-        justify-content: space-around;
-    }
-    .form_file{
-        width: 90%;
-        height: 150px;
-    }
+  .container_url-links {
+    /* width: auto; */
+    /* flex-wrap: wrap; */
+    justify-content: initial;
+    word-wrap: break-word;
+    width: 95%;
+  }
 }

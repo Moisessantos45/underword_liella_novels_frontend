@@ -111,7 +111,7 @@ const Container_novela = () => {
     setSinopsis("");
     // setIlustraciones("");
     setCapitulos(false);
-    setClave("");
+    // setClave("");
     setId(null);
   };
   // const handleChange = (event) => {

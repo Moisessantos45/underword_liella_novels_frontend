@@ -65,7 +65,7 @@ const Content_novelas = () => {
                   className="bg-blue-700 text-white rounded-lg h-7 w-10 flex items-center justify-center absolute right-1 top-1"
                   onClick={() => handelClick(item.clave, !item.activo)}
                 >
-                  {item.activo ? "off" : "on"}
+                  {item.activo ? <i className="fa-solid fa-power-off"></i>: <i className="fa-regular fa-lightbulb"></i>}
                 </button>
                 <img
                   src={item.imagen}
