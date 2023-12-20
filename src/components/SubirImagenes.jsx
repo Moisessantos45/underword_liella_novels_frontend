@@ -5,6 +5,7 @@ import axios from "axios";
 import NavbarSlider from "./NavbarSlider";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+import imageCompression from "browser-image-compression";
 
 const toastify = (text, type) => {
   Toastify({
@@ -41,26 +42,38 @@ const SubirImagenes = () => {
 
     const uploadedUrls = await Promise.all(
       files.map(async (file, index) => {
+        let compressedFile = file;
         const formData = new FormData();
-        formData.append("image", file);
-
-        const { data } = await axios.post(
-          `https://api.imgbb.com/1/upload?key=${apiKey}`,
-          formData,
-          {
-            onUploadProgress: (progressEvent) => {
-              const progress = Math.round(
-                (progressEvent.loaded / progressEvent.total) * 100
-              );
-              // Actualiza el progreso teniendo en cuenta la cantidad total de archivos
-              setUploadProgress(
-                ((index + 1) / files.length) * 100 + progress / files.length
-              );
-            },
-          }
-        );
-
-        return data.data.url;
+        if (file.size > 1 * 1024 * 1024) {
+          const options = {
+            maxSizeMB: 1,
+            useWebWorker: true,
+            maxWidthOrHeight: Infinity,
+          };
+          compressedFile = await imageCompression(file, options);
+        }
+        if (compressedFile === null) return toastify("Ocurrio un error", false);
+        formData.append("image", compressedFile);
+        try {
+          const { data } = await axios.post(
+            `https://api.imgbb.com/1/upload?key=${apiKey}`,
+            formData,
+            {
+              onUploadProgress: (progressEvent) => {
+                const progress = Math.round(
+                  (progressEvent.loaded / progressEvent.total) * 100
+                );
+                // Actualiza el progreso teniendo en cuenta la cantidad total de archivos
+                setUploadProgress(
+                  ((index + 1) / files.length) * 100 + progress / files.length
+                );
+              },
+            }
+          );
+          return data.data.url;
+        } catch (error) {
+          toastify("Ocurrio un error", false);
+        }
       })
     );
 
@@ -145,7 +158,7 @@ const SubirImagenes = () => {
               <div className="">
                 <span className="text-gray-600">Imagen</span>
                 <span className="float-right text-sm text-gray-400">
-                  {uploadProgress}MB
+                  {uploadProgress / 100}MB
                 </span>
                 <div className="h-2 overflow-hidden rounded-full bg-gray-300">
                   <div

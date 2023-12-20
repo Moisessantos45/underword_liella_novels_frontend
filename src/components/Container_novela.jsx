@@ -113,6 +113,7 @@ const Container_novela = () => {
     setCapitulos(false);
     // setClave("");
     setId(null);
+    datosEdit([])
   };
   // const handleChange = (event) => {
   //   setAge(event.target.value);

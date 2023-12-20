@@ -65,6 +65,7 @@ const Modal = () => {
     setMediafireEpub("");
     setClave("");
     setId(null);
+    cardEditar([])
   };
   return (
     <>

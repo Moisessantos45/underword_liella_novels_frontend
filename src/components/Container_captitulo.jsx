@@ -34,7 +34,7 @@ const Container_captitulo = () => {
 
   useEffect(() => {
     if (datosEdit?.id && datosEdit?.contenido) {
-      console.log("si funciona el de capi");
+      // console.log("si funciona el de capi");
       setTitulo(datosEdit.titulo);
       setContenido(datosEdit.contenido);
       setCapitulos(datosEdit.capitulo);
@@ -43,6 +43,7 @@ const Container_captitulo = () => {
       setId(datosEdit.id);
     }
   }, [datosEdit]);
+
   const tipo = "capitulos";
   const handelSubmit = async (e) => {
     e.preventDefault();
@@ -65,6 +66,7 @@ const Container_captitulo = () => {
     setNombre("");
     // setClave("");
     setId(null);
+    datosEdit([])
   };
   const handleClose = () => {
     setOpen(false);
@@ -121,7 +123,7 @@ const Container_captitulo = () => {
               onOpen={handleOpen}
               value={nombre}
               label="Age"
-              sx={{ width: "90%", height: 35,background:"#f3f4f6" }}
+              sx={{ width: "90%", height: 35, background: "#f3f4f6" }}
               onChange={(e) => setNombre(e.target.value)}
             >
               {novelasInfo.map((chart, i) => (

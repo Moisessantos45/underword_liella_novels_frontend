@@ -24,8 +24,7 @@ export const AdminProvider = ({ children }) => {
   const [capitulosInfo, setCapitulosInfo] = useState([]);
   //edicion
   const [cardEditar, setEditarCard] = useState({});
-  const [datosEdit, setDatos] = useState({}, {});
-  const [confirmacion, setConfimar] = useState(false);
+  const [datosEdit, setDatos] = useState({});
   const [data_cuenta, setDataUser] = useState([]);
   const [users, setUsers] = useState([]);
   const [confirmar_delate, setConfirmar] = useState(false);

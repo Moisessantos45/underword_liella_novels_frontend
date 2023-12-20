@@ -1,4 +1,3 @@
-import * as React from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -12,6 +11,7 @@ import { NavLink } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import NavbarSlider from "./NavbarSlider";
 import ModalConfirm from "./ModalConfirm";
+import { useState } from "react";
 
 const columns = [
   { id: "name", label: "Nombre", minWidth: 170 },
@@ -67,10 +67,10 @@ const llenar = (
       <div className="flex justify-center items-center">
         <NavLink
           className="bg-blue-600 rounded-lg h-7 w-8 m-1 flex justify-center items-center"
+          to={`/dashboard/${userAuth.id}/agregar-capitulo`}
           onClick={() => {
             obtenerDatos(item);
           }}
-          to={`/dashboard/${userAuth.id}/agregar-capitulo`}
         >
           <i className="fa-solid fa-pencil text-base text-yellow-500"></i>
           {/* Editar */}
@@ -111,8 +111,8 @@ const Content_capitulos = () => {
     setMostrar_modal,
   } = useAdmin();
   const { userType, userAuth } = useAuth();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -122,6 +122,7 @@ const Content_capitulos = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
   const llenarAndSetRows = () => {
     llenar(
       capitulosInfo,

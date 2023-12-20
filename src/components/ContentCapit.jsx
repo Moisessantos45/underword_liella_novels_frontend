@@ -20,7 +20,7 @@ const ContentCapit = ({ capi }) => {
   for (let i = 0; i < capitulosArray.length; i += 10) {
     gruposDeCapitulos.push(capitulosArray.slice(i, i + 10));
   }
-  console.log(capitulosArray);
+  // console.log(capitulosArray);
   return (
     <>
       <div className=" w-10/12 flex flex-col" style={{ margin: "20px auto" }}>

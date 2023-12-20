@@ -40,7 +40,6 @@ const AuthProvider = ({ children }) => {
           confi
         );
         setUserType(data.usuario.tipo);
-        // console.log(data);
         setAuth(data.usuario);
         setCont(data.totalUsuarios);
         // setWebIlustraciones(data.ilusNovelas);

@@ -31,10 +31,11 @@ const PaginasNovelas = () => {
         setTitleNabvar({ title: respuesta.data.info.titulo });
         setCapi(respuesta.data.capi.length > 0);
         setLoader(true);
-        console.log(respuesta);
+        // console.log(respuesta);
       } catch (error) {
         console.log(error);
       }
+      setLoader(true);
     };
     peticion();
   }, [clave]);

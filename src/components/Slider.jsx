@@ -9,14 +9,11 @@ import Loading from "./Loading";
 const Slider = () => {
   const { active, setActive, activeDark, setDark } = useAdmin();
   const { userType, userAuth, setAuth, cargando } = useAuth();
-  // const [activeDark,setDark]=useState(false)
   const navigate = useNavigate();
-  // const [email, setEmail] = useState("");
   const [activeIndex, setActiveIndex] = useState(-1);
   const location = useLocation();
   const pathParts = location.pathname.split("/");
   const lastPart = pathParts[pathParts.length - 1];
-  console.log(lastPart);
   const menuItems = [
     {
       text: "Inicio",
