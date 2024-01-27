@@ -31,7 +31,7 @@ const UploadsFiles = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const email = import.meta.env.VITE_MEGA_EMAIL;
   const password = import.meta.env.VITE_MEGA_PASSWORD + "$1";
-  // console.log(email, password)
+  console.log(email, password)
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     setFiles(selectedFiles);
