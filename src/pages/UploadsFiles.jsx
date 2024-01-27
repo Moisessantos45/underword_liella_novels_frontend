@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import UrlAxiosMega from "../config/UrlAxiosMega";
+import { useState } from "react";
 import useAdmin from "../hooks/useAdmin";
 import Toastify from "toastify-js";
+import { Storage } from "https://cdn.skypack.dev/megajs";
 import "../css/uploadImg.css";
 import "toastify-js/src/toastify.css";
 import NavbarSlider from "../components/NavbarSlider";
@@ -29,7 +29,9 @@ const UploadsFiles = () => {
   const [files, setFiles] = useState([]);
   const [urls, setUrls] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
-
+  const email = import.meta.env.VITE_MEGA_EMAIL;
+  const password = import.meta.env.VITE_MEGA_PASSWORD + "$1";
+  // console.log(email, password)
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     setFiles(selectedFiles);
@@ -37,40 +39,31 @@ const UploadsFiles = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const storage = await new Storage({ email, password }).ready;
     const uploadedUrls = await Promise.all(
-      files.map(async (file, index) => {
-        const formData = new FormData();
-        formData.append("file", file);
-        try {
-          const response = await UrlAxiosMega.post(
-            "/upload_file_mega",
-            formData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-              onUploadProgress: (progressEvent) => {
-                const progress = Math.round(
-                  (progressEvent.loaded / progressEvent.total) * 100
-                );
-                // Actualiza el progreso teniendo en cuenta la cantidad total de archivos
-                setUploadProgress(
-                  ((index + 1) / files.length) * 100 + progress / files.length
-                );
-              },
+      files.map((file, index) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = async () => {
+            try {
+              const content = reader.result;
+              const buffer = new Uint8Array(content);
+              const uploadedFile = await storage.upload(
+                { name: file.name, size: file.size },
+                buffer
+              ).complete;
+              const link = await uploadedFile.link();
+              setUploadProgress(
+                (((index + 1) / files.length) * 100) / files.length
+              );
+              resolve(link);
+            } catch (error) {
+              toastify("Ocurrio un error", false);
+              reject(error);
             }
-          );
-          const responseData =
-            response.data !== undefined ? response.data : null;
-          if (!responseData) {
-            toastify("Url no recibida", false);
-            return;
-          }
-          return responseData;
-        } catch (error) {
-          toastify("Ocurrio un error", false);
-        }
+          };
+          reader.readAsArrayBuffer(file);
+        });
       })
     );
 
@@ -133,7 +126,7 @@ const UploadsFiles = () => {
           </h1>
           <form onSubmit={handleSubmit} className="space-y-4 px-8 py-10">
             <div className="">
-              <span className="text-gray-600">Imagen</span>
+              <span className="text-gray-600">Archivo</span>
               <span className="float-right text-sm text-gray-400">
                 {uploadProgress / 100}MB
               </span>
