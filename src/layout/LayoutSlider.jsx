@@ -4,7 +4,7 @@ import "../css/slider.css";
 
 
 const LayoutSlider = () => {
-    const { active, setActive,activeDark } = useAdmin(); 
+    const { active,activeDark } = useAdmin(); 
     const [activeIndex, setActiveIndex] = useState(0);
     const menuItems = [
       { text: "Inicio", icon: "fas fa-border-all" },

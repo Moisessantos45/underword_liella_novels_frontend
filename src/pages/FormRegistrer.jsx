@@ -46,7 +46,7 @@ const FormRegistrer = () => {
   const [id_user, setIdUser] = useState(null);
   useEffect(() => {
     if (data_cuenta?.id) {
-      console.log("si funciona el de capi");
+      // console.log("si funciona el de capi");
       setEmail(data_cuenta.email);
       setTipo(data_cuenta.tipo);
       setName(data_cuenta.name_user);
@@ -165,9 +165,6 @@ const FormRegistrer = () => {
                   mt: 1,
                   height: 25,
                   width: "25%",
-                  // position: "absolute",
-                  // top: 0,
-                  // right: 1,
                   background: "dodgerblue",
                   color: "white",
                 }}

@@ -1,9 +1,4 @@
-import {
-  Route,
-  BrowserRouter,
-  Routes,
-  createBrowserRouter,
-} from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import LayoutLogin from "./layout/LayoutLogin";
 import LayoutInicio from "./layout/LayoutInicio";
 import PaginasNovelas from "./pages/PaginasNovelas";
@@ -11,10 +6,6 @@ import Cards from "./components/Cards";
 import FormLogin from "./pages/FormLogin";
 import LayoutAdmin from "./layout/LayoutAdmin";
 
-import { AuthProvider } from "./context/AuthProvider";
-import Container_admin from "./components/Container_admin";
-import ContainerPrincipal from "../src/pages/ContainerPrincipal";
-import { AdminProvider } from "./context/AdminProvide";
 import Container_card from "./components/Container_card";
 import Container_captitulo from "./components/Container_captitulo";
 import Container_novela from "./components/Container_novela";
@@ -23,15 +14,13 @@ import Content_novelas from "./components/Content_novelas";
 import Content_capitulos from "./components/Content_capitulos";
 import FormRegistrer from "./pages/FormRegistrer";
 import SubirImagenes from "./components/SubirImagenes";
-import ContainerIlustraciones from "./pages/ContainerIlustraciones";
 import PaginasCapitulos from "./pages/PaginasCapitulos";
 import Perfil from "./pages/Perfil";
 import Prueba from "./components/prueba";
-// import LayoutSlider from "./layout/LayoutSlider";
-import ContentCapit from "./components/ContentCapit";
 import Slider from "./components/Slider";
 import Content_list from "./components/Content_list";
 import Teams from "./pages/Teams";
+import UploadsFiles from "./pages/UploadsFiles";
 
 export const router = createBrowserRouter([
   {
@@ -62,18 +51,10 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  // {
-  //   path:"/slider",
-  //   element:<ContentCapit/>
-  // },
   {
     path: "/dashboard/:id",
     element: <LayoutAdmin />,
     children: [
-      // {
-      //   index: true,
-      //   element: <ContainerPrincipal />,
-      // },
       {
         index: true,
         element: <Content_list />,
@@ -115,8 +96,8 @@ export const router = createBrowserRouter([
         element: <SubirImagenes />,
       },
       {
-        path: "Ilustraciones_web",
-        element: <ContainerIlustraciones />,
+        path: "subir_file_mega",
+        element: <UploadsFiles />,
       },
       {
         path: "prueba",

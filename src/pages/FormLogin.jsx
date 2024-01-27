@@ -57,7 +57,6 @@ const FormLogin = () => {
         email,
         password,
       });
-      // console.log(data);
       setAuth(data);
       localStorage.setItem("token", data.token);
       toastify("Inicio exitoso", true);
@@ -66,7 +65,7 @@ const FormLogin = () => {
     } catch (error) {
       toastify(error.response.data.msg, false);
       setError(error.response.data.msg);
-      console.log(error);
+      setAuth({})
     }
     setCargando(false);
   };
@@ -75,42 +74,6 @@ const FormLogin = () => {
 
   return (
     <main className=" flex justify-center items-center main__content-form">
-      {/* <div className="container-from">
-        {error && (
-          <span className=" bg-red-600 flex w-11/12 items-center justify-center m-auto text-white font-bold text-sm rounded-md h-8">
-            {error}
-          </span>
-        )}
-        <div className="heading">Sign In</div>
-        <form onSubmit={handelSubmit} className="form">
-          <input
-            className="input"
-            type="email"
-            name="email"
-            id="email"
-            value={email}
-            placeholder="E-mail"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            className="input"
-            type="password"
-            name="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-          />
-          <span className="forgot-password">
-            <a href="#">Forgot Password ?</a>
-          </span>
-          <input
-            className="login-button"
-            type="submit"
-            defaultValue="Sign In"
-          />
-        </form>
-      </div> */}
       <form
         className="relative space-y-1 sm:h-88 h-105 rounded-md bg-white p-3 shadow-xl lg:p-10 border border-gray-100 margin sm:w-auto w-11/12"
         onSubmit={handelSubmit}

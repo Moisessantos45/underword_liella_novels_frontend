@@ -32,7 +32,7 @@ const Content_novelas = () => {
   const type = "novelas";
 
   const handelClick = async (clave, active) => {
-    console.log(clave, active);
+    // console.log(clave, active);
     try {
       const { data } = await urlAxios.put("/novelas/estado", { clave, active });
       // console.log(data);

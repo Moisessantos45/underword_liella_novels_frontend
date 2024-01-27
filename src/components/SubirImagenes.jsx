@@ -141,14 +141,14 @@ const SubirImagenes = () => {
                   </p>
                 </div>
               ))}
-               {urls.length > 1 && (
-					<button
-					  className="mt-4 rounded-full bg-blue-600 px-5 py-2 font-semibold text-white cursor-pointer"
-					  onClick={() => copyTodosUrl()}
-					>
-					  Copiar todas
-					</button>
-			    )}
+              {urls.length > 1 && (
+                <button
+                  className="mt-4 rounded-full bg-blue-600 px-5 py-2 font-semibold text-white cursor-pointer"
+                  onClick={() => copyTodosUrl()}
+                >
+                  Copiar todas
+                </button>
+              )}
             </div>
           )}
 

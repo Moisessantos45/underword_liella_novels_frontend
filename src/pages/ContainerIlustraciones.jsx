@@ -5,10 +5,10 @@ import useAdmin from "../hooks/useAdmin";
 import useAuth from "../hooks/useAuth";
 import Loading from "../components/Loading";
 
+
 const ContainerIlustraciones = () => {
   const {
     enviarDatos,
-    eliminarDatos,
     novelasInfo,
     setNovelasInfo,
     activeDark,
@@ -33,12 +33,10 @@ const ContainerIlustraciones = () => {
       .map((url) => url.trim()),
     id: item.id,
   }));
-  // setLoader(true);
-  // console.log(ilustracionesConClaves);
   const handelEditar = (url, clave, id) => {
     const confir = confirm("si deseas actulizat la img");
     if (confir) {
-      console.log("eliminar", confir, url, clave, id);
+      // console.log("eliminar", confir, url, clave, id);
       enviarDatos({ clave, url, id }, tipo);
     }
   };
@@ -58,7 +56,7 @@ const ContainerIlustraciones = () => {
       );
       setNovelasInfo(datosActulizados);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
   const habilitarEdicion = (url, i) => {

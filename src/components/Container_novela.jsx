@@ -29,7 +29,6 @@ const Container_novela = () => {
   const [encargados, setEncargados] = useState("");
   const [activo, setActivo] = useState(false);
   const [sinopsis, setSinopsis] = useState("");
-  // const [ilustraciones, setIlustraciones] = useState("");
   const [capitulos, setCapitulos] = useState(false);
   const [clave, setClave] = useState("dato");
   const [id, setId] = useState(null);
@@ -47,7 +46,6 @@ const Container_novela = () => {
       setEncargados(datosEdit.encargados);
       setActivo(datosEdit.activo);
       setSinopsis(datosEdit.sinopsis);
-      // setIlustraciones(datosEdit.ilustraciones);
       setCapitulos(datosEdit.capitulos);
       setClave(datosEdit.clave);
       setId(datosEdit.id);
@@ -67,7 +65,6 @@ const Container_novela = () => {
       autor,
       encargados,
       activo,
-      // ilustraciones,
     ];
     const camposVacios = Object.entries(campos)
       .filter(
@@ -95,7 +92,6 @@ const Container_novela = () => {
         autor,
         encargados,
         activo,
-        // ilustraciones,
       },
       dataTipo
     );
@@ -109,7 +105,6 @@ const Container_novela = () => {
     setEncargados("");
     setActivo(false);
     setSinopsis("");
-    // setIlustraciones("");
     setCapitulos(false);
     // setClave("");
     setId(null);
@@ -293,19 +288,6 @@ const Container_novela = () => {
               onChange={(e) => setSinopsis(e.target.value)}
             />
           </div>
-          {/* <div className="form_add_content">
-            <label htmlFor="ilustraciones" className={` ${activeDark?"text-white":"text-slate-600"}`}>
-              Ilustraciones de la novela
-            </label>
-            <textarea
-              type="text"
-              placeholder="ilustraciones"
-              id="ilustraciones"
-              className="input_from text-slate-700"
-              value={ilustraciones}
-              onChange={(e) => setIlustraciones(e.target.value)}
-            />
-          </div> */}
           <div className="form_add_content">
             <label
               htmlFor="capitulos"

@@ -23,9 +23,11 @@ const ContentCapit = ({ capi }) => {
   // console.log(capitulosArray);
   return (
     <>
-      <div className=" w-10/12 flex flex-col" style={{ margin: "20px auto" }}>
+      <div className=" w-10/12 flex flex-col margin">
         <div className="w-full flex justify-center m-2">
-          <h1 className=" text-xl">Capitulos</h1>
+          <h1 className=" text-xl font-bold">
+            Capitulos Disponibles &quot;Novela&quot;
+          </h1>
         </div>
         {gruposDeCapitulos.map((grupo, i) => (
           <Accordion
@@ -34,7 +36,7 @@ const ContentCapit = ({ capi }) => {
               backgroundColor: "#111827",
               "&:active": { borderRadius: "0 0 10px 10px" },
               margin: "5px",
-              transition:"all"
+              transition: "all",
             }}
             expanded={expanded === `panel${i}`}
             onChange={handleChange(`panel${i}`)}
@@ -44,8 +46,8 @@ const ContentCapit = ({ capi }) => {
               aria-controls="panel1bh-content"
               id="panel1bh-header"
             >
-              <Typography sx={{ width: "33%", flexShrink: 0, color: "white" }}>
-                {`Capitulos ${i + 1}-${i + 10}`}
+              <Typography sx={{ width: "85%", flexShrink: 0, color: "white" }}>
+                {`Capitulos ${i * 10 + 1}-${i * 10 + 10}`}
               </Typography>
               {/* <Typography sx={{ color: "white" }}>{char.titulo}</Typography> */}
             </AccordionSummary>

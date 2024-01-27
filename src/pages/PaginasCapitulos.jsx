@@ -71,7 +71,7 @@ function formatearTextoConImagenes(texto) {
 }
 
 const PaginasCapitulos = () => {
-  const { bgNovel, setBackg, setTitleNabvar } = useAdmin();
+  const { setBackg, setTitleNabvar } = useAdmin();
   const [capit, setCapi] = useState([]);
   const [loader, setLoader] = useState(true);
   const [cont, setCont] = useState();
@@ -90,13 +90,13 @@ const PaginasCapitulos = () => {
       setLoader(false);
     } catch (error) {
       setCapi([]);
-      console.log(error);
+      // console.log(error);
     }
     setLoader(false);
   };
   useEffect(() => {
     document.title = capit.titulo || "UnderWordLiellaNovels";
-  }, []);
+  }, [capitulo]);
 
   useEffect(() => {
     obtenerCapitulo(clave, capitulo);
@@ -115,41 +115,38 @@ const PaginasCapitulos = () => {
         <div className="line bg-white"></div>
       </section>
       <section className="container_capi">
-        {/* <div dangerouslySetInnerHTML={{ __html: contenidoFormateado }} /> */}
-        {contenidoFormateado || <h1>Ocurrion un error</h1>}
+        {contenidoFormateado || <h1>Capitulo no disponible</h1>}
         <div className="line"></div>
         <div className="naveg">
-          {tamanio == 0 ? (
-            cont > 0
-          ) : cont > 1 ? (
-            <div className="previuos">
+          {+cont > 1 ? (
+            <button className="previuos">
               <img src={previuos} alt="" />
               <Link
                 className="btn_naveg font-bold"
-                to={`/capitulo/${clave}/${cont - 1}`}
+                to={`/capitulo/${clave}/${+cont - 1}`}
               >
                 Previous
               </Link>
-            </div>
+            </button>
           ) : (
             ""
           )}
-          <div className="home">
+          <button className="home">
             <Link className="btn_naveg btn_naveg-link font-bold" to={`/`}>
               Inicio
               <img src={home} alt="" />
             </Link>
-          </div>
-          {cont !== tamanio ? (
-            <div className="next">
+          </button>
+          {+cont !== tamanio ? (
+            <button className="next">
               <Link
                 className="btn_naveg font-bold"
-                to={`/capitulo/${clave}/${cont + 1}`}
+                to={`/capitulo/${clave}/${+cont + 1}`}
               >
                 Previous
               </Link>
               <img src={next} alt="" />
-            </div>
+            </button>
           ) : (
             ""
           )}

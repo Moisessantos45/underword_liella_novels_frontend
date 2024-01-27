@@ -131,11 +131,11 @@ const Content_cards = () => {
   } = useAdmin();
   const { userType, userAuth } = useAuth();
   const mouse = (valor) => {
-    console.log("se paso el mouse", valor);
+    // console.log("se paso el mouse", valor);
   };
 
   const solatar = (valor) => {
-    console.log("se dejo el elemnto", valor);
+    // console.log("se dejo el elemnto", valor);
   };
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -149,7 +149,7 @@ const Content_cards = () => {
     setPage(0);
   };
   const handleEdit = (item) => {
-    console.log(item);
+    // console.log(item);
     setModal(item);
   };
   // console.log(cardsVol);
@@ -187,7 +187,7 @@ const Content_cards = () => {
               // maxHeight:500
             }}
           >
-            <TableContainer sx={{minHeight:490 }}>
+            <TableContainer sx={{ minHeight: 490 }}>
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
                   <TableRow>

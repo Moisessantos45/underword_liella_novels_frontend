@@ -36,15 +36,10 @@ const Teams = () => {
     users,
     setUsers,
     eliminarDatos,
-    setConfirmar,
     confirmar_delate,
     mostrar_modal,
     setMostrar_modal,
   } = useAdmin();
-  //   const [users, setUsers] = useState([]);
-  const [id, setId] = useState(null);
-  // const [confirmar_delate, setConfirmar] = useState(false);
-  // const [mostrar_modal, setMostrar_modal] = useState(false);
   const type = "user";
   useEffect(() => {
     const data_users = async () => {
@@ -163,7 +158,7 @@ const Teams = () => {
                               />
                             </div>
                             <div className="ml-3">
-                              <p className="whitespace-no-wrap">{item.name}</p>
+                              <p className="whitespace-no-wrap">{item.name_user}</p>
                             </div>
                           </div>
                         </td>

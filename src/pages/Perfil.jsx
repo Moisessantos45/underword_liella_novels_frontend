@@ -32,8 +32,7 @@ const Perfil = () => {
   const [email, setEmail] = useState(userAuth?.email);
   const [password, setPassword] = useState("");
   const [foto, setFoto] = useState([]);
-  const [name_user, setName] = useState(userAuth?.name_user);
-  const [datos_actuales, setDatos] = useState({});
+  const [name_user, setName] = useState(userAuth?.name_user); 
   const [tipo, setTipo] = useState(userAuth?.tipo);
   let foto_perfil = userAuth?.foto_perfil || "";
 
@@ -75,7 +74,7 @@ const Perfil = () => {
       toastify("Datos actualizados", true);
     } catch (error) {
       toastify(error.response.data.msg, false);
-      console.log(error);
+      // console.log(error);
     }
   };
   return (

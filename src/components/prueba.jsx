@@ -134,9 +134,9 @@ const Prueba = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  console.log(cardsVol);
+  // console.log(cardsVol);
   const handleEdit = (item) => {
-    console.log("si funcion edita");
+    // console.log("si funcion edita");
   };
 
   const llenarAndSetRows = () => {

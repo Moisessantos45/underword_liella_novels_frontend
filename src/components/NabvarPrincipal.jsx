@@ -1,11 +1,6 @@
-import { Link } from "react-router-dom";
 import "../css/MenuHeader.css";
-import useAdmin from "../hooks/useAdmin";
-import { useEffect, useState } from "react";
-import bars from "../img/bars.png";
+import "../css/styles.css"
 import icon_logo from "../img/Marca.png";
-import light from "../img/modo_claro.png";
-import dark from "../img/modo-oscuro.png";
 import bg_back from "../img/backgraoud.jpg";
 
 const NabvarPrincipal = () => {

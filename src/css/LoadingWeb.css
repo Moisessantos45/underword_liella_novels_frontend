@@ -5,6 +5,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  top: 0;
+  left: 0;
+  background: rgb(32 32 44);
 }
 
 .three-body {

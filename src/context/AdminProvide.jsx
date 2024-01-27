@@ -83,7 +83,7 @@ export const AdminProvider = ({ children }) => {
           toastify("Volumen actualizado", true);
         } catch (error) {
           toastify(error.response.data.msg, false);
-          console.log(error);
+          // console.log(error);
         }
       } else if (tipo == "capitulos") {
         const { id, ...newData } = dato;
@@ -96,7 +96,7 @@ export const AdminProvider = ({ children }) => {
           toastify("Capitulo actualizado", true);
         } catch (error) {
           toastify(error.response.data.msg, false);
-          console.log(error);
+          // console.log(error);
         }
       } else if (tipo == "novela") {
         const { id, ...newData } = dato;
@@ -110,23 +110,7 @@ export const AdminProvider = ({ children }) => {
           toastify("Novela actulizada", true);
         } catch (error) {
           toastify(error.response.data.msg, false);
-          console.log(error);
-        }
-      } else if (tipo == "ilustraciones") {
-        const { id, ...newData } = dato;
-        try {
-          const { data } = await urlAxios.put(
-            "/novelas/ilustraciones",
-            newData
-          );
-          const ilustraciones_actulizados = novelasInfo.map((novela) =>
-            novela.id == data.id ? data : novela
-          );
-          setNovelasInfo(ilustraciones_actulizados);
-          mostrarAlerta("se actulizo correctamente la imagen", true);
-        } catch (error) {
-          toastify(error.response.data.msg, false);
-          console.log(error);
+          // console.log(error);
         }
       }
     } else {
@@ -138,7 +122,7 @@ export const AdminProvider = ({ children }) => {
           toastify("Volumen agregado", true);
         } catch (error) {
           toastify(error.response.data.msg, false);
-          console.log(error);
+          // console.log(error);
         }
       } else if (tipo == "capitulos") {
         const { id, ...newData } = dato;
@@ -148,7 +132,7 @@ export const AdminProvider = ({ children }) => {
           toastify("Capitulo agregado", true);
         } catch (error) {
           toastify(error.response.data.msg, false);
-          console.log(error);
+          // console.log(error);
         }
       } else if (tipo == "novela") {
         const { id, ...newData } = dato;
@@ -158,7 +142,7 @@ export const AdminProvider = ({ children }) => {
           toastify("Novela agregada", true);
         } catch (error) {
           toastify(error.response.data.msg, false);
-          console.log(error);
+          // console.log(error);
         }
       }
     }
@@ -175,7 +159,7 @@ export const AdminProvider = ({ children }) => {
 
   const eliminarDatos = async (id, tipo) => {
     if (tipo == "cards") {
-      console.log("tipo", tipo);
+      // console.log("tipo", tipo);
       try {
         await urlAxios.delete(`/novelas/cards/${id}`);
         const datosActulizados = cardsVol.filter((itens) => itens.id !== id);
@@ -183,7 +167,7 @@ export const AdminProvider = ({ children }) => {
         toastify("Volumen eliminado", true);
       } catch (error) {
         toastify(error.response.data.msg, false);
-        console.log(error);
+        // console.log(error);
       }
     } else if (tipo == "capitulos") {
       try {
@@ -195,10 +179,10 @@ export const AdminProvider = ({ children }) => {
         toastify("Capitulo eliminado", true);
       } catch (error) {
         toastify(error.response.data.msg, false);
-        console.log(error);
+        // console.log(error);
       }
     } else if (tipo == "novelas") {
-      console.log(tipo);
+      // console.log(tipo);
       try {
         await urlAxios.delete(`/novelas/${id}`);
         const datosActulizados = novelasInfo.filter((itens) => itens.id !== id);
@@ -206,7 +190,7 @@ export const AdminProvider = ({ children }) => {
         toastify("Novela eliminada", true);
       } catch (error) {
         toastify(error.response.data.msg, false);
-        console.log(error);
+        // console.log(error);
       }
     } else if (tipo == "user") {
       try {
@@ -216,14 +200,13 @@ export const AdminProvider = ({ children }) => {
         toastify(`${tipo} eliminado`, true);
       } catch (error) {
         toastify(error.response.data.msg, false);
-        console.log(error);
+        // console.log(error);
       }
     }
   };
 
   const registrar = async (user) => {
-    // console.log("registrando usuario", user);
-    const { email, password, tipo, id, foto_perfil, name_user, id_user } = user;
+    const { email, password, tipo, id, foto_perfil, name_user } = user;
     const token = localStorage.getItem("token");
     const confi = {
       headers: {
@@ -249,7 +232,7 @@ export const AdminProvider = ({ children }) => {
         toastify(`${tipo} registrado`, true);
       } catch (error) {
         toastify(error.response.data.msg, false);
-        console.log(error);
+        // console.log(error);
       }
     } else {
       try {
@@ -267,7 +250,7 @@ export const AdminProvider = ({ children }) => {
         toastify(`${tipo} registrado`, true);
       } catch (error) {
         toastify(error.response.data.msg, false);
-        console.log(error);
+        // console.log(error);
       }
     }
   };
@@ -278,7 +261,7 @@ export const AdminProvider = ({ children }) => {
         const { data } = await urlAxios("/novelas");
         setNovelasInfo(data);
       } catch (error) {
-        console.log(error);
+        toastify(error.response.data.msg, false);
       }
     };
     const obtenerVolumenes = async () => {
@@ -286,7 +269,7 @@ export const AdminProvider = ({ children }) => {
         const { data } = await urlAxios("/novelas/cards");
         setCarsVol(data);
       } catch (error) {
-        console.log(error);
+        toastify(error.response.data.msg, false);
       }
     };
     const obtenerCaptiulos = async () => {
@@ -294,7 +277,7 @@ export const AdminProvider = ({ children }) => {
         const { data } = await urlAxios("/capitulo");
         setCapitulosInfo(data);
       } catch (error) {
-        console.log(error);
+        toastify(error.response.data.msg, false);
       }
     };
     obtenerNovelas();

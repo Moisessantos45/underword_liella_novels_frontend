@@ -7,7 +7,7 @@ import urlAxios from "../config/urlAxios";
 import Loading from "./Loading";
 
 const Slider = () => {
-  const { active, setActive, activeDark, setDark } = useAdmin();
+  const { active, activeDark } = useAdmin();
   const { userType, userAuth, setAuth, cargando } = useAuth();
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -64,47 +64,44 @@ const Slider = () => {
       tipo: "user",
     },
     {
-      text: "Upload  Ilustraciones",
+      text: "Upload Ilustraciones",
       icon: "fa-solid fa-file-image",
       url: "subir_imagenes",
       tipo: "user",
     },
-    // {
-    //   text: "Gestionar Ilustraciones",
-    //   icon: "fa-solid fa-images",
-    //   url: "Ilustraciones_web",
-    //   tipo: "user",
-    // },
+    {
+      text: "Upload File Mega",
+      icon: "fas fa-file-upload",
+      url: "subir_file_mega",
+      tipo: "user",
+    },
     {
       text: "Team",
       icon: "fas fa-people-group",
       tipo: "administrador",
       url: "colaboradores",
-    },
+    }   
   ];
   useEffect(() => {
     document.title = "Panel de administracion";
   }, []);
   useEffect(() => {
     if (!userAuth?.activo) {
-      console.log(userAuth.activo);
       navigate("/login-admin");
     }
   }, [userAuth, navigate]);
 
   const handelClick = async () => {
     const email = userAuth.email;
-    // await setEmail(userAuth.email);
     try {
       await urlAxios.post("/underwordliellanovels/logout", {
         email,
       });
-      console.log("funciona");
       localStorage.removeItem("token");
       setAuth({});
       navigate("/login-admin");
     } catch (error) {
-      console.log(error);
+      return
     }
   };
   if (cargando) return <Loading />;

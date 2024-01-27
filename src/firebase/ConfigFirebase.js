@@ -8,7 +8,7 @@ import {
   signOut,
 } from "firebase/auth";
 
-console.log("si funciona")
+// console.log("si funciona")
 
 
 const firebaseConfig = {
