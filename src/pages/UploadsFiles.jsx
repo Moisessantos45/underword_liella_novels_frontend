@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import urlAxios from "../config/urlAxios";
+import UrlAxiosMega from "../config/UrlAxiosMega";
 import useAdmin from "../hooks/useAdmin";
 import Toastify from "toastify-js";
 import "../css/uploadImg.css";
@@ -43,8 +43,8 @@ const UploadsFiles = () => {
         const formData = new FormData();
         formData.append("file", file);
         try {
-          const response = await urlAxios.post(
-            "/mega/upload_file_mega",
+          const response = await UrlAxiosMega.post(
+            "/upload_file_mega",
             formData,
             {
               headers: {
