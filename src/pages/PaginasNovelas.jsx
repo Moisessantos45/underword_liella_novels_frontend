@@ -6,7 +6,8 @@ import CardsVol from "../components/CardsVol";
 import useAdmin from "../hooks/useAdmin";
 import Loading from "../components/Loading";
 import ContentCapit from "../components/ContentCapit";
-import Recomendaciones from "../components/Recomendaciones";3
+import Recomendaciones from "../components/Recomendaciones";
+3;
 import Comentarios from "../components/Comentarios";
 import NavbarPage from "../components/NavbarPage";
 
@@ -22,13 +23,11 @@ const PaginasNovelas = () => {
       try {
         const respuesta = await urlAxios(`/paginas/novela/${clave}`);
         setNovela(respuesta.data);
-        // console.log(respuesta);
         const bg = `${respuesta.data.info.backgroud}`;
         setBackg(bg);
         setTitleNabvar({ title: respuesta.data.info.titulo });
         setCapi(respuesta.data.capi.length > 0);
         setLoader(false);
-        // console.log(respuesta);
       } catch (error) {
         setNovela({});
       }

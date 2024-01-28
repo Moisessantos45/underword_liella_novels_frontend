@@ -19,7 +19,9 @@ const Cards = () => {
     };
     peticion();
   }, []);
-
+  useEffect(() => {
+    document.title =  "UnderWordLiellaNovels";
+  }, []);
   if (!loader) return <Loading />;
 
   return (

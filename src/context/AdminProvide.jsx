@@ -73,9 +73,9 @@ export const AdminProvider = ({ children }) => {
   const enviarDatos = async (dato, tipo) => {
     if (dato?.id) {
       if (tipo == "cards") {
-        const { id, ...newData } = dato;
+        // const { id, ...newData } = dato;
         try {
-          const { data } = await urlAxios.put("/novelas/cards", newData);
+          const { data } = await urlAxios.put("/novelas/cards", dato);
           const volActulizados = cardsVol.map((vol) =>
             vol.id == data.id ? data : vol
           );
@@ -86,9 +86,10 @@ export const AdminProvider = ({ children }) => {
           // console.log(error);
         }
       } else if (tipo == "capitulos") {
-        const { id, ...newData } = dato;
+        // const { id, ...newData } = dato;
+        // console.log("actalizar",dato);
         try {
-          const { data } = await urlAxios.put("/capitulo", newData);
+          const { data } = await urlAxios.put("/capitulo", dato);
           const capitulosActualizados = capitulosInfo.map((capi) =>
             capi.id == data.id ? data : capi
           );
@@ -99,9 +100,9 @@ export const AdminProvider = ({ children }) => {
           // console.log(error);
         }
       } else if (tipo == "novela") {
-        const { id, ...newData } = dato;
+        // const { id, ...newData } = dato;
         try {
-          const { data } = await urlAxios.put("/novelas", newData);
+          const { data } = await urlAxios.put("/novelas", dato);
           // console.log(data)
           const novelasActulizados = novelasInfo.map((novela) =>
             novela.id == data.id ? data : novela
@@ -304,10 +305,12 @@ export const AdminProvider = ({ children }) => {
         setModal,
         editarCard,
         cardEditar,
+        setEditarCard,
         enviarDatos,
         obtenerDatosUser,
         obtenerDatos,
         datosEdit,
+        setDatos,
         eliminarDatos,
         registrar,
         activeDark,

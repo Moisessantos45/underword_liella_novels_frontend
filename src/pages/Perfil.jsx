@@ -34,6 +34,7 @@ const Perfil = () => {
   const [foto, setFoto] = useState([]);
   const [name_user, setName] = useState(userAuth?.name_user); 
   const [tipo, setTipo] = useState(userAuth?.tipo);
+  const [id,setId] = useState(userAuth?.id)
   let foto_perfil = userAuth?.foto_perfil || "";
 
   const handleFileChange = (e) => {
@@ -67,6 +68,7 @@ const Perfil = () => {
           foto_perfil,
           name_user,
           tipo,
+          id
         }
       );
       setEmail(data.email);

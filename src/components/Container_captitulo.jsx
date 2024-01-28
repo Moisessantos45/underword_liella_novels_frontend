@@ -21,7 +21,7 @@ const mostrarAlerta = (texto) => {
 };
 
 const Container_captitulo = () => {
-  const { active, novelasInfo, enviarDatos, datosEdit, activeDark } =
+  const { active, novelasInfo, enviarDatos, datosEdit, activeDark,setDatos } =
     useAdmin();
   const [alerta, setAlerta] = useState({});
   const [nombre, setNombre] = useState("");
@@ -34,7 +34,6 @@ const Container_captitulo = () => {
 
   useEffect(() => {
     if (datosEdit?.id && datosEdit?.contenido) {
-      // console.log("si funciona el de capi");
       setTitulo(datosEdit.titulo);
       setContenido(datosEdit.contenido);
       setCapitulos(datosEdit.capitulo);
@@ -66,7 +65,7 @@ const Container_captitulo = () => {
     setNombre("");
     // setClave("");
     setId(null);
-    datosEdit([])
+    setDatos({})
   };
   const handleClose = () => {
     setOpen(false);

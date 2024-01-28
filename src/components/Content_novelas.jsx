@@ -5,6 +5,26 @@ import useAuth from "../hooks/useAuth";
 import NavbarSlider from "./NavbarSlider";
 import urlAxios from "../config/urlAxios";
 import ModalConfirm from "./ModalConfirm";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
+
+const toastify = (text, type) => {
+  Toastify({
+    text: `${text}`,
+    duration: 3000,
+    newWindow: true,
+    // close: true,
+    gravity: "top",
+    position: "right",
+    stopOnFocus: true,
+    style: {
+      background: type
+        ? "linear-gradient(to right, #00b09b, #96c93d)"
+        : "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+      borderRadius: "10px",
+    },
+  }).showToast();
+};
 
 const Content_novelas = () => {
   const {
@@ -41,7 +61,7 @@ const Content_novelas = () => {
       );
       setNovelasInfo(novelasActulizados);
     } catch (error) {
-      console.log(error);
+      toastify(error.response.data.msg, false);
     }
   };
   return (
@@ -54,18 +74,23 @@ const Content_novelas = () => {
           {novelasInfo.map((item, index) => (
             <div className="mb-2 sm:w-60 w-44 text_color" key={index}>
               <div className="w-full bg-gray-50 relative flex justify-center flex-wrap rounded-lg items-center">
-                <Link
-                  to={`/novela/${item.clave}`}
+                <a
+                  href={`/novela/${item.clave}`}
                   className="bg-blue-700 text-white rounded-lg h-7 w-9 flex items-center justify-center absolute left-1 top-1"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  {" "}
                   <i className="fas fa-arrow-right"></i>
-                </Link>
+                </a>
                 <button
                   className="bg-blue-700 text-white rounded-lg h-7 w-10 flex items-center justify-center absolute right-1 top-1"
                   onClick={() => handelClick(item.clave, !item.activo)}
                 >
-                  {item.activo ? <i className="fa-solid fa-power-off"></i>: <i className="fa-regular fa-lightbulb"></i>}
+                  {item.activo ? (
+                    <i className="fa-solid fa-power-off"></i>
+                  ) : (
+                    <i className="fa-regular fa-lightbulb"></i>
+                  )}
                 </button>
                 <img
                   src={item.imagen}

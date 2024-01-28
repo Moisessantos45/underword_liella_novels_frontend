@@ -17,7 +17,7 @@ const mostrarAlerta = (texto) => {
 };
 
 const Container_novela = () => {
-  const { active, enviarDatos, datosEdit, activeDark } = useAdmin();
+  const { active, enviarDatos, datosEdit, activeDark,setDatos } = useAdmin();
   const [alerta, setAlerta] = useState({});
   const [titulo, setTitulo] = useState("");
   const [tipo, setTipo] = useState("");
@@ -108,7 +108,7 @@ const Container_novela = () => {
     setCapitulos(false);
     // setClave("");
     setId(null);
-    datosEdit([])
+    setDatos({})
   };
   // const handleChange = (event) => {
   //   setAge(event.target.value);

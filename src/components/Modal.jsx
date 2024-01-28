@@ -4,7 +4,8 @@ import "../css/modal.css";
 import imgClose from "../img/cerrar.png";
 
 const Modal = () => {
-  const { modal, setModal, cardEditar, enviarDatos } = useAdmin();
+  const { modal, setModal, cardEditar, setEditarCard, enviarDatos } =
+    useAdmin();
   const [nombreClave, setNombre] = useState("");
   const [volumen, setVolumen] = useState(0);
   const [imagen, setImagen] = useState("");
@@ -65,7 +66,7 @@ const Modal = () => {
     setMediafireEpub("");
     setClave("");
     setId(null);
-    cardEditar([])
+    setEditarCard([]);
   };
   return (
     <>
@@ -105,7 +106,7 @@ const Modal = () => {
               value={volumen}
               onChange={(e) => setVolumen(e.target.value)}
             />
-             <label htmlFor="captitulo" className="text-black w-40">
+            <label htmlFor="captitulo" className="text-black w-40">
               Texto
             </label>
             <input

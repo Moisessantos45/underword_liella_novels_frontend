@@ -54,7 +54,7 @@ const llenar = (
   setMostrar_modal,
   userAuth
 ) => {
-  const type = "cards";
+  const type = "capitulos";
   rows = data.map((item) => ({
     ...createData(
       item.nombre,
@@ -82,7 +82,6 @@ const llenar = (
           onClick={() => {
             if (userAuth.tipo === "administrador") {
               setMostrar_modal(true);
-              confirmar_delate;
               if (confirmar_delate) {
                 eliminarDatos(item.id, type);
               }

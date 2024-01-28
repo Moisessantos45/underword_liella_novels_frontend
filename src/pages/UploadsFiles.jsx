@@ -1,10 +1,12 @@
 import { useState } from "react";
 import useAdmin from "../hooks/useAdmin";
 import Toastify from "toastify-js";
+import UrlAxiosMega from "../config/UrlAxiosMega";
 import { Storage } from "https://cdn.skypack.dev/megajs";
 import "../css/uploadImg.css";
 import "toastify-js/src/toastify.css";
 import NavbarSlider from "../components/NavbarSlider";
+import axios from "axios";
 
 const toastify = (text, type) => {
   Toastify({
@@ -39,31 +41,39 @@ const UploadsFiles = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const storage = await new Storage({ email, password }).ready;
     const uploadedUrls = await Promise.all(
-      files.map((file, index) => {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = async () => {
-            try {
-              const content = reader.result;
-              const buffer = new Uint8Array(content);
-              const uploadedFile = await storage.upload(
-                { name: file.name, size: file.size },
-                buffer
-              ).complete;
-              const link = await uploadedFile.link();
-              setUploadProgress(
-                (((index + 1) / files.length) * 100) / files.length
-              );
-              resolve(link);
-            } catch (error) {
-              toastify("Ocurrio un error", false);
-              reject(error);
+      files.map(async (file, index) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        try {
+          const response = await axios.post(
+            "https://api-uploads-mega.onrender.com/api/mega/upload_file_mega",
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+              onUploadProgress: (progressEvent) => {
+                const progress = Math.round(
+                  (progressEvent.loaded / progressEvent.total) * 100
+                );
+                // Actualiza el progreso teniendo en cuenta la cantidad total de archivos
+                setUploadProgress(
+                  ((index + 1) / files.length) * 100 + progress / files.length
+                );
+              },
             }
-          };
-          reader.readAsArrayBuffer(file);
-        });
+          );
+          const responseData =
+            response.data !== undefined ? response.data : null;
+          if (!responseData) {
+            toastify("Url no recibida", false);
+            return;
+          }
+          return responseData;
+        } catch (error) {
+          toastify("Ocurrio un error", false);
+        }
       })
     );
 
@@ -105,7 +115,7 @@ const UploadsFiles = () => {
                   <i className="fa-regular fa-copy"></i>
                 </button>
                 <p className="urlimg text-blue-500 font-semibold text-sm sm:text-base">
-                  {url}
+                  {url.substring(0, 40)+"..."}
                 </p>
               </div>
             ))}

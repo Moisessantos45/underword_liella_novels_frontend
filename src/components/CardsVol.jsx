@@ -18,7 +18,7 @@ const CardsVol = () => {
         setVolumen(respuesta.data);
         setLoader(false);
       } catch (error) {
-        setVolumen([])
+        setVolumen([]);
       }
       setLoader(false);
     };
@@ -50,24 +50,44 @@ const CardsVol = () => {
                     </div>
                   )}
                   {vol.mega && (
-                    <Link to={`${vol.mega}`} className="link-url">
+                    <a
+                      href={`${vol.mega}`}
+                      className="link-url"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       Mega
-                    </Link>
+                    </a>
                   )}
                   {vol.mediafire && (
-                    <Link to={`${vol.mediafire}`} className="link-url">
+                    <a
+                      href={`${vol.mediafire}`}
+                      className="link-url"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       Mediafire
-                    </Link>
+                    </a>
                   )}
                   {vol.megaEpub && (
-                    <Link to={`${vol.megaEpub}`} className="link-url">
+                    <a
+                      href={`${vol.megaEpub}`}
+                      className="link-url"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       Mega Epub
-                    </Link>
+                    </a>
                   )}
                   {vol.mediafireEpub && (
-                    <Link to={`${vol.mediafireEpub}`} className="link-url">
+                    <a
+                      href={`${vol.mediafireEpub}`}
+                      className="link-url"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       Mediafire Epub
-                    </Link>
+                    </a>
                   )}
                 </div>
               </figure>

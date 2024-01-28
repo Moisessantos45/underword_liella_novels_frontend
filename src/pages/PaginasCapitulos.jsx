@@ -83,6 +83,7 @@ const PaginasCapitulos = () => {
       const { data } = await urlAxios(
         `/pagina/capitulo/${clave}/${capitulo.toString()}`
       );
+      // console.log(data.data);
       setTitleNabvar({ title: `${data.data?.titulo}` });
       setCapi(data.data);
       setCont(Number(data.data.capitulo));
@@ -105,53 +106,63 @@ const PaginasCapitulos = () => {
   }, [clave, capitulo]);
 
   if (loader) return <Loading />;
-  const contenidoFormateado = formatearTextoConImagenes(capit.contenido);
+  const contenidoFormateado = capit.titulo
+    ? formatearTextoConImagenes(capit.contenido)
+    : "";
   return (
     <>
-      <NavbarChapters />
-      <section className="margin w-11/12 flex justify-center flex-col items-center">
-        <div className="line bg-white"></div>
-        <h1 className=" text-center sm:text-xl font-bold">{capit.titulo}</h1>
-        <div className="line bg-white"></div>
-      </section>
-      <section className="container_capi">
-        {contenidoFormateado || <h1>Capitulo no disponible</h1>}
-        <div className="line"></div>
-        <div className="naveg">
-          {+cont > 1 ? (
-            <button className="previuos">
-              <img src={previuos} alt="" />
-              <Link
-                className="btn_naveg font-bold"
-                to={`/capitulo/${clave}/${+cont - 1}`}
-              >
-                Previous
-              </Link>
-            </button>
-          ) : (
-            ""
-          )}
-          <button className="home">
-            <Link className="btn_naveg btn_naveg-link font-bold" to={`/`}>
-              Inicio
-              <img src={home} alt="" />
-            </Link>
-          </button>
-          {+cont !== tamanio ? (
-            <button className="next">
-              <Link
-                className="btn_naveg font-bold"
-                to={`/capitulo/${clave}/${+cont + 1}`}
-              >
-                Previous
-              </Link>
-              <img src={next} alt="" />
-            </button>
-          ) : (
-            ""
-          )}
-        </div>
-      </section>
+      {capit.titulo ? (
+        <>
+          <NavbarChapters />
+          <section className="margin w-11/12 flex justify-center flex-col items-center">
+            <div className="line bg-white"></div>
+            <h1 className=" text-center sm:text-xl font-bold">
+              {capit.titulo}
+            </h1>
+            <div className="line bg-white"></div>
+          </section>
+          <section className="container_capi">
+            {contenidoFormateado || <h1>Capitulo no disponible</h1>}
+            <div className="line"></div>
+            <div className="naveg">
+              {+cont > 1 ? (
+                <button className="previuos">
+                  <img src={previuos} alt="" />
+                  <Link
+                    className="btn_naveg font-bold"
+                    to={`/capitulo/${clave}/${+cont - 1}`}
+                  >
+                    Previous
+                  </Link>
+                </button>
+              ) : (
+                ""
+              )}
+              <button className="home">
+                <Link className="btn_naveg btn_naveg-link font-bold" to={`/`}>
+                  Inicio
+                  <img src={home} alt="" />
+                </Link>
+              </button>
+              {+cont !== tamanio ? (
+                <button className="next">
+                  <Link
+                    className="btn_naveg font-bold"
+                    to={`/capitulo/${clave}/${+cont + 1}`}
+                  >
+                    Previous
+                  </Link>
+                  <img src={next} alt="" />
+                </button>
+              ) : (
+                ""
+              )}
+            </div>
+          </section>
+        </>
+      ) : (
+        <h1 className=" text-center">Capitulo no disponible</h1>
+      )}
     </>
   );
 };
