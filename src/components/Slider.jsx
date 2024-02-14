@@ -80,7 +80,7 @@ const Slider = () => {
       icon: "fas fa-people-group",
       tipo: "administrador",
       url: "colaboradores",
-    }   
+    },
   ];
   useEffect(() => {
     document.title = "Panel de administracion";
@@ -101,7 +101,7 @@ const Slider = () => {
       setAuth({});
       navigate("/login-admin");
     } catch (error) {
-      return
+      return;
     }
   };
   if (cargando) return <Loading />;
@@ -136,7 +136,17 @@ const Slider = () => {
                     onClick={() => setActiveIndex(index)}
                   >
                     <i className={item.icon}></i>
-                    <span className="text text-slate-600">{item.text}</span>
+                    <span
+                      className={`${
+                        activeDark
+                          ? "text-gray-400"
+                          : index === activeIndex
+                          ? "text-blue-500 font-bold"
+                          : "text-gray-500"
+                      } text-sm `}
+                    >
+                      {item.text}
+                    </span>
                   </NavLink>
                 </li>
               )

@@ -17,12 +17,14 @@ const mostrarAlerta = (texto) => {
 };
 
 const Container_novela = () => {
-  const { active, enviarDatos, datosEdit, activeDark,setDatos } = useAdmin();
+  const { enviarDatos, datosEdit, activeDark, setDatos } = useAdmin();
   const [alerta, setAlerta] = useState({});
   const [titulo, setTitulo] = useState("");
   const [tipo, setTipo] = useState("");
   const [backgroud, setBackgroud] = useState("?");
-  const [imagen, setImagen] = useState("https://i.ibb.co/WvKyKrk/no-disponibles.jpg");
+  const [imagen, setImagen] = useState(
+    "https://i.ibb.co/WvKyKrk/no-disponibles.jpg"
+  );
   const [ilustrador, setIlustrador] = useState("?");
   const [generos, setGeneros] = useState("");
   const [autor, setAutor] = useState("?");
@@ -108,7 +110,7 @@ const Container_novela = () => {
     setCapitulos(false);
     // setClave("");
     setId(null);
-    setDatos({})
+    setDatos({});
   };
   // const handleChange = (event) => {
   //   setAge(event.target.value);
@@ -141,7 +143,7 @@ const Container_novela = () => {
               id="titulo"
               className="input_from h-9 text-slate-700 outline-none bg-gray-100"
               value={titulo}
-              onChange={(e) => setTitulo(e.target.value)}
+              onChange={(e) => setTitulo(e.target.value.replace(/´/g, ""))}
             />
           </div>
           <div className="form_add_content">

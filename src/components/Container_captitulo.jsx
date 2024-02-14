@@ -21,7 +21,7 @@ const mostrarAlerta = (texto) => {
 };
 
 const Container_captitulo = () => {
-  const { active, novelasInfo, enviarDatos, datosEdit, activeDark,setDatos } =
+  const { active, novelasInfo, enviarDatos, datosEdit, activeDark, setDatos } =
     useAdmin();
   const [alerta, setAlerta] = useState({});
   const [nombre, setNombre] = useState("");
@@ -65,7 +65,7 @@ const Container_captitulo = () => {
     setNombre("");
     // setClave("");
     setId(null);
-    setDatos({})
+    setDatos({});
   };
   const handleClose = () => {
     setOpen(false);
@@ -149,7 +149,7 @@ const Container_captitulo = () => {
               id="titulo"
               className="input_from h-8 text-slate-700 outline-none bg-gray-100"
               value={titulo}
-              onChange={(e) => setTitulo(e.target.value)}
+              onChange={(e) => setTitulo(e.target.value.replace(/´/g, ""))}
             />
           </div>
           <div className="form_add_content">

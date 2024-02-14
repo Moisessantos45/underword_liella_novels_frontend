@@ -4,13 +4,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: dodgerblue;
+  /* background: dodgerblue; */
   height: 70px;
 }
 
 .header_logon_title {
   font-size: 1.5rem;
   font-weight: bolder;
+}
+
+.gradient-text{
+  background: linear-gradient(to right, #7c3aed, #4c51bf, #f43f5e);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .main__content-form {
@@ -126,11 +132,11 @@
     height: 400px;
   }
 
-  .form .input{
+  .form .input {
     border-radius: 10px;
   }
 
-  .form .login-button{
+  .form .login-button {
     border-radius: 10px;
   }
   .header_logon_title {

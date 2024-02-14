@@ -3,9 +3,7 @@ import "../css/styleForm.css";
 import urlAxios from "../config/urlAxios";
 import { useNavigate } from "react-router-dom";
 import Loading from "../components/Loading";
-import { login } from "../firebase/ConfigFirebase";
 import useAuth from "../hooks/useAuth";
-import Alerta from "../components/Alerta";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 
@@ -29,7 +27,6 @@ const toastify = (text, type) => {
 
 const FormLogin = () => {
   const [password, setPassword] = useState("");
-  const [alerta, setAlerta] = useState({});
   const [email, setEmail] = useState("");
   const { userAuth, cargando, setAuth, setCargando } = useAuth();
   const [error, setError] = useState("");
@@ -65,7 +62,7 @@ const FormLogin = () => {
     } catch (error) {
       toastify(error.response.data.msg, false);
       setError(error.response.data.msg);
-      setAuth({})
+      setAuth({});
     }
     setCargando(false);
   };
@@ -73,15 +70,15 @@ const FormLogin = () => {
   if (cargando) return <Loading />;
 
   return (
-    <main className=" flex justify-center items-center main__content-form">
+    <main className=" flex justify-center items-center main__content-form bg-white">
       <form
-        className="relative space-y-1 sm:h-88 h-105 rounded-md bg-white p-3 shadow-xl lg:p-10 border border-gray-100 margin sm:w-auto w-11/12"
+        className="relative space-y-1 sm:h-88 h-[60vh] rounded-md bg-white p-3 lg:p-10 margin sm:w-auto w-11/12"
         onSubmit={handelSubmit}
       >
-        <p className="text-xl font-semibold lg:text-3xl text-gray-500 text-center">
-          Login
+        <p className="sm:text-xl text-3xl font-semibold lg:text-3xl gradient-text text-center">
+          Inciar sesion
         </p>
-        <p className="text-xl font-semibold lg:text-xl m-3 text-gray-500 text-center">
+        <p className="sm:text-xl text-3xl font-semibold lg:text-xl m-3 gradient-text text-center">
           Ingresa tu datos
         </p>
         <div className="">
@@ -91,7 +88,7 @@ const FormLogin = () => {
             value={email}
             placeholder="E-mail"
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-2 h-12 w-full rounded-md bg-gray-100 text-gray-700 px-3 outline-none focus:ring"
+            className="mt-2 h-12 w-full rounded-md text-gray-700 px-3 border border-slate-300 outline-none focus:ring"
           />
         </div>
         <div>
@@ -101,13 +98,13 @@ const FormLogin = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-            className="mt-2 h-12 w-full rounded-md bg-gray-100 text-gray-700  px-3 outline-none focus:ring"
+            className="mt-2 h-12 w-full rounded-md text-gray-700 px-3 border border-slate-300 outline-none focus:ring"
           />
         </div>
         <div>
           <button
             type="submit"
-            className="mt-5 w-full rounded-md bg-blue-600 p-2 text-center font-semibold text-white outline-none focus:ring"
+            className="mt-5 w-full rounded-md bg-gradient-to-r from-violet-700 to-fuchsia-600 p-2 text-center font-semibold text-white outline-none focus:ring"
           >
             Sign In
           </button>

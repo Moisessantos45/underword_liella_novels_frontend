@@ -15,6 +15,10 @@
   font-family: "Poppins", sans-serif;
 }
 
+html {
+  scrollbar-width: none;
+}
+
 .margin {
   margin: 15px auto;
 }

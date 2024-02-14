@@ -107,12 +107,12 @@ body {
   margin-left: 6px;
   background: transparent;
   border-radius: 48px 0 0 48px;
-  padding: 4px;
+  /* padding: 4px; */
 }
 
 .sidebar .side-menu li.actives {
   position: relative;
-  background: var(--grey);
+  /* background: var(--grey); */
 }
 
 .sidebar .side-menu li.actives::before {
@@ -120,11 +120,11 @@ body {
   position: absolute;
   height: 40px;
   width: 40px;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   right: 0;
   top: -40px;
   z-index: -1;
-  box-shadow: 20px 20px 0 var(--grey);
+  /* box-shadow: 20px 20px 0 var(--grey); */
 }
 
 .sidebar .side-menu li.actives::after {
@@ -132,11 +132,11 @@ body {
   position: absolute;
   height: 40px;
   width: 40px;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   right: 0;
   bottom: -40px;
   z-index: -1;
-  box-shadow: 20px -20px 0 var(--grey);
+  /* box-shadow: 20px -20px 0 var(--grey); */
 }
 
 .sidebar .side-menu li a {
@@ -145,7 +145,7 @@ body {
   background: var(--light);
   display: flex;
   align-items: center;
-  border-radius: 48px;
+  /* border-radius: 48px; */
   font-size: 16px;
   color: var(--dark);
   white-space: nowrap;
