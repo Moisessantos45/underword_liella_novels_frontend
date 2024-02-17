@@ -237,7 +237,7 @@ export const AdminProvider = ({ children }) => {
           },
           confi
         );
-        toastify(`${tipo} registrado`, true);
+        toastify(`${tipo} actulizado`, true);
       } catch (error) {
         toastify(error.response.data.msg, false);
         // console.log(error);

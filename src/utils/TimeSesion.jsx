@@ -10,30 +10,26 @@ const TimeSession = () => {
   const { modalTime, setModalTime } = useAdmin();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    let intervalId = setInterval(async () => {
-      let horaInicio = localStorage.getItem("horaInicio");
-      if (!horaInicio) {
-        clearInterval(intervalId);
-        await SesionLogout(userAuth.email);
-        localStorage.removeItem("token");
-        localStorage.removeItem("horaInicio");
-        setAuth({});
-        navigate("/login-admin");
-        return;
-      }
-      let tiempoTranscurrido = Date.now() - horaInicio;
-      setCount(900 - Math.floor(tiempoTranscurrido / 1000));
-      if (tiempoTranscurrido > 900000) {
-        setModalTime(true);
-        clearInterval(intervalId);
-        return;
-      }
-    }, 60);
-    return () => {
+  let intervalId = setInterval(async () => {
+    let horaInicio = localStorage.getItem("horaInicio");
+    if (!horaInicio) {
       clearInterval(intervalId);
-    };
-  }, []);
+      await SesionLogout(userAuth.email);
+      localStorage.removeItem("token");
+      localStorage.removeItem("horaInicio");
+      setAuth({});
+      <redirect to="/login-admin" />;
+      // navigate("/login-admin");
+      return;
+    }
+    let tiempoTranscurrido = Date.now() - horaInicio;
+    setCount(900 - Math.floor(tiempoTranscurrido / 1000));
+    if (tiempoTranscurrido > 900000) {
+      setModalTime(true);
+      clearInterval(intervalId);
+      return;
+    }
+  }, 60);
 
   return <>{modalTime && <ModalTime />}</>;
 };

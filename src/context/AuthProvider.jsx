@@ -13,6 +13,7 @@ const AuthProvider = ({ children }) => {
   const [userType, setUserType] = useState("");
   const [count, setCount] = useState(0);
   const [visitas_actuales, setVisitas] = useState(0);
+  const [dataActive, setDataActive] = useState(false);
 
   useEffect(() => {
     const autenticar = async () => {
@@ -47,7 +48,7 @@ const AuthProvider = ({ children }) => {
       setCargando(false);
     };
     autenticar();
-  }, []);
+  }, [dataActive]);
 
   if (cargando) return <Loading />;
   return (
@@ -64,6 +65,7 @@ const AuthProvider = ({ children }) => {
         setCount,
         setCargando,
         visitas_actuales,
+        setDataActive,
       }}
     >
       {children}

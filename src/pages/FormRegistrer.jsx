@@ -9,6 +9,26 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
+
+const toastify = (text, type) => {
+  Toastify({
+    text: `${text}`,
+    duration: 3000,
+    newWindow: true,
+    // close: true,
+    gravity: "top",
+    position: "right",
+    stopOnFocus: true,
+    style: {
+      background: type
+        ? "linear-gradient(to right, #00b09b, #96c93d)"
+        : "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+      borderRadius: "10px",
+    },
+  }).showToast();
+};
 
 const mostrarAlerta = (texto) => {
   Swal.fire({
@@ -91,6 +111,15 @@ const FormRegistrer = () => {
       return;
     }
     registrar({ email, password, tipo, id, foto_perfil, name_user, id_user });
+    setEmail("");
+    setPassword("");
+    setName("");
+    setFotoPerfil("");
+    setTypeDataUser("");
+    setFoto(null);
+    setIdUser(null);
+    setId(null);
+    toastify("Usuario agregado", true);
   };
 
   const handleClose = () => {

@@ -28,7 +28,7 @@ const toastify = (text, type) => {
 const FormLogin = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const { userAuth, cargando, setAuth, setCargando } = useAuth();
+  const { userAuth, cargando, setAuth, setCargando,setDataActive } = useAuth();
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -58,6 +58,7 @@ const FormLogin = () => {
       localStorage.setItem("token", data.token);
       toastify("Inicio exitoso", true);
       localStorage.setItem("horaInicio", Date.now());
+      setDataActive(true)
       navigate(`/dashboard/${data?.id}`);
       setCargando(false);
     } catch (error) {

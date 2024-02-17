@@ -53,13 +53,15 @@ const Ilustraciones = () => {
   if (loading) return <Loading />;
   return (
     <section
-      className={`content bg-zinc-100 text-black ${activeDark ? "dark" : ""}`}
+      className={`content bg-zinc-100 text-black ${
+        activeDark ? "dark" : ""
+      } overflow-y-auto`}
     >
       <NavbarSlider />
-      <div className="grid grid-cols-3 md:grid-cols-5 p-2 gap-4 w-11/12 m-auto">
+      <div className="grid grid-cols-3 md:grid-cols-5 p-3 sm:p-2 gap-4 w-11/12 m-auto sm:h-auto h-screen">
         {imagenesWeb.length > 0 &&
           imagenesWeb.map(({ imagen }, i) => (
-            <div key={i} className="grid gap-4">
+            <div key={i} className="grid gap-4 relative">
               <img
                 onClick={() => copyUrl(imagen)}
                 className="h-auto max-w-full rounded-lg cursor-pointer"
