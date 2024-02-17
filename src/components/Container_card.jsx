@@ -26,7 +26,9 @@ const Container_card = () => {
   const [alerta, setAlerta] = useState({});
   const [nombreClave, setNombre] = useState("");
   const [volumen, setVolumen] = useState("");
-  const [imagen, setImagen] = useState("https://i.ibb.co/WvKyKrk/no-disponibles.jpg");
+  const [imagen, setImagen] = useState(
+    "https://i.ibb.co/WvKyKrk/no-disponibles.jpg"
+  );
   const [captiuloActive, setDisponible] = useState(false);
   const [capitulo, setCapitulos] = useState("");
   const [mega, setMega] = useState("");
@@ -62,7 +64,6 @@ const Container_card = () => {
         mediafire,
         megaEpub,
         mediafireEpub,
-        clave,
       },
       tipo
     );
@@ -89,15 +90,20 @@ const Container_card = () => {
       <section className={`content bg-zinc-100 ${activeDark ? "dark" : ""}`}>
         {msg && <Alerta alerta={alerta} />}
         <NavbarSlider />
-        <form className="form_add font-bold" onSubmit={handelSubmit}>
-          <div className="form_add_content p-1 flex-col relative items-center">
+        <form
+          className={`w-11/12 sm:w-8/12 p-2 ${
+            activeDark ? "bg-gray-800" : "bg-white"
+          }  shadow-lg rounded-lg m-auto`}
+          onSubmit={handelSubmit}
+        >
+          <div className="w-12/12 m-auto p-1 flex-col relative justify-center flex items-center">
             <Button
               sx={{
                 display: "flex",
                 justifyContent: "center",
                 mt: 1,
                 height: 25,
-                width: "25%",
+                width: "20%",
                 position: "absolute",
                 top: 0,
                 right: 1,
@@ -112,7 +118,7 @@ const Container_card = () => {
               sx={{
                 m: 1,
                 width: "50%",
-                color: "#475569",
+                color: "green",
                 fontWeight: "bold",
                 fontSize: "17px",
               }}
@@ -128,7 +134,7 @@ const Container_card = () => {
               onOpen={handleOpen}
               value={nombreClave}
               label="Age"
-              sx={{ width: "90%", height: 35 ,background:"#f3f4f6"}}
+              sx={{ width: "95%", height: 35, margin: "auto" }}
               onChange={(e) => setNombre(e.target.value)}
             >
               {novelasInfo.map((chart, i) => (
@@ -142,26 +148,35 @@ const Container_card = () => {
               ))}
             </Select>
           </div>
-          <div className="form_add_content">
-            <label
-              htmlFor="volumen"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
-            >
-            Volumen
-            </label>
+          <div className="w-11/12 p-2 grid md:grid-cols-3 md:gap-2 m-auto">
             <input
               type="number"
-              placeholder="volumen"
-              id="volumen"
-              className="input_from text-slate-700 h-9 outline-none bg-gray-100"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              placeholder="Volumen"
               value={volumen}
               onChange={(e) => setVolumen(e.target.value)}
+            />
+            <input
+              type="text"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              placeholder="Esta disponible para leer"
+              value={captiuloActive}
+              onChange={(e) => setDisponible(e.target.value)}
+            />
+            <input
+              type="text"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              placeholder="Escribir si esta disponible para leer"
+              value={capitulo}
+              onChange={(e) => setCapitulos(e.target.value)}
             />
           </div>
           <div className="form_add_content">
             <label
               htmlFor="imagen"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
+              className={` font-bold ${
+                activeDark ? "text-white" : "text-slate-600"
+              }`}
             >
               Url Portada
             </label>
@@ -169,47 +184,17 @@ const Container_card = () => {
               type="text"
               placeholder="imagen"
               id="imagen"
-              className="input_from text-slate-700 h-9 outline-none bg-gray-100"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
               value={imagen}
               onChange={(e) => setImagen(e.target.value)}
             />
           </div>
           <div className="form_add_content">
             <label
-              htmlFor="disponible"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
-            >
-              Esta para descargar
-            </label>
-            <input
-              type="text"
-              placeholder="disponible"
-              id="disponible"
-              className="input_from text-slate-700 h-9 outline-none bg-gray-100"
-              value={captiuloActive}
-              onChange={(e) => setDisponible(e.target.value)}
-            />
-          </div>
-          <div className="form_add_content">
-            <label
-              htmlFor="captitulo"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
-            >
-              Texto de disponible
-            </label>
-            <input
-              type="text"
-              placeholder="si esta para descargar"
-              id="capitulo"
-              className="input_from text-slate-700 h-9 outline-none bg-gray-100"
-              value={capitulo}
-              onChange={(e) => setCapitulos(e.target.value)}
-            />
-          </div>
-          <div className="form_add_content">
-            <label
               htmlFor="mega"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
+              className={`font-bold ${
+                activeDark ? "text-white" : "text-slate-600"
+              }`}
             >
               Link de mega
             </label>
@@ -217,7 +202,7 @@ const Container_card = () => {
               type="text"
               placeholder="mega"
               id="mega"
-              className="input_from text-slate-700 h-9 outline-none bg-gray-100"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
               value={mega}
               onChange={(e) => setMega(e.target.value)}
             />
@@ -225,7 +210,9 @@ const Container_card = () => {
           <div className="form_add_content">
             <label
               htmlFor="mediafire"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
+              className={`font-bold ${
+                activeDark ? "text-white" : "text-slate-600"
+              }`}
             >
               Link de drive
             </label>
@@ -233,7 +220,7 @@ const Container_card = () => {
               type="text"
               placeholder="mediafire"
               id="mediafire"
-              className="input_from text-slate-700 h-9 outline-none bg-gray-100"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
               value={mediafire}
               onChange={(e) => setMediafire(e.target.value)}
             />
@@ -241,7 +228,9 @@ const Container_card = () => {
           <div className="form_add_content">
             <label
               htmlFor="megaEpub"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
+              className={`font-bold ${
+                activeDark ? "text-white" : "text-slate-600"
+              }`}
             >
               Link mega epub
             </label>
@@ -249,7 +238,7 @@ const Container_card = () => {
               type="text"
               placeholder="megaEpub"
               id="megaEpub"
-              className="input_from text-slate-700 h-9 outline-none bg-gray-100"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
               value={megaEpub}
               onChange={(e) => setMegaEpub(e.target.value)}
             />
@@ -257,7 +246,9 @@ const Container_card = () => {
           <div className="form_add_content">
             <label
               htmlFor="mediafireEpub"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
+              className={`font-bold ${
+                activeDark ? "text-white" : "text-slate-600"
+              }`}
             >
               Link mediafire epub
             </label>
@@ -265,7 +256,7 @@ const Container_card = () => {
               type="text"
               placeholder="mediafire Epub"
               id="mediafireEpub"
-              className="input_from text-slate-700 h-9 outline-none bg-gray-100"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
               value={mediafireEpub}
               onChange={(e) => setMediafireEpub(e.target.value)}
             />
@@ -273,7 +264,9 @@ const Container_card = () => {
           <div className="form_add_content">
             <label
               htmlFor="clave"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
+              className={`font-bold ${
+                activeDark ? "text-white" : "text-slate-600"
+              }`}
             >
               No modificar
             </label>
@@ -281,16 +274,19 @@ const Container_card = () => {
               type="text"
               placeholder="clave"
               id="clave"
-              className="input_from text-slate-700 h-9 outline-none bg-gray-100"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
               value={clave}
               onChange={(e) => setClave(e.target.value)}
             />
           </div>
-          <input
-            type="submit"
-            value="Agrega un volumen"
-            className="btn_submit"
-          />
+          <div className="flex justify-center items-center pt-2">
+            <button
+              type="submit"
+              className="h-10 w-72 rounded font-medium text-xs bg-blue-500 text-white"
+            >
+              Agrega un volumen
+            </button>
+          </div>
         </form>
       </section>
     </>

@@ -21,13 +21,14 @@ const mostrarAlerta = (texto) => {
 };
 
 const Container_captitulo = () => {
-  const { active, novelasInfo, enviarDatos, datosEdit, activeDark, setDatos } =
+  const { novelasInfo, enviarDatos, datosEdit, activeDark, setDatos } =
     useAdmin();
   const [alerta, setAlerta] = useState({});
   const [nombre, setNombre] = useState("");
   const [titulo, setTitulo] = useState("");
   const [contenido, setContenido] = useState("");
   const [capitulo, setCapitulos] = useState(0);
+  const [nameData, setNameData] = useState("");
   const [clave, setClave] = useState("dato");
   const [id, setId] = useState(null);
   const [open, setOpen] = useState(false);
@@ -38,6 +39,7 @@ const Container_captitulo = () => {
       setContenido(datosEdit.contenido);
       setCapitulos(datosEdit.capitulo);
       setNombre(datosEdit.nombre);
+      setNameData(datosEdit.nombre);
       setClave(datosEdit.clave);
       setId(datosEdit.id);
     }
@@ -58,11 +60,12 @@ const Container_captitulo = () => {
       mostrarAlerta(`Los siguientes campos están vacíos: ${camposVacios}`);
       return;
     }
-    enviarDatos({ nombre, titulo, contenido, capitulo, clave, id }, tipo);
+    enviarDatos({ nombre, titulo, contenido, capitulo, id }, tipo);
     setTitulo("");
     setContenido("");
     setCapitulos(0);
     setNombre("");
+    setNameData("");
     // setClave("");
     setId(null);
     setDatos({});
@@ -81,17 +84,19 @@ const Container_captitulo = () => {
         {msg && <Alerta alerta={alerta} />}
         <NavbarSlider />
         <form
-          className="form_add form_add-heigth font-bold"
+          className={`w-11/12 sm:w-8/12 p-2 ${
+            activeDark ? "bg-gray-800" : "bg-white"
+          }  shadow-lg rounded-lg m-auto`}
           onSubmit={handelSubmit}
         >
-          <div className="form_add_content p-1 flex-col relative items-center">
+          <div className="w-12/12 m-auto p-1 flex-col relative justify-center flex items-center">
             <Button
               sx={{
                 display: "flex",
                 justifyContent: "center",
                 mt: 1,
                 height: 25,
-                width: "25%",
+                width: "20%",
                 position: "absolute",
                 top: 0,
                 right: 1,
@@ -106,7 +111,7 @@ const Container_captitulo = () => {
               sx={{
                 m: 1,
                 width: "50%",
-                color: "#475569",
+                color: "green",
                 fontWeight: "bold",
                 fontSize: "17px",
               }}
@@ -120,16 +125,24 @@ const Container_captitulo = () => {
               open={open}
               onClose={handleClose}
               onOpen={handleOpen}
-              value={nombre}
+              value={nameData ? nameData : nombre}
               label="Age"
-              sx={{ width: "90%", height: 35, background: "#f3f4f6" }}
-              onChange={(e) => setNombre(e.target.value)}
+              sx={{
+                width: "93%",
+                height: 35,
+                color: `${activeDark ? "white" : "black"}`,
+              }}
+              onChange={(e) => {
+                setNombre(e.target.value), setNameData(e.target.value);
+              }}
             >
               {novelasInfo.map((chart, i) => (
                 <MenuItem
                   key={i}
                   value={`${chart.titulo.split(" ").slice(0, 4).join(" ")}`}
-                  className=" overflow-hidden text-ellipsis whitespace-nowrap text-slate-600"
+                  className={`overflow-hidden text-ellipsis whitespace-nowrap ${
+                    activeDark ? "text-white" : "text-slate-600"
+                  } `}
                 >
                   {chart.titulo.split(" ").slice(0, 4).join(" ")}
                 </MenuItem>
@@ -139,7 +152,9 @@ const Container_captitulo = () => {
           <div className="form_add_content">
             <label
               htmlFor="titulo"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
+              className={` font-bold ${
+                activeDark ? "text-white" : "text-slate-600"
+              }`}
             >
               Titulo del capitulo
             </label>
@@ -147,7 +162,7 @@ const Container_captitulo = () => {
               type="text"
               placeholder="titulo"
               id="titulo"
-              className="input_from h-8 text-slate-700 outline-none bg-gray-100"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
               value={titulo}
               onChange={(e) => setTitulo(e.target.value.replace(/´/g, ""))}
             />
@@ -155,7 +170,9 @@ const Container_captitulo = () => {
           <div className="form_add_content">
             <label
               htmlFor="capitulo"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
+              className={`font-bold ${
+                activeDark ? "text-white" : "text-slate-600"
+              }`}
             >
               El capitulo
             </label>
@@ -163,7 +180,7 @@ const Container_captitulo = () => {
               type="number"
               placeholder="capitulo"
               id="capitulo"
-              className="input_from h-8 text-slate-700 outline-none bg-gray-100"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
               value={capitulo}
               onChange={(e) => setCapitulos(e.target.value)}
             />
@@ -171,7 +188,9 @@ const Container_captitulo = () => {
           <div className="form_add_content">
             <label
               htmlFor="contenido"
-              className={` ${activeDark ? "text-white" : "text-slate-600"} `}
+              className={`font-bold ${
+                activeDark ? "text-white" : "text-slate-600"
+              } `}
             >
               El contenido
             </label>
@@ -181,7 +200,7 @@ const Container_captitulo = () => {
               rows="5"
               placeholder="contenido"
               id="contenido"
-              className="input_from h-24 sm:h-14 w-11/12 text-slate-700 outline-none bg-gray-100"
+              className="border rounded sm:h-40 h-84 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm scrollbar"
               value={contenido}
               onChange={(e) => setContenido(e.target.value)}
             />
@@ -189,7 +208,9 @@ const Container_captitulo = () => {
           <div className="form_add_content">
             <label
               htmlFor="clave"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
+              className={`font-bold ${
+                activeDark ? "text-white" : "text-slate-600"
+              }`}
             >
               No modificar
             </label>
@@ -197,16 +218,20 @@ const Container_captitulo = () => {
               type="text"
               placeholder="clave"
               id="clave"
-              className="input_from h-8 text-slate-700 outline-none bg-gray-100"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
               value={clave}
               onChange={(e) => setClave(e.target.value)}
             />
           </div>
-          <input
-            type="submit"
-            value={id ? "Actulizar capitulo" : "Agrega el capitulo"}
-            className="btn_submit"
-          />
+          <div className="flex justify-center items-center pt-2">
+            <button
+              type="submit"
+              value={id ? "Actulizar novela" : "Agrega un novela"}
+              className="h-10 w-72 rounded font-medium text-xs bg-blue-500 text-white"
+            >
+              {id ? "Actulizar capitulo" : "Agrega el capitulo"}
+            </button>
+          </div>
         </form>
       </section>
     </>

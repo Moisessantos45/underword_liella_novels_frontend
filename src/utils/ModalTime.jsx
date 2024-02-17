@@ -1,7 +1,42 @@
+import { useEffect } from "react";
 import useAdmin from "../hooks/useAdmin";
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import SesionLogout from "./SesionLogout";
 
 const ModalConfirm = () => {
-  const { setConfirmar, setMostrar_modal } = useAdmin();
+  const { setModalTime } = useAdmin();
+  const { userAuth, setCount, setAuth } = useAuth();
+  const navigate = useNavigate();
+
+  const handelConfirmar = async (sesion) => {
+    const email = userAuth.email;
+    setCount(0);
+    if (sesion) {
+      localStorage.setItem("horaInicio", Date.now());
+      return;
+    }
+    try {
+      await SesionLogout(email);
+      localStorage.removeItem("token");
+      localStorage.removeItem("horaInicio");
+      setAuth({});
+      setModalTime(false);
+      navigate("/login-admin");
+    } catch (error) {
+      return;
+    }
+  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setModalTime(false);
+      handelConfirmar(false);
+    }, 10000);
+
+    // Limpiar el temporizador si el componente se desmonta
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <>
       <section className=" flex justify-center items-center top-0 left-0 modal_confirm">
@@ -11,7 +46,7 @@ const ModalConfirm = () => {
               type="button"
               className="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
               onClick={() => {
-                setConfirmar(false), setMostrar_modal(false);
+                setModalTime(false), handelConfirmar(true);
               }}
             >
               <svg
@@ -48,14 +83,14 @@ const ModalConfirm = () => {
                 />
               </svg>
               <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                Deseas seguir nevegando
+                Deseas seguir en la sesión?
               </h3>
               <button
                 data-modal-hide="popup-modal"
                 type="button"
                 className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2"
                 onClick={() => {
-                  setConfirmar(true), setMostrar_modal(false);
+                  setModalTime(false), handelConfirmar(true);
                 }}
               >
                 Yes
@@ -65,10 +100,10 @@ const ModalConfirm = () => {
                 type="button"
                 className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
                 onClick={() => {
-                  setConfirmar(false), setMostrar_modal(false);
+                  setModalTime(false), handelConfirmar(false);
                 }}
               >
-                No, cancel
+                No
               </button>
             </div>
           </div>

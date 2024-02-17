@@ -1,10 +1,8 @@
-import axios from "axios";
 import { useState, createContext, useEffect } from "react";
 import urlAxios from "../config/urlAxios";
-import Swal from "sweetalert2";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
-// import Alerta from "../components/Alerta";
+import ApiRequester from "../config/ApiRequester";
 
 const AdminContext = createContext();
 
@@ -29,6 +27,7 @@ export const AdminProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [confirmar_delate, setConfirmar] = useState(false);
   const [mostrar_modal, setMostrar_modal] = useState(false);
+  const [modalTime, setModalTime] = useState(false);
 
   const toastify = (text, type) => {
     Toastify({
@@ -48,19 +47,6 @@ export const AdminProvider = ({ children }) => {
     }).showToast();
   };
 
-  const mostrarAlerta = (texto, tipo) => {
-    Swal.fire({
-      // position: "top-end",
-      icon: tipo ? "success" : "error",
-      width: 300,
-      title: texto,
-      // showConfirmButton: false,
-      timer: 1500,
-      customClass: {
-        title: "mi-clase",
-      },
-    });
-  };
   useEffect(() => {
     let mode_dark = JSON.parse(localStorage.getItem("modo_dark")) || false;
     setDark(mode_dark);
@@ -71,11 +57,13 @@ export const AdminProvider = ({ children }) => {
   };
 
   const enviarDatos = async (dato, tipo) => {
+    console.log("enviarDatos", dato, tipo);
     if (dato?.id) {
       if (tipo == "cards") {
         // const { id, ...newData } = dato;
         try {
-          const { data } = await urlAxios.put("/novelas/cards", dato);
+          const data = await ApiRequester("put", "/novelas/cards", dato);
+          // const { data } = await urlAxios.put("/novelas/cards", dato);
           const volActulizados = cardsVol.map((vol) =>
             vol.id == data.id ? data : vol
           );
@@ -128,7 +116,8 @@ export const AdminProvider = ({ children }) => {
       } else if (tipo == "capitulos") {
         const { id, ...newData } = dato;
         try {
-          const { data } = await urlAxios.post("/capitulo", newData);
+          const data = await ApiRequester("post", "/capitulo", newData);
+          // const { data } = await urlAxios.post("/capitulo", newData);
           setCapitulosInfo([data, ...capitulosInfo]);
           toastify("Capitulo agregado", true);
         } catch (error) {
@@ -323,6 +312,8 @@ export const AdminProvider = ({ children }) => {
         confirmar_delate,
         mostrar_modal,
         setMostrar_modal,
+        modalTime,
+        setModalTime
       }}
     >
       {children}

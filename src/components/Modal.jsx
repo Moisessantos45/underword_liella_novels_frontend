@@ -4,8 +4,7 @@ import "../css/modal.css";
 import imgClose from "../img/cerrar.png";
 
 const Modal = () => {
-  const { modal, setModal, cardEditar, setEditarCard, enviarDatos } =
-    useAdmin();
+  const { setModal, cardEditar, setEditarCard, enviarDatos } = useAdmin();
   const [nombreClave, setNombre] = useState("");
   const [volumen, setVolumen] = useState(0);
   const [imagen, setImagen] = useState("");
@@ -67,167 +66,111 @@ const Modal = () => {
     setClave("");
     setId(null);
     setEditarCard([]);
+    setModal(false);
   };
   return (
     <>
-      <section className="flex justify-center items-center top-0 left-0 modal">
-        <form
-          className="flex items-center h-96 max-w-lg font-bold bg-slate-50 rounded-lg form_modal relative"
-          onSubmit={handelSubmit}
-        >
+      <section className="flex p-2 justify-center items-center top-0 left-0 modal">
+        <div className="max-w-md bg-white shadow-lg rounded-lg md:max-w-xl mx-2">
           <img
             src={imgClose}
             alt=""
-            className="absolute w-6 h-6 top-2 right-1 cursor-pointer"
+            className="absolute w-6 h-6 sm:top-6 sm:right-[29%] right-7 top-[18%] cursor-pointer"
             onClick={ocultarModal}
           />
-          <div className="form_add_content flex text-black h-16">
-            <label htmlFor="nombre" className="text-black">
-              Agrega el nombre de la novela
-            </label>
-            <input
-              type="text"
-              placeholder="titulo"
-              id="nombre"
-              className="input_from text-black"
-              value={nombreClave}
-              onChange={(e) => setNombre(e.target.value)}
-            />
-          </div>
-          <div className="form_add_content flex flex-wrap">
-            <label htmlFor="volumen" className="text-black w-40">
-              Volumen
-            </label>
-            <input
-              type="number"
-              placeholder="volumen"
-              id="volumen"
-              className="input_from sm:w-16 w-11/12"
-              value={volumen}
-              onChange={(e) => setVolumen(e.target.value)}
-            />
-            <label htmlFor="captitulo" className="text-black w-40">
-              Texto
-            </label>
-            <input
-              type="text"
-              placeholder="captitulo"
-              id="capitulo"
-              className="input_from sm:w-32 w-11/12"
-              value={capitulo}
-              onChange={(e) => setCapitulos(e.target.value)}
-            />
-          </div>
-          <div className="form_add_content flex h-16">
-            <label htmlFor="imagen" className="text-black">
-              Agrega a url imagen
-            </label>
-            <input
-              type="text"
-              placeholder="imagen"
-              id="imagen"
-              className="input_from"
-              value={imagen}
-              onChange={(e) => setImagen(e.target.value)}
-            />
-          </div>
-          <div className="form_add_content flex h-16">
-            <label htmlFor="disponible" className="text-black">
-              Esta para descarga o leer
-            </label>
-            <input
-              type="text"
-              placeholder="disponible"
-              id="disponible"
-              className="input_from"
-              value={captiuloActive}
-              onChange={(e) => setDisponible(e.target.value)}
-            />
-          </div>
-          {/* <div className="form_add_content flex h-16">
-            <label htmlFor="captitulo" className="text-black">
-              Texto de disponible
-            </label>
-            <input
-              type="text"
-              placeholder="captitulo"
-              id="capitulo"
-              className="input_from"
-              value={capitulo}
-              onChange={(e) => setCapitulos(e.target.value)}
-            />
-          </div> */}
-          <div className="form_add_content flex h-16">
-            <label htmlFor="mega" className="text-black">
-              Link de mega
-            </label>
-            <input
-              type="text"
-              placeholder="mega"
-              id="mega"
-              className="input_from"
-              value={mega}
-              onChange={(e) => setMega(e.target.value)}
-            />
-          </div>
-          <div className="form_add_content flex h-16">
-            <label htmlFor="mediafire" className="text-black">
-              Link de mediafire
-            </label>
-            <input
-              type="text"
-              placeholder="mediafire"
-              id="mediafire"
-              className="input_from"
-              value={mediafire}
-              onChange={(e) => setMediafire(e.target.value)}
-            />
-          </div>
-          <div className="form_add_content flex h-16">
-            <label htmlFor="megaEpub" className="text-black">
-              Link de mega epub
-            </label>
-            <input
-              type="text"
-              placeholder="megaEpub"
-              id="megaEpub"
-              className="input_from"
-              value={megaEpub}
-              onChange={(e) => setMegaEpub(e.target.value)}
-            />
-          </div>
-          <div className="form_add_content flex h-16">
-            <label htmlFor="mediafireEpub" className="text-black">
-              link de epub mediafire
-            </label>
-            <input
-              type="text"
-              placeholder="mediafire Epub"
-              id="mediafireEpub"
-              className="input_from"
-              value={mediafireEpub}
-              onChange={(e) => setMediafireEpub(e.target.value)}
-            />
-          </div>
-          <div className="form_add_content flex h-16">
-            <label htmlFor="clave" className="text-black">
-              No modificar
-            </label>
-            <input
-              type="text"
-              placeholder="clave"
-              id="clave"
-              className="input_from"
-              value={clave}
-              onChange={(e) => setClave(e.target.value)}
-            />
-          </div>
-          <input
-            type="submit"
-            value="Actualizar el volumen"
-            className="btn_submit h-7"
-          />
-        </form>
+          <form className="md:flex" onSubmit={handelSubmit}>
+            <div className="w-full p-4 px-5 py-5">
+              <div className="flex flex-row text-center">
+                <h2 className="text-3xl text-green-400 font-semibold">
+                  Actualizar datos
+                </h2>
+              </div>
+              <div className="relative pb-1">
+                <input
+                  type="text"
+                  className="border rounded h-10 w-full focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 mt-2 text-sm"
+                  placeholder="Nombre del volumen"
+                  value={nombreClave}
+                  onChange={(e) => setNombre(e.target.value)}
+                />
+              </div>
+              <div className="grid md:grid-cols-3 md:gap-2">
+                <input
+                  type="number"
+                  className="border rounded h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                  placeholder="Volumen"
+                  value={volumen}
+                  onChange={(e) => setVolumen(e.target.value)}
+                />
+                <input
+                  type="text"
+                  className="border rounded h-10 w-full text-slate-400 focus:text-slate-700  focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                  placeholder="Si hay capitulos"
+                  value={capitulo}
+                  onChange={(e) => setCapitulos(e.target.value)}
+                />
+                <input
+                  type="text"
+                  className="border rounded h-10 w-full text-slate-400 focus:text-slate-700  focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                  placeholder="Capitulo activo"
+                  value={captiuloActive}
+                  onChange={(e) => setDisponible(e.target.value)}
+                />
+              </div>
+              <input
+                type="text"
+                className="border rounded h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                placeholder="Imagen"
+                value={imagen}
+                onChange={(e) => setImagen(e.target.value)}
+              />
+              <input
+                type="text"
+                className="border rounded h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                placeholder="Mega"
+                value={mega}
+                onChange={(e) => setMega(e.target.value)}
+              />
+              <input
+                type="text"
+                className="border rounded h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                placeholder="Mediafire"
+                value={mediafire}
+                onChange={(e) => setMediafire(e.target.value)}
+              />
+              <input
+                type="text"
+                className="border rounded h-10 w-full text-slate-400 focus:text-slate-700  focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                placeholder="Mega Epub"
+                value={megaEpub}
+                onChange={(e) => setMegaEpub(e.target.value)}
+              />
+              <input
+                type="text"
+                className="border rounded h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                placeholder="Mediafire Epub"
+                value={mediafireEpub}
+                onChange={(e) => setMediafireEpub(e.target.value)}
+              />
+              <input
+                type="text"
+                className="border rounded h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                placeholder="Clave"
+                value={clave}
+                onChange={(e) => setClave(e.target.value)}
+              />
+              <div className="flex justify-center items-center pt-2">
+                <button
+                  type="submit"
+                  value="Actualizar el volumen"
+                  className="h-10 w-48 rounded font-medium text-xs bg-blue-500 text-white"
+                >
+                  Actualizar el volumen
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       </section>
     </>
   );

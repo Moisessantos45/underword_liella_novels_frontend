@@ -32,23 +32,26 @@ const Perfil = () => {
   const [email, setEmail] = useState(userAuth?.email);
   const [password, setPassword] = useState("");
   const [foto, setFoto] = useState([]);
-  const [name_user, setName] = useState(userAuth?.name_user); 
+  const [name_user, setName] = useState(userAuth?.name_user);
   const [tipo, setTipo] = useState(userAuth?.tipo);
-  const [id,setId] = useState(userAuth?.id)
-  let foto_perfil = userAuth?.foto_perfil || "";
+  const [id, setId] = useState(userAuth?.id);
+  const [foto_perfil, setFotoPerfil] = useState(userAuth?.foto_perfil);
+  const [fotoRender, setFotoRender] = useState(foto_perfil);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
+    let img = URL.createObjectURL(selectedFile);
+    setFotoRender(img);
     // console.log(e.target);
     setFoto(selectedFile);
   };
   const handlSubtmit = async (e) => {
     e.preventDefault();
-    if ([password, email, name_user].includes("")) {
-      toastify("Password vacio", false);
+    if ([email, name_user].includes("")) {
+      toastify("Datos vacios", false);
       return;
     }
-    if (foto !== null) {
+    if (foto.length >= 1) {
       if (foto.type.startsWith("image/")) {
         const formData = new FormData();
         formData.append("image", foto);
@@ -56,7 +59,7 @@ const Perfil = () => {
           `https://api.imgbb.com/1/upload?key=${apiKey}`,
           formData
         );
-        foto_perfil = data.data.url;
+        setFotoPerfil(data.data.url);
       }
     }
     try {
@@ -68,7 +71,7 @@ const Perfil = () => {
           foto_perfil,
           name_user,
           tipo,
-          id
+          id,
         }
       );
       setEmail(data.email);
@@ -137,10 +140,12 @@ const Perfil = () => {
                 <p className="text-sm text-gray-600">Sube tu perfil</p>
               </div>
               <div className="flex h-56 w-full flex-col items-center justify-center gap-4 rounded-xl border border-dashed border-gray-300 p-5 text-center">
-                <img
-                  src={foto_perfil}
-                  className="h-16 w-16 rounded-full"
-                />
+                {fotoRender && (
+                  <img
+                    src={fotoRender || foto_perfil}
+                    className="h-24 w-24 rounded-lg shadow-lg"
+                  />
+                )}
                 <p className="text-sm text-gray-600">
                   Selecciona su foto de perfil
                 </p>

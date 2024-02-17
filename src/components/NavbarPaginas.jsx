@@ -1,7 +1,6 @@
 import "../css/styles.css";
 import { Link } from "react-router-dom";
 import useAdmin from "../hooks/useAdmin";
-import { useEffect, useState } from "react";
 
 const NavbarPaginas = () => {
   const { active, bgNovel, setBackg } = useAdmin();

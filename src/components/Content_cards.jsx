@@ -7,12 +7,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { useState } from "react";
 import useAdmin from "../hooks/useAdmin";
 import Modal from "./Modal";
 import useAuth from "../hooks/useAuth";
 import NavbarSlider from "./NavbarSlider";
-import { Hidden } from "@mui/material";
 import ModalConfirm from "./ModalConfirm";
 
 const columns = [

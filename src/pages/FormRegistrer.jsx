@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import useAdmin from "../hooks/useAdmin";
 import useAuth from "../hooks/useAuth";
 import NavbarSlider from "../components/NavbarSlider";
-import Alerta from "../components/Alerta";
 import axios from "axios";
 import Swal from "sweetalert2";
 const apiKey = import.meta.env.VITE_URL_APIKEY;
@@ -24,37 +23,34 @@ const mostrarAlerta = (texto) => {
 };
 
 const FormRegistrer = () => {
-  const {
-    active,
-    registrar,
-    activeDark,
-    data_cuenta,
-    setDataUser,
-    obtenerDatosUser,
-  } = useAdmin();
+  const { registrar, activeDark, data_cuenta } = useAdmin();
   const { userAuth, setAuth } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [tipo, setTipo] = useState("administrador");
+  const [tipo, setTipo] = useState("");
   const [foto, setFoto] = useState(null);
   const [name_user, setName] = useState("");
+  const [typeDataUser, setTypeDataUser] = useState("");
   const [open, setOpen] = useState(false);
-
-  // const [foto_perfil,setFotoPerfil]=useState()
+  const [fotoPerfil, setFotoPerfil] = useState();
 
   const [id, setId] = useState(null);
   const [id_user, setIdUser] = useState(null);
   useEffect(() => {
     if (data_cuenta?.id) {
-      // console.log("si funciona el de capi");
       setEmail(data_cuenta.email);
       setTipo(data_cuenta.tipo);
+      setTypeDataUser(data_cuenta.tipo);
       setName(data_cuenta.name_user);
       setIdUser(data_cuenta.id);
+      setFotoPerfil(data_cuenta.foto_perfil);
     }
   }, [data_cuenta]);
+
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
+    let img = URL.createObjectURL(selectedFile);
+    setFotoPerfil(img);
     // console.log(e.target);
     setFoto(selectedFile);
   };
@@ -73,10 +69,14 @@ const FormRegistrer = () => {
         foto_perfil = data.data.url;
       }
     }
-    const campos = [name_user, password, email, tipo, id];
+    const campos = [name_user, email, tipo, id];
     if (!email.endsWith("@gmail.com")) {
       mostrarAlerta(`Correo invalido`);
       mostrarAlerta("Direccion valida @gmail.com");
+      return;
+    }
+    if (id_user === null) {
+      mostrarAlerta("Password vacio");
       return;
     }
     const camposVacios = Object.entries(campos)
@@ -106,13 +106,17 @@ const FormRegistrer = () => {
         <NavbarSlider />
         <section className="flex justify-center sm:items-start items-center m-auto main__container_perfil">
           <form
-            className="form_add form_add-heigth-reg font-bold"
+            className={`w-11/12 sm:w-8/12 p-2 ${
+              activeDark ? "bg-gray-800" : "bg-white"
+            }  shadow-lg rounded-lg m-auto`}
             onSubmit={handelSubmit}
           >
             <div className="form_add_content">
               <label
                 htmlFor="name"
-                className={` ${activeDark ? "text-white" : "text-slate-700"}`}
+                className={`font-bold ${
+                  activeDark ? "text-white" : "text-slate-700"
+                }`}
               >
                 Name
               </label>
@@ -120,7 +124,7 @@ const FormRegistrer = () => {
                 type="name"
                 placeholder="name"
                 id="name"
-                className="input_from h-9 outline-none bg-gray-100"
+                className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
                 value={name_user}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -128,7 +132,9 @@ const FormRegistrer = () => {
             <div className="form_add_content">
               <label
                 htmlFor="email"
-                className={` ${activeDark ? "text-white" : "text-slate-700"}`}
+                className={`font-bold ${
+                  activeDark ? "text-white" : "text-slate-700"
+                }`}
               >
                 Email
               </label>
@@ -136,7 +142,7 @@ const FormRegistrer = () => {
                 type="email"
                 placeholder="email"
                 id="email"
-                className="input_from h-9 outline-none bg-gray-100"
+                className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -144,7 +150,9 @@ const FormRegistrer = () => {
             <div className="form_add_content">
               <label
                 htmlFor="password"
-                className={` ${activeDark ? "text-white" : "text-slate-700"}`}
+                className={` font-bold ${
+                  activeDark ? "text-white" : "text-slate-700"
+                }`}
               >
                 Contraseña
               </label>
@@ -152,13 +160,13 @@ const FormRegistrer = () => {
                 type="password"
                 placeholder="password"
                 id="password"
-                className="input_from h-9 outline-none bg-gray-100"
+                className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <div className="form_add_content p-1 flex-wrap justify-evenly items-center">
-                <Button
+            <div className="w-12/12 m-auto p-1 flex-wrap relative justify-evenly flex items-center">
+              <Button
                 sx={{
                   display: "flex",
                   justifyContent: "center",
@@ -179,7 +187,7 @@ const FormRegistrer = () => {
                   color: "#475569",
                   fontWeight: "bold",
                   fontSize: "17px",
-                  textAlign:"center"
+                  textAlign: "center",
                 }}
                 id="demo-controlled-open-select-label"
               >
@@ -191,10 +199,17 @@ const FormRegistrer = () => {
                 open={open}
                 onClose={handleClose}
                 onOpen={handleOpen}
-                value={tipo}
+                value={typeDataUser ? typeDataUser : tipo}
                 label="Age"
-                sx={{ width: "90%", height: 35,margin:1,background:"#f3f4f6" }}
-                onChange={(e) => setTipo(e.target.value)}
+                sx={{
+                  width: "90%",
+                  height: 35,
+                  margin: 1,
+                  color: `${activeDark ? "white" : "black"}`,
+                }}
+                onChange={(e) => {
+                  setTipo(e.target.value), setTypeDataUser(e.target.value);
+                }}
               >
                 <MenuItem value="administrador">Administrador</MenuItem>
                 <MenuItem value="colaborador">Colaborador</MenuItem>
@@ -216,11 +231,23 @@ const FormRegistrer = () => {
                 onChange={handleFileChange}
               />
             </div>
-            <input
-              type="submit"
-              value={id_user ? "Actulizar Usuario" : "Agrega un usuario"}
-              className="btn_submit"
-            />
+            {fotoPerfil && (
+              <div className="w-12/12 flex justify-center items-center p-2">
+                <img
+                  className=" rounded-md w-40 h-40"
+                  src={fotoPerfil ? fotoPerfil : ""}
+                  alt=""
+                />
+              </div>
+            )}
+            <div className="flex justify-center items-center pt-2">
+              <button
+                type="submit"
+                className="h-10 w-72 rounded font-medium text-xs bg-blue-500 text-white"
+              >
+                {id_user ? "Actulizar Usuario" : "Agrega un usuario"}
+              </button>
+            </div>
           </form>
         </section>
       </section>

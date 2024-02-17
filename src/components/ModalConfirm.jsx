@@ -2,6 +2,7 @@ import useAdmin from "../hooks/useAdmin";
 
 const ModalConfirm = () => {
   const { setConfirmar, setMostrar_modal } = useAdmin();
+
   return (
     <>
       <section className=" flex justify-center items-center top-0 left-0 modal_confirm">

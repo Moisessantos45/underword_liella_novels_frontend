@@ -1,7 +1,6 @@
 import { useState, useEffect, createContext } from "react";
 import Loading from "../components/Loading";
 import urlAxios from "../config/urlAxios";
-import useAdmin from "../hooks/useAdmin";
 
 const AuthContext = createContext();
 
@@ -13,7 +12,7 @@ const AuthProvider = ({ children }) => {
   const [cargando, setCargando] = useState(true);
   const [userType, setUserType] = useState("");
   const [webIlustraciones, setWebIlustraciones] = useState([]);
-  const [count, setCount] = useState(600);
+  const [count, setCount] = useState(0);
   const [visitas_actuales, setVisitas] = useState(0);
 
   useEffect(() => {
@@ -21,6 +20,7 @@ const AuthProvider = ({ children }) => {
       const token = localStorage.getItem("token");
       if (!token) {
         setCargando(false);
+        localStorage.removeItem("horaInicio");
         return <redirect to="/login-admin" />;
       }
       const confi = {
@@ -41,7 +41,6 @@ const AuthProvider = ({ children }) => {
         setEndChapters(data.ultimosCapitulos);
         setEndCards(data.ultimasCards);
         setVisitas(data.visistas_actuales);
-        // localStorage.setItem("horaInicio", Date.now());
       } catch (error) {
         setAuth({});
         localStorage.removeItem("token");
@@ -50,7 +49,7 @@ const AuthProvider = ({ children }) => {
     };
     autenticar();
   }, []);
- 
+
   if (cargando) return <Loading />;
   return (
     <AuthContext.Provider
@@ -64,6 +63,7 @@ const AuthProvider = ({ children }) => {
         ultimosCapitulo,
         ultimosCards,
         count,
+        setCount,
         setCargando,
         visitas_actuales,
       }}

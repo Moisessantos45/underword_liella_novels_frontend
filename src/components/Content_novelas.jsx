@@ -34,7 +34,6 @@ const Content_novelas = () => {
     eliminarDatos,
     setNovelasInfo,
     activeDark,
-    setConfirmar,
     confirmar_delate,
     mostrar_modal,
     setMostrar_modal,

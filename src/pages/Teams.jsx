@@ -158,7 +158,9 @@ const Teams = () => {
                               />
                             </div>
                             <div className="ml-3">
-                              <p className="whitespace-no-wrap">{item.name_user}</p>
+                              <p className="whitespace-no-wrap">
+                                {item.name_user}
+                              </p>
                             </div>
                           </div>
                         </td>

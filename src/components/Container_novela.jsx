@@ -120,20 +120,29 @@ const Container_novela = () => {
   return (
     <>
       <section
-        className={`content bg-zinc-100 text-black  ${
+        className={`content bg-zinc-100 text-slate-400   ${
           activeDark ? "dark" : ""
         }`}
       >
         <NavbarSlider />
         {msg && <Alerta alerta={alerta} />}
         <form
-          className="form_add font-bold form_add_novel"
+          className={`w-11/12 sm:w-8/12 p-2 ${
+            activeDark ? "bg-gray-800" : "bg-white"
+          }  shadow-lg rounded-lg m-auto`}
           onSubmit={handelSubmit}
         >
+          <div className="flex flex-row text-center justify-center items-center w-11/12">
+            <h2 className="text-3xl text-center flex justify-center items-center text-green-400 font-bold">
+              {id ? "Actulizar novela" : "Agregar novela"}
+            </h2>
+          </div>
           <div className="form_add_content">
             <label
               htmlFor="titulo"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
+              className={` font-bold w-12/12 ${
+                activeDark ? "text-white" : "text-slate-600"
+              }`}
             >
               El titulo de la novela
             </label>
@@ -141,71 +150,76 @@ const Container_novela = () => {
               type="text"
               placeholder="titulo"
               id="titulo"
-              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
+              className="border rounded h-10 w-12/12 focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
               value={titulo}
               onChange={(e) => setTitulo(e.target.value.replace(/´/g, ""))}
             />
           </div>
-          <div className="form_add_content">
-            <label
-              htmlFor="tipo"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
-            >
-              Tipo de novela
-            </label>
+          <div className="w-12/12 p-2 grid md:grid-cols-3 md:gap-2 m-auto">
             <input
               type="text"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
               placeholder="tipo"
-              id="tipo"
-              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
               value={tipo}
               onChange={(e) => setTipo(e.target.value)}
             />
-          </div>
-          <div className="form_add_content">
-            <label
-              htmlFor="backgroud"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
-            >
-              El background de la novela
-            </label>
             <input
               type="text"
-              placeholder="backgroud"
-              id="backgroud"
-              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              placeholder="Activo"
+              value={activo}
+              onChange={(e) => setActivo(e.target.value)}
+            />
+            <input
+              type="text"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              placeholder="Hay capitulos"
+              value={capitulos}
+              onChange={(e) => setCapitulos(e.target.value)}
+            />
+          </div>
+          <div className="w-12/12 p-2 grid md:grid-cols-2 md:gap-2 m-auto">
+            <input
+              type="text"
+              className="border rounded h-10 w-12/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              placeholder="Url de la imagen"
+              value={imagen}
+              onChange={(e) => setImagen(e.target.value)}
+            />
+            <input
+              type="text"
+              className="border rounded h-10 w-12/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              placeholder="Url backgroud"
               value={backgroud}
               onChange={(e) => setBackgroud(e.target.value)}
             />
           </div>
-          <div className="form_add_content">
-            <label
-              htmlFor="imagen"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
-            >
-              La url de la imagen
-            </label>
+          <div className="w-12/12 p-2 grid md:grid-cols-2 md:gap-2 m-auto">
             <input
               type="text"
-              placeholder="imagen"
-              id="imagen"
-              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
-              value={imagen}
-              onChange={(e) => setImagen(e.target.value)}
+              className="border rounded h-10 w-12/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              placeholder="Nombre del autor"
+              value={autor}
+              onChange={(e) => setAutor(e.target.value)}
             />
-          </div>
-          <div className="form_add_content">
-            <label
-              htmlFor="nombre"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
-            >
-              Ilustrador
-            </label>
             <input
               type="text"
-              placeholder="nombre"
-              id="nombre"
-              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
+              className="border rounded h-10 w-12/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              placeholder="Encargados de la novela"
+              value={encargados}
+              onChange={(e) => setEncargados(e.target.value)}
+            />
+            <input
+              type="text"
+              className="border rounded h-10 w-12/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              placeholder="Generos de la novela"
+              value={generos}
+              onChange={(e) => setGeneros(e.target.value)}
+            />
+            <input
+              type="text"
+              className="border rounded h-10 w-12/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              placeholder="Ilustrador de la novel"
               value={ilustrador}
               onChange={(e) => setIlustrador(e.target.value)}
             />
@@ -213,103 +227,27 @@ const Container_novela = () => {
           <div className="form_add_content">
             <label
               htmlFor="generos"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
+              className={`font-bold w-12/12 ${
+                activeDark ? "text-white" : "text-slate-600"
+              }`}
             >
-              El genero de la novela
-            </label>
-            <input
-              type="text"
-              placeholder="generos"
-              id="generos"
-              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
-              value={generos}
-              onChange={(e) => setGeneros(e.target.value)}
-            />
-          </div>
-          <div className="form_add_content">
-            <label
-              htmlFor="autor"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
-            >
-              El nombre del autor
-            </label>
-            <input
-              type="text"
-              placeholder="autor"
-              id="autor"
-              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
-              value={autor}
-              onChange={(e) => setAutor(e.target.value)}
-            />
-          </div>
-          <div className="form_add_content">
-            <label
-              htmlFor="volumen"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
-            >
-              Encargados
-            </label>
-            <input
-              type="text"
-              placeholder="encargados"
-              id="volumen"
-              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
-              value={encargados}
-              onChange={(e) => setEncargados(e.target.value)}
-            />
-          </div>
-          <div className="form_add_content">
-            <label
-              htmlFor="activo"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
-            >
-              Esta activo
-            </label>
-            <input
-              type="text"
-              placeholder="activo"
-              id="activo"
-              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
-              value={activo}
-              onChange={(e) => setActivo(e.target.value)}
-            />
-          </div>
-          <div className="form_add_content">
-            <label
-              htmlFor="sinopsis"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
-            >
-              Sinopsis de la novela
+              Sinopsis
             </label>
             <textarea
               type="text"
               placeholder="sinopsis"
-              id="sinopsis"
-              className="input_from text-slate-700 h-20 sm:h-14 outline-none bg-gray-100"
+              id="generos"
+              className="border rounded h-32 w-12/12 focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm scrollbar"
               value={sinopsis}
               onChange={(e) => setSinopsis(e.target.value)}
             />
           </div>
           <div className="form_add_content">
             <label
-              htmlFor="capitulos"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
-            >
-              Hay capitiuos
-            </label>
-            <input
-              type="text"
-              placeholder="capitulos"
-              id="capitulos"
-              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
-              value={capitulos}
-              onChange={(e) => setCapitulos(e.target.value)}
-            />
-          </div>
-          <div className="form_add_content">
-            <label
               htmlFor="clave"
-              className={` ${activeDark ? "text-white" : "text-slate-600"}`}
+              className={`font-bold w-12/12 ${
+                activeDark ? "text-white" : "text-slate-600"
+              }`}
             >
               No modificar
             </label>
@@ -317,16 +255,20 @@ const Container_novela = () => {
               type="text"
               placeholder="clave"
               id="clave"
-              className="input_from h-9 text-slate-700 outline-none bg-gray-100"
+              className="border rounded h-10 w-12/12 focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
               value={clave}
               onChange={(e) => setClave(e.target.value)}
             />
           </div>
-          <input
-            type="submit"
-            value={id ? "Actulizar novela" : "Agrega un novela"}
-            className="btn_submit "
-          />
+          <div className="flex justify-center items-center pt-2">
+            <button
+              type="submit"
+              value={id ? "Actulizar novela" : "Agrega un novela"}
+              className="h-10 w-72 rounded font-medium text-xs bg-blue-500 text-white"
+            >
+              {id ? "Actulizar novela" : "Agrega un novela"}
+            </button>
+          </div>
         </form>
       </section>
     </>

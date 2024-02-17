@@ -3,8 +3,8 @@ import "../css/slider.css";
 import useAdmin from "../hooks/useAdmin";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import urlAxios from "../config/urlAxios";
 import Loading from "./Loading";
+import SesionLogout from "../utils/SesionLogout";
 
 const Slider = () => {
   const { active, activeDark } = useAdmin();
@@ -94,10 +94,9 @@ const Slider = () => {
   const handelClick = async () => {
     const email = userAuth.email;
     try {
-      await urlAxios.post("/underwordliellanovels/logout", {
-        email,
-      });
+      await SesionLogout(email);
       localStorage.removeItem("token");
+      localStorage.removeItem("horaInicio");
       setAuth({});
       navigate("/login-admin");
     } catch (error) {

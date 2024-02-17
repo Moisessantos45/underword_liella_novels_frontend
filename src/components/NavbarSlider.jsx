@@ -3,6 +3,7 @@ import useAdmin from "../hooks/useAdmin";
 import "../css/slider.css";
 import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import TimeSesion from "../utils/TimeSesion";
 
 const NavbarSlider = () => {
   const { active, setActive, activeDark, setDark } = useAdmin();
@@ -15,7 +16,6 @@ const NavbarSlider = () => {
     setActive(!active);
   };
   const handelChange = (e) => {
-    console.log("click", e.target.checked);
     setDark(!activeDark);
     setCheck(e.target.checked);
     localStorage.setItem("modo_dark", !activeDark);
@@ -60,6 +60,7 @@ const NavbarSlider = () => {
           Perfil
         </Link>
       </nav>
+      <TimeSesion />
     </>
   );
 };

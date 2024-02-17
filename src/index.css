@@ -19,6 +19,11 @@ html {
   scrollbar-width: none;
 }
 
+.scrollbar{
+  scrollbar-width: none;
+
+}
+
 .margin {
   margin: 15px auto;
 }
