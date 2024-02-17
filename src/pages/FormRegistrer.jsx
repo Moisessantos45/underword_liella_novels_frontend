@@ -95,7 +95,7 @@ const FormRegistrer = () => {
       mostrarAlerta("Direccion valida @gmail.com");
       return;
     }
-    if (id_user === null) {
+    if (id_user === null && password === "") {
       mostrarAlerta("Password vacio");
       return;
     }
