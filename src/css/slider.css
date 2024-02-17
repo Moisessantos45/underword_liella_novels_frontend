@@ -178,10 +178,10 @@ body {
 .logout {
   background: transparent;
   border: none;
-  width: 120px;
+  width: 135px;
   height: 30px;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   color: red;
   font-size: 18px;
   gap: 10px;
@@ -361,7 +361,7 @@ body {
   gap: 10px;
   color: white;
   border: none;
-  background: deeppink;
+  background: #ff1493;
   cursor: pointer;
   /* flex-direction: column; */
 }

@@ -11,7 +11,6 @@ const AuthProvider = ({ children }) => {
   const [ultimosCards, setEndCards] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [userType, setUserType] = useState("");
-  const [webIlustraciones, setWebIlustraciones] = useState([]);
   const [count, setCount] = useState(0);
   const [visitas_actuales, setVisitas] = useState(0);
 
@@ -58,7 +57,6 @@ const AuthProvider = ({ children }) => {
         setAuth,
         cargando,
         userType,
-        webIlustraciones,
         userCont,
         ultimosCapitulo,
         ultimosCards,

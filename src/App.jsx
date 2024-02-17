@@ -21,6 +21,7 @@ import Slider from "./components/Slider";
 import Content_list from "./components/Content_list";
 import Teams from "./pages/Teams";
 import UploadsFiles from "./pages/UploadsFiles";
+import Ilustraciones from "./components/Ilustraciones";
 
 export const router = createBrowserRouter([
   {
@@ -90,6 +91,10 @@ export const router = createBrowserRouter([
       {
         path: "capitulos-activos",
         element: <Content_capitulos />,
+      },
+      {
+        path: "ilustraciones_activas",
+        element: <Ilustraciones />,
       },
       {
         path: "subir_imagenes",

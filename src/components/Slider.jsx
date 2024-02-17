@@ -4,7 +4,7 @@ import useAdmin from "../hooks/useAdmin";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import Loading from "./Loading";
-import SesionLogout from "../utils/SesionLogout";
+import urlAxios from "../config/urlAxios";
 
 const Slider = () => {
   const { active, activeDark } = useAdmin();
@@ -64,6 +64,12 @@ const Slider = () => {
       tipo: "user",
     },
     {
+      text: "Gestionar Ilustraciones",
+      icon: "fa-regular fa-images",
+      url: "ilustraciones_activas",
+      tipo: "user",
+    },
+    {
       text: "Upload Ilustraciones",
       icon: "fa-solid fa-file-image",
       url: "subir_imagenes",
@@ -94,7 +100,7 @@ const Slider = () => {
   const handelClick = async () => {
     const email = userAuth.email;
     try {
-      await SesionLogout(email);
+      await urlAxios.post("/underwordliellanovels/logout", { email });
       localStorage.removeItem("token");
       localStorage.removeItem("horaInicio");
       setAuth({});

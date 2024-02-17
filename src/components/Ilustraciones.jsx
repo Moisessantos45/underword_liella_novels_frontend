@@ -1,26 +1,78 @@
-import "../css/Ilustraciones.css";
+import useAdmin from "../hooks/useAdmin";
+import NavbarSlider from "./NavbarSlider";
+import { useEffect, useState } from "react";
+import urlAxios from "../config/urlAxios";
+import Loading from "./Loading";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 
-const Ilustraciones = ({ datos }) => {
-  const urls = datos.ilustraciones.split(",");
+const toastify = (text, type) => {
+  Toastify({
+    text: `${text}`,
+    duration: 3000,
+    newWindow: true,
+    // close: true,
+    gravity: "top",
+    position: "right",
+    stopOnFocus: true,
+    style: {
+      background: type
+        ? "linear-gradient(to right, #00b09b, #96c93d)"
+        : "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
+      borderRadius: "10px",
+    },
+  }).showToast();
+};
+
+const Ilustraciones = () => {
+  const { activeDark } = useAdmin();
+  const [imagenesWeb, setIlustraciones] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const solicitarIlustraciones = async () => {
+      try {
+        const { data } = await urlAxios(
+          "/underwordliellanovels/solicitud_ilustraciones"
+        );
+        // console.log(data);
+        setIlustraciones(data);
+        setLoading(false);
+      } catch (error) {
+        setIlustraciones([]);
+        return;
+      }
+      setLoading(false);
+    };
+    solicitarIlustraciones();
+  }, []);
+  const copyUrl = (url) => {
+    navigator.clipboard.writeText(url);
+    toastify("Imagen copiada", true);
+  };
+
+  if (loading) return <Loading />;
   return (
-    <>
-      {datos.ilustraciones ? (
-        <section className="tours">
-          <div className="col content-col">
-            <div className="line4"></div>
-            <h1 className="text-xl">Ilustraciones de la novela</h1>
-            <div className="line4"></div>
-          </div>
-          <div className="col image-col">
-            {urls.map((url, index) => (
-              <img key={index} src={url} alt="" />
-            ))}
-          </div>
-        </section>
-      ) : (
-        <h1 className="font-bold text-3xl text-center m-3">No hay ilustraciones</h1>
-      )}
-    </>
+    <section
+      className={`content bg-zinc-100 text-black ${activeDark ? "dark" : ""}`}
+    >
+      <NavbarSlider />
+      <div className="grid grid-cols-3 md:grid-cols-5 p-2 gap-4 w-11/12 m-auto">
+        {imagenesWeb.length > 0 &&
+          imagenesWeb.map(({ imagen }, i) => (
+            <div key={i} className="grid gap-4">
+              <img
+                onClick={() => copyUrl(imagen)}
+                className="h-auto max-w-full rounded-lg cursor-pointer"
+                src={imagen}
+                alt=""
+              />
+              <span className=" absolute font-bold text-[10px] bg-pink-600 w-10 rounded-md h-5 items-center justify-center flex text-white">
+                Click
+              </span>
+            </div>
+          ))}
+      </div>
+    </section>
   );
 };
 

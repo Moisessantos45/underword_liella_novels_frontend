@@ -57,9 +57,9 @@ const FormLogin = () => {
       setAuth(data);
       localStorage.setItem("token", data.token);
       toastify("Inicio exitoso", true);
-      setCargando(false);
       localStorage.setItem("horaInicio", Date.now());
       navigate(`/dashboard/${data?.id}`);
+      setCargando(false);
     } catch (error) {
       toastify(error.response.data.msg, false);
       setError(error.response.data.msg);
