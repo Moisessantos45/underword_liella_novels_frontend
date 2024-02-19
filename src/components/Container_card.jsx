@@ -118,9 +118,9 @@ const Container_card = () => {
               sx={{
                 m: 1,
                 width: "50%",
-                color: "green",
+                color: "#4ADE80",
                 fontWeight: "bold",
-                fontSize: "17px",
+                fontSize: "23px",
               }}
               id="demo-controlled-open-select-label"
             >

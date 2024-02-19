@@ -160,10 +160,10 @@ const Slider = () => {
 
         <ul className="side-menu">
           <li>
-            <a href="#">
+            <NavLink to="configuracion-sitio">
               <i className="fas fa-cog"></i>
               <span className="text">Settings</span>
-            </a>
+            </NavLink>
           </li>
           <li>
             <button onClick={handelClick} className="logout cursor-pointer">
@@ -173,7 +173,6 @@ const Slider = () => {
           </li>
         </ul>
       </section>
-      {/* <Content_list/> */}
     </>
   );
 };

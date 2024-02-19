@@ -77,10 +77,10 @@ const FormLogin = () => {
         className="relative space-y-1 sm:h-88 h-[60vh] rounded-md bg-white p-3 lg:p-10 margin sm:w-auto w-11/12"
         onSubmit={handelSubmit}
       >
-        <p className="sm:text-xl text-3xl font-semibold lg:text-3xl gradient-text text-center">
+        <p className="sm:text-xl text-4xl font-bold lg:text-3xl gradient-text text-center">
           Inciar sesion
         </p>
-        <p className="sm:text-xl text-3xl font-semibold lg:text-xl m-3 gradient-text text-center">
+        <p className="sm:text-xl text-2xl font-semibold lg:text-xl m-3 gradient-text text-center">
           Ingresa tu datos
         </p>
         <div className="">

@@ -16,12 +16,12 @@ import FormRegistrer from "./pages/FormRegistrer";
 import SubirImagenes from "./components/SubirImagenes";
 import PaginasCapitulos from "./pages/PaginasCapitulos";
 import Perfil from "./pages/Perfil";
-import Prueba from "./components/prueba";
-import Slider from "./components/Slider";
 import Content_list from "./components/Content_list";
 import Teams from "./pages/Teams";
 import UploadsFiles from "./pages/UploadsFiles";
 import Ilustraciones from "./components/Ilustraciones";
+import ConfiguracionSitio from "./pages/ConfiguracionSitio";
+import PageError from "./pages/PageError";
 
 export const router = createBrowserRouter([
   {
@@ -105,17 +105,17 @@ export const router = createBrowserRouter([
         element: <UploadsFiles />,
       },
       {
-        path: "prueba",
-        element: <Prueba />,
-      },
-      {
         path: "colaboradores",
         element: <Teams />,
+      },
+      {
+        path: "configuracion-sitio",
+        element: <ConfiguracionSitio />,
       },
     ],
   },
   {
-    path: "slider",
-    element: <Slider />,
+    path: "*",
+    element: <PageError />,
   },
 ]);

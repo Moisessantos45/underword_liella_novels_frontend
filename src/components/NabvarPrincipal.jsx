@@ -1,9 +1,10 @@
 import "../css/MenuHeader.css";
-import "../css/styles.css"
+import "../css/styles.css";
 import icon_logo from "../img/Marca.png";
-import bg_back from "../img/backgraoud.jpg";
+import { useDataSiteHome } from "../Store/DataSiteHome";
 
 const NabvarPrincipal = () => {
+  const { dataSite } = useDataSiteHome();
   return (
     <>
       <img
@@ -14,12 +15,12 @@ const NabvarPrincipal = () => {
       <header
         className="header m-auto relative top-0 left-0"
         style={{
-          backgroundImage: `url(${bg_back})`,
+          backgroundImage: `url(${dataSite.fondoPagina})`,
           backgroundAttachment: "fixed",
         }}
       >
         <div className="header-content">
-          <h1 className="flex sm:text-2xl text-xl"> UnderwordLiellaNovels</h1>
+          <h1 className="flex sm:text-2xl text-xl">{dataSite.tituloPagina}</h1>
         </div>
       </header>
     </>
