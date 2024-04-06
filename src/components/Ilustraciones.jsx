@@ -59,7 +59,7 @@ const Ilustraciones = () => {
     >
       <NavbarSlider />
       <div className="grid grid-cols-3 md:grid-cols-5 p-3 sm:p-2 gap-4 w-11/12 m-auto sm:h-auto h-screen">
-        {imagenesWeb.length > 0 &&
+        {imagenesWeb.length > 0 ? (
           imagenesWeb.map(({ imagen }, i) => (
             <div key={i} className="grid gap-4 relative">
               <img
@@ -72,7 +72,10 @@ const Ilustraciones = () => {
                 Click
               </span>
             </div>
-          ))}
+          ))
+        ) : (
+          <h1>No se lograron cargar</h1>
+        )}
       </div>
     </section>
   );

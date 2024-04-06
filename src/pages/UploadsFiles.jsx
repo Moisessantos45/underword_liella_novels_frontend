@@ -1,8 +1,6 @@
 import { useState } from "react";
 import useAdmin from "../hooks/useAdmin";
 import Toastify from "toastify-js";
-import UrlAxiosMega from "../config/UrlAxiosMega";
-import { Storage } from "https://cdn.skypack.dev/megajs";
 import "../css/uploadImg.css";
 import "toastify-js/src/toastify.css";
 import NavbarSlider from "../components/NavbarSlider";
