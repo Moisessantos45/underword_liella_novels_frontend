@@ -5,24 +5,39 @@ import Banner_inferior from "./Banner_inferior";
 import urlAxios from "../config/urlAxios";
 import Loading from "./Loading";
 import Nosotros from "./Nosotros";
+import { useQuery } from "@tanstack/react-query";
 
 const Cards = () => {
   const [datos, setData] = useState([]);
-  const [loader, setLoader] = useState(false);
   const [filteredData, setFilteredData] = useState([]);
-  useEffect(() => {
-    const peticion = async () => {
+
+  const getCards = async () => {
+    try {
       const { data } = await urlAxios("/paginas");
       setData(data);
       setFilteredData(data);
-      setLoader(true);
-    };
-    peticion();
-  }, []);
+      return data;
+    } catch (error) {
+      setData([]);
+      setFilteredData([]);
+      return [];
+    }
+  };
+
+  const { isLoading } = useQuery({
+    queryKey: ["getCards"],
+    queryFn: getCards,
+    refetchInterval: 3000000,
+    staleTime: 3000000,
+    retry: 0,
+    refetchOnWindowFocus: false,
+  });
+
   useEffect(() => {
-    document.title =  "UnderWordLiellaNovels";
+    document.title = "UnderWordLiellaNovels";
   }, []);
-  if (!loader) return <Loading />;
+
+  if (isLoading) return <Loading />;
 
   return (
     <>
@@ -40,9 +55,7 @@ const Cards = () => {
               <Link to={`/novela/${item.clave}`}>
                 <img src={item.imagen} alt="" className="img_bg" />
               </Link>
-              <h4 className=" font-bold">
-                {item.titulo}
-              </h4>
+              <h4 className=" font-bold">{item.titulo}</h4>
             </figure>
           ))}
       </section>

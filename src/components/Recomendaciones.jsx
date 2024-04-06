@@ -1,28 +1,36 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import urlAxios from "../config/urlAxios";
-import Loading from "./Loading";
+import { useQuery } from "@tanstack/react-query";
 
 const Recomendaciones = () => {
   const [recomendacions, setRecomendaciones] = useState([]);
   const [loader, setLoader] = useState(true);
   const params = useParams();
   const { clave } = params;
-  useEffect(() => {
-    const peticion = async () => {
-      try {
-        const respuesta = await urlAxios(
-          `/paginas/novela/recomendaciones/${clave}`
-        );
-        // console.log(respuesta)
-        setRecomendaciones(respuesta.data);
-        setLoader(false);
-      } catch (error) {
-        setRecomendaciones([]);
-      }
-    };
-    peticion();
-  }, [clave]);
+
+  const getRecomendation = async () => {
+    try {
+      const respuesta = await urlAxios(
+        `/paginas/novela/recomendaciones/${clave}`
+      );
+      // console.log(respuesta)
+      setRecomendaciones(respuesta.data);
+      setLoader(false);
+      return respuesta.data;
+    } catch (error) {
+      setRecomendaciones([]);
+      return [];
+    }
+  };
+  useQuery({
+    queryKey: ["recomendaciones", clave],
+    queryFn: getRecomendation,
+    refetchInterval: 3000000,
+    staleTime: 3000000,
+    retry: 0,
+    refetchOnWindowFocus: false,
+  });
   // if (loader) return <Loading />;
   return (
     <>

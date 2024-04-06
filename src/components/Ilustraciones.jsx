@@ -1,10 +1,11 @@
 import useAdmin from "../hooks/useAdmin";
 import NavbarSlider from "./NavbarSlider";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import urlAxios from "../config/urlAxios";
 import Loading from "./Loading";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+import { useQuery } from "@tanstack/react-query";
 
 const toastify = (text, type) => {
   Toastify({
@@ -27,30 +28,36 @@ const toastify = (text, type) => {
 const Ilustraciones = () => {
   const { activeDark } = useAdmin();
   const [imagenesWeb, setIlustraciones] = useState([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const solicitarIlustraciones = async () => {
-      try {
-        const { data } = await urlAxios(
-          "/underwordliellanovels/solicitud_ilustraciones"
-        );
-        // console.log(data);
-        setIlustraciones(data);
-        setLoading(false);
-      } catch (error) {
-        setIlustraciones([]);
-        return;
-      }
-      setLoading(false);
-    };
-    solicitarIlustraciones();
-  }, []);
+  // const [loading, setLoading] = useState(true);
+
+  const solicitarIlustraciones = async () => {
+    try {
+      const { data } = await urlAxios(
+        "/underwordliellanovels/solicitud_ilustraciones"
+      );
+      setIlustraciones(data);
+      return data
+    } catch (error) {
+      setIlustraciones([]);
+      return [];
+    }
+  };
+
+  const { isLoading } = useQuery({
+    queryKey: ["ilsutraciones"],
+    queryFn: solicitarIlustraciones,
+    refetchInterval: 3000000,
+    staleTime: 3000000,
+    retry: 0,
+    refetchOnWindowFocus: false,
+  });
+
   const copyUrl = (url) => {
     navigator.clipboard.writeText(url);
     toastify("Imagen copiada", true);
   };
 
-  if (loading) return <Loading />;
+  if (isLoading) return <Loading />;
   return (
     <section
       className={`content bg-zinc-100 text-black ${

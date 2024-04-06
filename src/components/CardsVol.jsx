@@ -1,33 +1,38 @@
 import { Link, useParams } from "react-router-dom";
 import "../css/CardsVol.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import urlAxios from "../config/urlAxios";
-import Loading from "./Loading";
+import { useQuery } from "@tanstack/react-query";
 
 const CardsVol = () => {
   const [volumen, setVolumen] = useState([]);
-  const [loader, setLoader] = useState(true);
   const params = useParams();
   const { clave } = params;
   // console.log(clave)
-  useEffect(() => {
-    const peticion = async () => {
-      try {
-        const respuesta = await urlAxios(`/paginas/novela/volumen/${clave}`);
-        // console.log(respuesta);
-        setVolumen(respuesta.data);
-        setLoader(false);
-      } catch (error) {
-        setVolumen([]);
-      }
-      setLoader(false);
-    };
-    peticion();
-  }, [clave]);
+
+  const getCards = async () => {
+    try {
+      const respuesta = await urlAxios(`/paginas/novela/volumen/${clave}`);
+      setVolumen(respuesta.data);
+      return respuesta.data;
+    } catch (error) {
+      setVolumen([]);
+      return [];
+    }
+  };
+
+  useQuery({
+    queryKey: ["cardsVol"],
+    queryFn: getCards,
+    refetchInterval: 3000000,
+    staleTime: 3000000,
+    retry: 0,
+    refetchOnWindowFocus: false,
+  });
   // if (loader) return <Loading />;
   return (
     <>
-      {volumen && volumen.length > 0 ? (
+      {volumen && volumen.length > 0 && (
         <section className="volumes">
           {volumen
             .sort((a, b) => Number(a.volumen) - Number(b.volumen))
@@ -93,8 +98,6 @@ const CardsVol = () => {
               </figure>
             ))}
         </section>
-      ) : (
-        <h1 className="font-bold text-3xl text-center m-3">No hay Volumenes</h1>
       )}
     </>
   );
