@@ -33,7 +33,7 @@ const ContentCapit = ({ capi }) => {
           <Accordion
             key={i}
             sx={{
-              backgroundColor: "#111827",
+              backgroundColor: "#1A202C",
               "&:active": { borderRadius: "0 0 10px 10px" },
               margin: "5px",
               transition: "all",
@@ -55,7 +55,7 @@ const ContentCapit = ({ capi }) => {
               <AccordionDetails
                 key={char.id}
                 sx={{
-                  backgroundColor: "#00008B",
+                  backgroundColor: "#2D3748",
                   borderRadius: "0 0 10px 10px",
                   margin: "5px auto",
                 }}

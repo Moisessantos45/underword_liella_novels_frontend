@@ -69,9 +69,9 @@ const Content_novelas = () => {
         className={`content bg-zinc-100 text-black ${activeDark ? "dark" : ""}`}
       >
         <NavbarSlider />
-        <section className="justify-evenly flex flex-wrap overflow-y-auto scroll_vertical">
+        <section className="justify-evenly flex flex-wrap overflow-y-auto scroll_vertical scrollbar">
           {novelasInfo.map((item, index) => (
-            <div className="mb-2 sm:w-60 w-44 text_color" key={index}>
+            <div className="mb-2 sm:w-60 w-44 text_color relative" key={index}>
               <div className="w-full bg-gray-50 relative flex justify-center flex-wrap rounded-lg items-center">
                 <a
                   href={`/novela/${item.clave}`}
@@ -146,7 +146,7 @@ const Content_novelas = () => {
               </div>
 
               <div
-                className={`overflow-hidden transition-max-height duration-300 ease-in-out rounded-lg m-2 ${
+                className={`overflow-hidden transition-max-height duration-300 ease-in-out rounded-lg absolute sm:w-60 w-44 z-20 ${
                   isOpen === index ? " max-h-48" : "max-h-0"
                 }`}
               >

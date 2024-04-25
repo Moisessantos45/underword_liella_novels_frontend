@@ -10,11 +10,13 @@ import Recomendaciones from "../components/Recomendaciones";
 import Comentarios from "../components/Comentarios";
 import NavbarPage from "../components/NavbarPage";
 import { useQuery } from "@tanstack/react-query";
+import CardsScans from "../components/CardsScans";
 
 const PaginasNovelas = () => {
   const [novela, setNovela] = useState({});
   const { bgNovel, setBackg, setTitleNabvar } = useAdmin();
   const [capit, setCapi] = useState(false);
+  const [cards, setCards] = useState([]);
   const params = useParams();
   const { clave } = params;
 
@@ -26,6 +28,8 @@ const PaginasNovelas = () => {
       setBackg(bg);
       setTitleNabvar({ title: respuesta.data.info.titulo });
       setCapi(respuesta.data.capi.length > 0);
+      setCards(respuesta.data.info.scans);
+      // console.log(respuesta.data);
       return respuesta.data;
     } catch (error) {
       setNovela({});
@@ -36,9 +40,9 @@ const PaginasNovelas = () => {
   const { isLoading } = useQuery({
     queryKey: ["pageNovel", clave],
     queryFn: peticion,
-    refetchInterval:3000000,
-    staleTime:3000000,
-    retry:0,
+    refetchInterval: 3000000,
+    staleTime: 3000000,
+    retry: 0,
     refetchOnWindowFocus: false,
   });
 
@@ -58,6 +62,7 @@ const PaginasNovelas = () => {
       ) : (
         ""
       )}
+      <CardsScans cards={cards} />
       <CardsVol />
       <Recomendaciones />
       <Comentarios />

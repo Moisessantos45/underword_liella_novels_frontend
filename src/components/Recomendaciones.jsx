@@ -1,11 +1,9 @@
-import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import urlAxios from "../config/urlAxios";
 import { useQuery } from "@tanstack/react-query";
 
 const Recomendaciones = () => {
-  const [recomendacions, setRecomendaciones] = useState([]);
-  const [loader, setLoader] = useState(true);
+  // const [recomendacions, setRecomendaciones] = useState([]);
   const params = useParams();
   const { clave } = params;
 
@@ -14,16 +12,15 @@ const Recomendaciones = () => {
       const respuesta = await urlAxios(
         `/paginas/novela/recomendaciones/${clave}`
       );
-      // console.log(respuesta)
-      setRecomendaciones(respuesta.data);
-      setLoader(false);
+      // setRecomendaciones(respuesta.data);
       return respuesta.data;
     } catch (error) {
-      setRecomendaciones([]);
+      // setRecomendaciones([]);
       return [];
     }
   };
-  useQuery({
+
+  const { data: recomendacions } = useQuery({
     queryKey: ["recomendaciones", clave],
     queryFn: getRecomendation,
     refetchInterval: 3000000,
@@ -31,9 +28,9 @@ const Recomendaciones = () => {
     retry: 0,
     refetchOnWindowFocus: false,
   });
-  // if (loader) return <Loading />;
-  return (
-    <>
+
+  if (recomendacions && recomendacions.length > 0)
+    return (
       <section
         className={`sm:w-10/12 w-11/12 ${
           recomendacions.length > 0 ? "flex" : "hidden"
@@ -53,8 +50,7 @@ const Recomendaciones = () => {
           </figure>
         ))}
       </section>
-    </>
-  );
+    );
 };
 
 export default Recomendaciones;

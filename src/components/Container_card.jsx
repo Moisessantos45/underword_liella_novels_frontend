@@ -91,7 +91,7 @@ const Container_card = () => {
         {msg && <Alerta alerta={alerta} />}
         <NavbarSlider />
         <form
-          className={`w-11/12 sm:w-8/12 p-2 ${
+          className={`w-11/12 sm:w-8/12 p-2 md:mt-10 lg:mt-0 ${
             activeDark ? "bg-gray-800" : "bg-white"
           }  shadow-lg rounded-lg m-auto`}
           onSubmit={handelSubmit}

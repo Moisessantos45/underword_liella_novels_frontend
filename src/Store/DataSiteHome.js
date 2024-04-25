@@ -11,8 +11,9 @@ const useDataSiteHome = create((set, get) => ({
       );
       const dataSite = res.data;
       set({ dataSite });
+      return dataSite
     } catch (error) {
-      <redirect to="/*" />;
+      return;
     }
   },
 }));

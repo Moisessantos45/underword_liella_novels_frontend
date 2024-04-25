@@ -2,7 +2,6 @@ import { Outlet } from "react-router-dom";
 import NabvarPrincipal from "../components/NabvarPrincipal";
 import Footer from "../components/Footer";
 import Comentarios from "../components/Comentarios";
-import { useEffect, useState } from "react";
 import { useDataSiteHome } from "../Store/DataSiteHome";
 import Loading from "../components/Loading";
 import { useQuery } from "@tanstack/react-query";
