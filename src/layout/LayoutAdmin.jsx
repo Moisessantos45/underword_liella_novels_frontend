@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import Loading from "../components/Loading";
@@ -13,17 +13,18 @@ const LayoutAdmin = () => {
   useEffect(() => {
     document.title = "Panel de administracion";
   }, []);
-  // useEffect(() => {
-  //   if (!userAuth?.activo) {
-  //     console.log(userAuth.activo);
-  //     navigate("/login-admin");
-  //   }
-  // }, [userAuth]);
+
   if (cargando) return <Loading />;
   return (
     <>
       <Slider />
-      {userAuth?.id ? <Outlet /> : <Navigate to="/login-admin" />}
+      {userAuth?.id ? (
+        <Suspense fallback={<Loading />}>
+          <Outlet />
+        </Suspense>
+      ) : (
+        <Navigate to="/login-admin" />
+      )}
     </>
   );
 };

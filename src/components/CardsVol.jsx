@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import "../css/CardsVol.css";
-import urlAxios from "../config/urlAxios";
+import urlAxios from "../config/urlAxios.js";
 import { useQuery } from "@tanstack/react-query";
 
 const CardsVol = () => {
@@ -23,10 +23,9 @@ const CardsVol = () => {
   const { data: volumen } = useQuery({
     queryKey: ["cardsVol"],
     queryFn: getCards,
-    refetchInterval: 3000000,
-    staleTime: 3000000,
-    retry: 0,
+    refetchInterval: 60000,
     refetchOnWindowFocus: false,
+    retry: 0,
   });
 
   if (volumen && volumen.length > 0)

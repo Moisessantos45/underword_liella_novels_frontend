@@ -1,30 +1,12 @@
-import { useEffect, useState } from "react";
-import useAdmin from "../hooks/useAdmin";
-import useAuth from "../hooks/useAuth";
-import urlAxios from "../config/urlAxios";
-import NavbarSlider from "../components/NavbarSlider";
-import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css";
+import { useState } from "react";
+import useAdmin from "@/hooks/useAdmin.jsx";
+import useAuth from "@/hooks/useAuth.jsx";
+import urlAxios from "@/config/urlAxios.js";
+import NavbarSlider from "@/components/NavbarSlider.jsx";
+import { toastify } from "@/utils/Utils.js";
 import axios from "axios";
+import { errorHandle } from "@/Services/errorHandle.js";
 const apiKey = import.meta.env.VITE_URL_APIKEY;
-
-const toastify = (text, type) => {
-  Toastify({
-    text: `${text}`,
-    duration: 3000,
-    newWindow: true,
-    // close: true,
-    gravity: "top",
-    position: "right",
-    stopOnFocus: true,
-    style: {
-      background: type
-        ? "linear-gradient(to right, #00b09b, #96c93d)"
-        : "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
-      borderRadius: "10px",
-    },
-  }).showToast();
-};
 
 const Perfil = () => {
   const { userAuth } = useAuth();
@@ -45,6 +27,7 @@ const Perfil = () => {
     // console.log(e.target);
     setFoto(selectedFile);
   };
+  
   const handlSubtmit = async (e) => {
     e.preventDefault();
     if ([email, name_user].includes("")) {
@@ -63,23 +46,19 @@ const Perfil = () => {
       }
     }
     try {
-      const { data } = await urlAxios.put(
-        "/underwordliellanovels/actulizar-datos",
-        {
-          email: userAuth.email,
-          password,
-          foto_perfil,
-          name_user,
-          tipo,
-          id,
-        }
-      );
+      const { data } = await urlAxios.put("/admin/actulizar-datos", {
+        email: userAuth.email,
+        password,
+        foto_perfil,
+        name_user,
+        tipo,
+        id,
+      });
       setEmail(data.email);
       setName(data.name_user);
       toastify("Datos actualizados", true);
     } catch (error) {
-      toastify(error.response.data.msg, false);
-      // console.log(error);
+      errorHandle(error);
     }
   };
   return (

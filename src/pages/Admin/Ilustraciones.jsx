@@ -1,29 +1,10 @@
-import useAdmin from "../hooks/useAdmin";
-import NavbarSlider from "./NavbarSlider";
+import useAdmin from "@/hooks/useAdmin.jsx";
+import NavbarSlider from "@/components/NavbarSlider.jsx";
 import { useState } from "react";
-import urlAxios from "../config/urlAxios";
-import Loading from "./Loading";
-import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css";
+import urlAxios from "@/config/urlAxios.js";
+import Loading from "@/components/Loading.jsx";
 import { useQuery } from "@tanstack/react-query";
-
-const toastify = (text, type) => {
-  Toastify({
-    text: `${text}`,
-    duration: 3000,
-    newWindow: true,
-    // close: true,
-    gravity: "top",
-    position: "right",
-    stopOnFocus: true,
-    style: {
-      background: type
-        ? "linear-gradient(to right, #00b09b, #96c93d)"
-        : "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
-      borderRadius: "10px",
-    },
-  }).showToast();
-};
+import { toastify } from "@/utils/Utils.js";
 
 const Ilustraciones = () => {
   const { activeDark } = useAdmin();
@@ -32,11 +13,9 @@ const Ilustraciones = () => {
 
   const solicitarIlustraciones = async () => {
     try {
-      const { data } = await urlAxios(
-        "/underwordliellanovels/solicitud_ilustraciones"
-      );
+      const { data } = await urlAxios("/admin/solicitud_ilustraciones");
       setIlustraciones(data);
-      return data
+      return data;
     } catch (error) {
       setIlustraciones([]);
       return [];
@@ -46,10 +25,9 @@ const Ilustraciones = () => {
   const { isLoading } = useQuery({
     queryKey: ["ilsutraciones"],
     queryFn: solicitarIlustraciones,
-    refetchInterval: 3000000,
-    staleTime: 3000000,
-    retry: 0,
+    refetchInterval: 60000,
     refetchOnWindowFocus: false,
+    retry: 0,
   });
 
   const copyUrl = (url) => {

@@ -1,13 +1,13 @@
 import { create } from "zustand";
-import urlAxios from "../config/urlAxios";
+import urlAxios from "../config/urlAxios.js";
 
-const useDataSiteHome = create((set, get) => ({
+const useDataSiteHome = create((set) => ({
   dataSite: {},
   setDataSite: (dataSite) => set((state) => ({ dataSite })),
   fecthDataSite: async () => {
     try {
       const res = await urlAxios.get(
-        "/underwordliellanovels/configuracion-sitio"
+        "/admin/configuracion-sitio"
       );
       const dataSite = res.data;
       set({ dataSite });

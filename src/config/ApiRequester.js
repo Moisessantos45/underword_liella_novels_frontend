@@ -1,12 +1,11 @@
-import urlAxios from "./urlAxios";
+import urlAxios from "./urlAxios.js";
 
 const ApiRequester = async (method, url, content) => {
-
   try {
     const { data } = await urlAxios[method](url, content);
-    return data;
+    return { success: true, data };
   } catch (error) {
-    return error;
+    return { success: false, error };
   }
 };
 

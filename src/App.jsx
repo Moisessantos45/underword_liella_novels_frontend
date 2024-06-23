@@ -1,27 +1,34 @@
 import { createBrowserRouter } from "react-router-dom";
-import LayoutLogin from "./layout/LayoutLogin";
+import { lazy } from "react";
 import LayoutInicio from "./layout/LayoutInicio";
-import PaginasNovelas from "./pages/PaginasNovelas";
 import Cards from "./components/Cards";
-import FormLogin from "./pages/FormLogin";
-import LayoutAdmin from "./layout/LayoutAdmin";
 
-import Container_card from "./components/Container_card";
-import Container_captitulo from "./components/Container_captitulo";
-import Container_novela from "./components/Container_novela";
-import Content_cards from "./components/Content_cards";
-import Content_novelas from "./components/Content_novelas";
-import Content_capitulos from "./components/Content_capitulos";
-import FormRegistrer from "./pages/FormRegistrer";
-import SubirImagenes from "./components/SubirImagenes";
-import PaginasCapitulos from "./pages/PaginasCapitulos";
-import Perfil from "./pages/Perfil";
-import Content_list from "./components/Content_list";
-import Teams from "./pages/Teams";
-import UploadsFiles from "./pages/UploadsFiles";
-import Ilustraciones from "./components/Ilustraciones";
-import ConfiguracionSitio from "./pages/ConfiguracionSitio";
-import PageError from "./pages/PageError";
+const LayoutLogin = lazy(() => import("./layout/LayoutLogin"));
+const PaginasNovelas = lazy(() => import("./pages/PaginasNovelas"));
+const FormLogin = lazy(() => import("./pages/Admin/Forms/FormLogin"));
+const LayoutAdmin = lazy(() => import("./layout/LayoutAdmin"));
+const Container_card = lazy(() => import("./pages/Admin/Forms/Container_card"));
+const Container_captitulo = lazy(() =>
+  import("./pages/Admin/Forms/Container_captitulo")
+);
+const Container_novela = lazy(() =>
+  import("./pages/Admin/Forms/Container_novela")
+);
+const Content_cards = lazy(() => import("./pages/Admin/Content_cards"));
+const Content_novelas = lazy(() => import("./pages/Admin/Content_novelas"));
+const Content_capitulos = lazy(() => import("./pages/Admin/Content_capitulos"));
+const FormRegistrer = lazy(() => import("./pages/Admin/Forms/FormRegistrer"));
+const SubirImagenes = lazy(() => import("./pages/Admin/Forms/SubirImagenes"));
+const PaginasCapitulos = lazy(() => import("./pages/PaginasCapitulos"));
+const Perfil = lazy(() => import("./pages/Admin/Perfil"));
+const Content_list = lazy(() => import("./pages/Admin/Content_list"));
+const Teams = lazy(() => import("./pages/Admin/Teams"));
+const UploadsFiles = lazy(() => import("./pages/Admin/UploadsFiles"));
+const Ilustraciones = lazy(() => import("./pages/Admin/Ilustraciones"));
+const ConfiguracionSitio = lazy(() =>
+  import("./pages/Admin/ConfiguracionSitio")
+);
+const PageError = lazy(() => import("./pages/PageError"));
 
 export const router = createBrowserRouter([
   {

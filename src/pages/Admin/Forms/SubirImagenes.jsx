@@ -1,29 +1,11 @@
 import { useState } from "react";
-import "../css/uploadImg.css";
-import useAdmin from "../hooks/useAdmin";
+import "@/css/uploadImg.css";
+import useAdmin from "@/hooks/useAdmin";
 import axios from "axios";
-import NavbarSlider from "./NavbarSlider";
-import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css";
+import NavbarSlider from "@/components/NavbarSlider";
 import imageCompression from "browser-image-compression";
-
-const toastify = (text, type) => {
-  Toastify({
-    text: `${text}`,
-    duration: 3000,
-    newWindow: true,
-    // close: true,
-    gravity: "top",
-    position: "right",
-    stopOnFocus: true,
-    style: {
-      background: type
-        ? "linear-gradient(to right, #00b09b, #96c93d)"
-        : "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
-      borderRadius: "10px",
-    },
-  }).showToast();
-};
+import { toastify } from "@/utils/Utils";
+import { errorHandle } from "@/Services/errorHandle";
 
 const SubirImagenes = () => {
   const apiKey = import.meta.env.VITE_URL_APIKEY;
@@ -74,7 +56,7 @@ const SubirImagenes = () => {
           );
           return data.data.url;
         } catch (error) {
-          toastify("Ocurrio un error", false);
+          errorHandle(error);
         }
       })
     );

@@ -2,11 +2,9 @@ import "../css/ContainerPrincipal.css";
 import useAdmin from "../hooks/useAdmin";
 import img from "../img/icon_user.png";
 import img_visit from "../img/icon-post.jpg";
-import useAuth from "../hooks/useAuth";
 
 const ContainerPrincipal = () => {
   const { active } = useAdmin();
-  const { userAuth, setAuth, cargando } = useAuth();
   return (
     <>
       <main

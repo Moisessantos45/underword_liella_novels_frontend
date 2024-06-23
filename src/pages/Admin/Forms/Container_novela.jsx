@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import useAdmin from "../hooks/useAdmin";
-import NavbarSlider from "./NavbarSlider";
-import Alerta from "./Alerta";
+import useAdmin from "@/hooks/useAdmin";
+import NavbarSlider from "@/components/NavbarSlider";
+import Alerta from "@/components/UI/Alerta";
 import Swal from "sweetalert2";
 
 const mostrarAlerta = (texto) => {
@@ -142,9 +142,6 @@ const Container_novela = () => {
     setId(null);
     setDatos({});
   };
-  // const handleChange = (event) => {
-  //   setAge(event.target.value);
-  // };
 
   const { msg } = alerta;
   return (
@@ -338,24 +335,7 @@ const Container_novela = () => {
               onChange={(e) => setSinopsis(e.target.value)}
             />
           </div>
-          {/* <div className="form_add_content">
-            <label
-              htmlFor="clave"
-              className={`font-bold w-12/12 ${
-                activeDark ? "text-white" : "text-slate-600"
-              }`}
-            >
-              No modificar
-            </label>
-            <input
-              type="text"
-              placeholder="clave"
-              id="clave"
-              className="border rounded h-10 w-12/12 focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
-              value={clave}
-              onChange={(e) => setClave(e.target.value)}
-            />
-          </div> */}
+
           <div className="flex justify-center items-center pt-2">
             <button
               type="submit"

@@ -5,9 +5,9 @@ import Comentarios from "../components/Comentarios";
 import { useDataSiteHome } from "../Store/DataSiteHome";
 import Loading from "../components/Loading";
 import { useQuery } from "@tanstack/react-query";
+import { Suspense } from "react";
 
 const LayoutInicio = () => {
-  // const [loading, setLoading] = useState(true);
   const { fecthDataSite } = useDataSiteHome();
 
   const cargarDataSite = async () => {
@@ -22,17 +22,18 @@ const LayoutInicio = () => {
   const { isLoading } = useQuery({
     queryKey: ["fetchSite"],
     queryFn: cargarDataSite,
-    refetchInterval: 3000000,
-    staleTime: 3000000,
-    retry: 0,
+    refetchInterval: 60000,
     refetchOnWindowFocus: false,
+    retry: 0,
   });
 
   if (isLoading) return <Loading />;
   return (
     <>
       <NabvarPrincipal />
-      <Outlet />
+      <Suspense fallback={<Loading />}>
+        <Outlet />
+      </Suspense>
       <Comentarios />
       <Footer />
     </>

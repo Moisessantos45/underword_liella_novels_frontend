@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
-import useAdmin from "../hooks/useAdmin";
-import NavbarSlider from "./NavbarSlider";
-import Alerta from "./Alerta";
+import { useState } from "react";
+import "@/css/ContainerAdmin.css";
+import useAdmin from "@/hooks/useAdmin";
+import NavbarSlider from "@/components/NavbarSlider";
+import Alerta from "@/components/UI/Alerta";
 import Swal from "sweetalert2";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -20,35 +21,27 @@ const mostrarAlerta = (texto) => {
   });
 };
 
-const Container_captitulo = () => {
-  const { novelasInfo, enviarDatos, datosEdit, activeDark, setDatos } =
-    useAdmin();
+const Container_card = () => {
+  const { enviarDatos, novelasInfo, activeDark } = useAdmin();
   const [alerta, setAlerta] = useState({});
-  const [nombre, setNombre] = useState("");
-  const [titulo, setTitulo] = useState("");
-  const [contenido, setContenido] = useState("");
-  const [capitulo, setCapitulos] = useState(0);
-  const [nameData, setNameData] = useState("");
+  const [nombreClave, setNombre] = useState("");
+  const [volumen, setVolumen] = useState("");
+  const [imagen, setImagen] = useState(
+    "https://i.ibb.co/WvKyKrk/no-disponibles.jpg"
+  );
+  const [captiuloActive, setDisponible] = useState(false);
+  const [capitulo, setCapitulos] = useState("");
+  const [mega, setMega] = useState("");
+  const [mediafire, setMediafire] = useState("");
+  const [megaEpub, setMegaEpub] = useState("");
+  const [mediafireEpub, setMediafireEpub] = useState("");
   const [clave, setClave] = useState("dato");
-  const [id, setId] = useState(null);
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    if (datosEdit?.id && datosEdit?.contenido) {
-      setTitulo(datosEdit.titulo);
-      setContenido(datosEdit.contenido);
-      setCapitulos(datosEdit.capitulo);
-      setNombre(datosEdit.nombre);
-      setNameData(datosEdit.nombre);
-      setClave(datosEdit.clave);
-      setId(datosEdit.id);
-    }
-  }, [datosEdit]);
-
-  const tipo = "capitulos";
+  const tipo = "cards";
   const handelSubmit = async (e) => {
     e.preventDefault();
-    const campos = [nombre, titulo, contenido, capitulo, clave];
+    const campos = [nombreClave, volumen, imagen, clave];
     const camposVacios = Object.entries(campos)
       .filter(
         ([nombre, valor]) => typeof valor === "string" && valor.trim() === ""
@@ -60,15 +53,28 @@ const Container_captitulo = () => {
       mostrarAlerta(`Los siguientes campos están vacíos: ${camposVacios}`);
       return;
     }
-    enviarDatos({ nombre, titulo, contenido, capitulo, id }, tipo);
-    setTitulo("");
-    setContenido("");
-    setCapitulos(0);
-    setNombre("");
-    setNameData("");
-    // setClave("");
-    setId(null);
-    setDatos({});
+    enviarDatos(
+      {
+        nombreClave,
+        volumen,
+        imagen,
+        captiuloActive,
+        capitulo,
+        mega,
+        mediafire,
+        megaEpub,
+        mediafireEpub,
+      },
+      tipo
+    );
+    // setNombre("")
+    setVolumen("");
+    setImagen("https://i.ibb.co/WvKyKrk/no-disponibles.jpg");
+    setCapitulos("");
+    setMega("");
+    setMediafire("");
+    setMediafireEpub("");
+    setMegaEpub("");
   };
   const handleClose = () => {
     setOpen(false);
@@ -77,6 +83,7 @@ const Container_captitulo = () => {
   const handleOpen = () => {
     setOpen(true);
   };
+
   const { msg } = alerta;
   return (
     <>
@@ -125,111 +132,142 @@ const Container_captitulo = () => {
               open={open}
               onClose={handleClose}
               onOpen={handleOpen}
-              value={nameData ? nameData : nombre}
+              value={nombreClave}
               label="Age"
-              sx={{
-                width: "93%",
-                height: 35,
-                color: `${activeDark ? "white" : "black"}`,
-              }}
-              onChange={(e) => {
-                setNombre(e.target.value), setNameData(e.target.value);
-              }}
+              sx={{ width: "95%", height: 35, margin: "auto" }}
+              onChange={(e) => setNombre(e.target.value)}
             >
               {novelasInfo.map((chart, i) => (
                 <MenuItem
                   key={i}
                   value={`${chart.titulo.split(" ").slice(0, 4).join(" ")}`}
-                  className={`overflow-hidden text-ellipsis whitespace-nowrap ${
-                    activeDark ? "text-white" : "text-slate-600"
-                  } `}
+                  className=" overflow-hidden text-ellipsis whitespace-nowrap text-slate-600"
                 >
                   {chart.titulo.split(" ").slice(0, 4).join(" ")}
                 </MenuItem>
               ))}
             </Select>
           </div>
-          <div className="form_add_content">
-            <label
-              htmlFor="titulo"
-              className={` font-bold ${
-                activeDark ? "text-white" : "text-slate-600"
-              }`}
-            >
-              Titulo del capitulo
-            </label>
-            <input
-              type="text"
-              placeholder="titulo"
-              id="titulo"
-              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-              value={titulo}
-              onChange={(e) => setTitulo(e.target.value.replace(/´/g, ""))}
-            />
-          </div>
-          <div className="form_add_content">
-            <label
-              htmlFor="capitulo"
-              className={`font-bold ${
-                activeDark ? "text-white" : "text-slate-600"
-              }`}
-            >
-              El capitulo
-            </label>
+          <div className="w-11/12 p-2 grid md:grid-cols-3 md:gap-2 m-auto">
             <input
               type="number"
-              placeholder="capitulo"
-              id="capitulo"
               className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              placeholder="Volumen"
+              value={volumen}
+              onChange={(e) => setVolumen(e.target.value)}
+            />
+            <input
+              type="text"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              placeholder="Esta disponible para leer"
+              value={captiuloActive}
+              onChange={(e) => setDisponible(e.target.value)}
+            />
+            <input
+              type="text"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              placeholder="Escribir si esta disponible para leer"
               value={capitulo}
               onChange={(e) => setCapitulos(e.target.value)}
             />
           </div>
           <div className="form_add_content">
             <label
-              htmlFor="contenido"
-              className={`font-bold ${
+              htmlFor="imagen"
+              className={` font-bold ${
                 activeDark ? "text-white" : "text-slate-600"
-              } `}
+              }`}
             >
-              El contenido
+              Url Portada
             </label>
-            <textarea
+            <input
               type="text"
-              cols="30"
-              rows="5"
-              placeholder="contenido"
-              id="contenido"
-              className="border rounded sm:h-40 h-84 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm scrollbar"
-              value={contenido}
-              onChange={(e) => setContenido(e.target.value)}
+              placeholder="imagen"
+              id="imagen"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              value={imagen}
+              onChange={(e) => setImagen(e.target.value)}
             />
           </div>
           <div className="form_add_content">
             <label
-              htmlFor="clave"
+              htmlFor="mega"
               className={`font-bold ${
                 activeDark ? "text-white" : "text-slate-600"
               }`}
             >
-              No modificar
+              Link de mega
             </label>
             <input
               type="text"
-              placeholder="clave"
-              id="clave"
+              placeholder="mega"
+              id="mega"
               className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-              value={clave}
-              onChange={(e) => setClave(e.target.value)}
+              value={mega}
+              onChange={(e) => setMega(e.target.value)}
             />
           </div>
+          <div className="form_add_content">
+            <label
+              htmlFor="mediafire"
+              className={`font-bold ${
+                activeDark ? "text-white" : "text-slate-600"
+              }`}
+            >
+              Link de drive
+            </label>
+            <input
+              type="text"
+              placeholder="mediafire"
+              id="mediafire"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              value={mediafire}
+              onChange={(e) => setMediafire(e.target.value)}
+            />
+          </div>
+          <div className="form_add_content">
+            <label
+              htmlFor="megaEpub"
+              className={`font-bold ${
+                activeDark ? "text-white" : "text-slate-600"
+              }`}
+            >
+              Link mega epub
+            </label>
+            <input
+              type="text"
+              placeholder="megaEpub"
+              id="megaEpub"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              value={megaEpub}
+              onChange={(e) => setMegaEpub(e.target.value)}
+            />
+          </div>
+          <div className="form_add_content">
+            <label
+              htmlFor="mediafireEpub"
+              className={`font-bold ${
+                activeDark ? "text-white" : "text-slate-600"
+              }`}
+            >
+              Link mediafire epub
+            </label>
+            <input
+              type="text"
+              placeholder="mediafire Epub"
+              id="mediafireEpub"
+              className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+              value={mediafireEpub}
+              onChange={(e) => setMediafireEpub(e.target.value)}
+            />
+          </div>
+
           <div className="flex justify-center items-center pt-2">
             <button
               type="submit"
-              value={id ? "Actulizar novela" : "Agrega un novela"}
               className="h-10 w-72 rounded font-medium text-xs bg-blue-500 text-white"
             >
-              {id ? "Actulizar capitulo" : "Agrega el capitulo"}
+              Agrega un volumen
             </button>
           </div>
         </form>
@@ -238,4 +276,4 @@ const Container_captitulo = () => {
   );
 };
 
-export default Container_captitulo;
+export default Container_card;

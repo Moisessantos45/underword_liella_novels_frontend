@@ -1,37 +1,17 @@
 import { useState } from "react";
-import useAdmin from "../hooks/useAdmin";
-import Toastify from "toastify-js";
-import "../css/uploadImg.css";
-import "toastify-js/src/toastify.css";
-import NavbarSlider from "../components/NavbarSlider";
+import useAdmin from "@/hooks/useAdmin";
+import "@/css/uploadImg.css";
+import NavbarSlider from "@/components/NavbarSlider";
 import axios from "axios";
-
-const toastify = (text, type) => {
-  Toastify({
-    text: `${text}`,
-    duration: 3000,
-    newWindow: true,
-    // close: true,
-    gravity: "top",
-    position: "right",
-    stopOnFocus: true,
-    style: {
-      background: type
-        ? "linear-gradient(to right, #00b09b, #96c93d)"
-        : "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
-      borderRadius: "10px",
-    },
-  }).showToast();
-};
+import { toastify } from "@/utils/Utils";
+import { errorHandle } from "@/Services/errorHandle";
 
 const UploadsFiles = () => {
-  const { active, activeDark } = useAdmin();
+  const { activeDark } = useAdmin();
   const [files, setFiles] = useState([]);
   const [urls, setUrls] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const email = import.meta.env.VITE_MEGA_EMAIL;
-  const password = import.meta.env.VITE_MEGA_PASSWORD + "$1";
-  // console.log(email, password)
+
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     setFiles(selectedFiles);
@@ -43,6 +23,7 @@ const UploadsFiles = () => {
       toastify("Seleccione un archivo", false);
       return;
     }
+
     const uploadedUrls = await Promise.all(
       files.map(async (file, index) => {
         const formData = new FormData();
@@ -66,15 +47,17 @@ const UploadsFiles = () => {
               },
             }
           );
+
           const responseData =
             response.data !== undefined ? response.data : null;
           if (!responseData) {
             toastify("Url no recibida", false);
             return;
           }
+
           return responseData;
         } catch (error) {
-          toastify("Ocurrio un error", false);
+          errorHandle(error);
         }
       })
     );

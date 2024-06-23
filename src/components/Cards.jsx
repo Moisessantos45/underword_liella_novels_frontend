@@ -1,25 +1,22 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import "../css/Cards.css";
+import "@/css/Cards.css";
 import Banner_inferior from "./Banner_inferior";
-import urlAxios from "../config/urlAxios";
+import urlAxios from "../config/urlAxios.js";
 import Loading from "./Loading";
 import Nosotros from "./Nosotros";
 import { useQuery } from "@tanstack/react-query";
 
 const Cards = () => {
   const [datos, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
 
   const getCards = async () => {
     try {
       const { data } = await urlAxios("/paginas");
       setData(data);
-      setFilteredData(data);
       return data;
     } catch (error) {
       setData([]);
-      setFilteredData([]);
       return [];
     }
   };
@@ -27,10 +24,9 @@ const Cards = () => {
   const { isLoading } = useQuery({
     queryKey: ["getCards"],
     queryFn: getCards,
-    refetchInterval: 3000000,
-    staleTime: 3000000,
-    retry: 0,
+    refetchInterval: 60000,
     refetchOnWindowFocus: false,
+    retry: 0,
   });
 
   useEffect(() => {
@@ -46,6 +42,7 @@ const Cards = () => {
         <div className=" w-full flex justify-center items-center text-2xl">
           <h1 className="title1">Novelas Ligeras en Traduccion</h1>
         </div>
+
         {datos.length > 0 &&
           datos.map((item) => (
             <figure key={item.id} className="cards">
@@ -59,7 +56,6 @@ const Cards = () => {
             </figure>
           ))}
       </section>
-
       <Banner_inferior />
     </>
   );

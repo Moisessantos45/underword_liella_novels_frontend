@@ -1,35 +1,16 @@
 import { useEffect, useState } from "react";
-import "../css/styleForm.css";
-import urlAxios from "../config/urlAxios";
+import "@/css/styleForm.css";
+import urlAxios from "@/config/urlAxios.js";
 import { useNavigate } from "react-router-dom";
-import Loading from "../components/Loading";
-import useAuth from "../hooks/useAuth";
-import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css";
-
-const toastify = (text, type) => {
-  Toastify({
-    text: `${text}`,
-    duration: 3000,
-    newWindow: true,
-    // close: true,
-    gravity: "top",
-    position: "right",
-    stopOnFocus: true,
-    style: {
-      background: type
-        ? "linear-gradient(to right, #00b09b, #96c93d)"
-        : "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
-      borderRadius: "10px",
-    },
-  }).showToast();
-};
+import Loading from "@/components/Loading";
+import useAuth from "@/hooks/useAuth";
+import { toastify } from "@/utils/Utils.js";
+import { errorHandle } from "@/Services/errorHandle.js";
 
 const FormLogin = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const { userAuth, cargando, setAuth, setCargando, setDataActive } = useAuth();
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,7 +31,7 @@ const FormLogin = () => {
       return;
     }
     try {
-      const { data } = await urlAxios.post("/underwordliellanovels/login", {
+      const { data } = await urlAxios.post("/admin/login", {
         email,
         password,
       });
@@ -62,8 +43,7 @@ const FormLogin = () => {
       navigate(`/dashboard/${data?.id}`);
       setCargando(false);
     } catch (error) {
-      toastify(error.response.data.msg, false);
-      setError(error.response.data.msg);
+      errorHandle(error);
       setAuth({});
     }
     setCargando(false);
@@ -84,7 +64,7 @@ const FormLogin = () => {
           Ingresa tu datos
         </p>
         <div className="">
-          <label className=""> Email Address </label>
+          <label className="text-gray-700"> Email Address </label>
           <input
             type="email"
             value={email}
@@ -94,7 +74,7 @@ const FormLogin = () => {
           />
         </div>
         <div>
-          <label className=""> Password </label>
+          <label className="text-gray-700"> Password </label>
           <input
             type="password"
             value={password}

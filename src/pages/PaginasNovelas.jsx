@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import urlAxios from "../config/urlAxios";
+import urlAxios from "../config/urlAxios.js";
 import { useEffect, useState } from "react";
 import TablaInfo from "../components/TablaInfo";
 import CardsVol from "../components/CardsVol";
@@ -40,10 +40,9 @@ const PaginasNovelas = () => {
   const { isLoading } = useQuery({
     queryKey: ["pageNovel", clave],
     queryFn: peticion,
-    refetchInterval: 3000000,
-    staleTime: 3000000,
-    retry: 0,
+    refetchInterval: 60000,
     refetchOnWindowFocus: false,
+    retry: 1,
   });
 
   useEffect(() => {
@@ -53,7 +52,7 @@ const PaginasNovelas = () => {
   if (isLoading) return <Loading />;
   return (
     <>
-      <TablaInfo key={novela.info.nombre} datos={novela.info} />
+      <TablaInfo key={novela.info.nombre || ""} datos={novela.info} />
       {capit ? <ContentCapit key={novela.info.id} capi={novela.capi} /> : ""}
       {novela.info?.id && novela.info?.backgroud.startsWith("https") ? (
         <figure className="backgraoud">

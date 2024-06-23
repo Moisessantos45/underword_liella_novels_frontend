@@ -1,4 +1,4 @@
-import urlAxios from "../config/urlAxios";
+import urlAxios from "../config/urlAxios.js";
 
 const SesionLogout = async (email) => {
   try {

@@ -1,5 +1,5 @@
 import useAdmin from "../hooks/useAdmin";
-import urlAxios from "../config/urlAxios";
+import urlAxios from "../config/urlAxios.js";
 import { Link, useParams } from "react-router-dom";
 import home from "../img/home.png";
 import previuos from "../img/previuos.png";
@@ -81,7 +81,7 @@ const PaginasCapitulos = () => {
   const obtenerCapitulo = async (clave, capitulo) => {
     try {
       const { data } = await urlAxios(
-        `/pagina/capitulo/${clave}/${capitulo.toString()}`
+        `/capitulo/${clave}/${capitulo.toString()}`
       );
       // console.log(data.data);
       setTitleNabvar({ title: `${data.data?.titulo}` });

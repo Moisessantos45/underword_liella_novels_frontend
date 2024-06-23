@@ -4,7 +4,7 @@ import useAdmin from "../hooks/useAdmin";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import Loading from "./Loading";
-import urlAxios from "../config/urlAxios";
+import urlAxios from "../config/urlAxios.js";
 
 const Slider = () => {
   const { active, activeDark } = useAdmin();
@@ -100,7 +100,7 @@ const Slider = () => {
   const handelClick = async () => {
     const email = userAuth.email;
     try {
-      await urlAxios.post("/underwordliellanovels/logout", { email });
+      await urlAxios.post("/admin/logout", { email });
       localStorage.removeItem("token");
       localStorage.removeItem("horaInicio");
       setAuth({});

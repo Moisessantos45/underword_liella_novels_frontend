@@ -1,9 +1,8 @@
 import { Link, useParams } from "react-router-dom";
-import urlAxios from "../config/urlAxios";
+import urlAxios from "../config/urlAxios.js";
 import { useQuery } from "@tanstack/react-query";
 
 const Recomendaciones = () => {
-  // const [recomendacions, setRecomendaciones] = useState([]);
   const params = useParams();
   const { clave } = params;
 
@@ -12,10 +11,8 @@ const Recomendaciones = () => {
       const respuesta = await urlAxios(
         `/paginas/novela/recomendaciones/${clave}`
       );
-      // setRecomendaciones(respuesta.data);
       return respuesta.data;
     } catch (error) {
-      // setRecomendaciones([]);
       return [];
     }
   };
@@ -23,10 +20,9 @@ const Recomendaciones = () => {
   const { data: recomendacions } = useQuery({
     queryKey: ["recomendaciones", clave],
     queryFn: getRecomendation,
-    refetchInterval: 3000000,
-    staleTime: 3000000,
-    retry: 0,
+    refetchInterval: 60000,
     refetchOnWindowFocus: false,
+    retry: 0,
   });
 
   if (recomendacions && recomendacions.length > 0)

@@ -1,28 +1,10 @@
 import { useEffect, useState } from "react";
-import useAdmin from "../hooks/useAdmin";
-import NavbarSlider from "../components/NavbarSlider";
-import urlAxios from "../config/urlAxios";
-import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css";
-import Loading from "../components/Loading";
-
-const toastify = (text, type) => {
-  Toastify({
-    text: `${text}`,
-    duration: 3000,
-    newWindow: true,
-    // close: true,
-    gravity: "top",
-    position: "right",
-    stopOnFocus: true,
-    style: {
-      background: type
-        ? "linear-gradient(to right, #00b09b, #96c93d)"
-        : "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
-      borderRadius: "10px",
-    },
-  }).showToast();
-};
+import useAdmin from "@/hooks/useAdmin";
+import NavbarSlider from "@/components/NavbarSlider";
+import urlAxios from "@/config/urlAxios.js";
+import Loading from "@/components/Loading";
+import { toastify } from "@/utils/Utils.js";
+import { errorHandle } from "@/Services/errorHandle.js";
 
 const ConfiguracionSitio = () => {
   const { activeDark } = useAdmin();
@@ -72,9 +54,7 @@ const ConfiguracionSitio = () => {
   useEffect(() => {
     const solicitarDatosSitio = async () => {
       try {
-        const res = await urlAxios.get(
-          "/underwordliellanovels/configuracion-sitio"
-        );
+        const res = await urlAxios.get("/admin/configuracion-sitio");
         actulizatDatosSito(res.data);
       } catch (error) {
         toastify(error.response.data.msg, false);
@@ -117,16 +97,14 @@ const ConfiguracionSitio = () => {
       activoReclutamiento,
     };
     try {
-      const res = await urlAxios.put(
-        "/underwordliellanovels/configuracion-sitio",
-        { datos }
-      );
+      const res = await urlAxios.put("/admin/configuracion-sitio", { datos });
       actulizatDatosSito(res.data);
       toastify("Datos actualizados", true);
     } catch (error) {
-      toastify(error.response.data.msg, false);
+      errorHandle(error);
     }
   };
+
   if (loading) return <Loading />;
   return (
     <section className={`content p-2 bg-zinc-100 ${activeDark ? "dark" : ""}`}>

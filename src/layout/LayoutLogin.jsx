@@ -1,13 +1,15 @@
 import { Outlet } from "react-router-dom";
 import NabvarLogin from "../components/NabvarLogin";
 
-import React from "react";
+import React, { Suspense } from "react";
 
 const LayoutLogin = () => {
   return (
     <>
       <NabvarLogin />
-      <Outlet />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Outlet />
+      </Suspense>
     </>
   );
 };

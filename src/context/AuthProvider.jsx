@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from "react";
 import Loading from "../components/Loading";
-import urlAxios from "../config/urlAxios";
+import urlAxios from "../config/urlAxios.js";
+import { obtenerConfig } from "../utils/Utils.js";
 
 const AuthContext = createContext();
 
@@ -23,18 +24,11 @@ const AuthProvider = ({ children }) => {
         localStorage.removeItem("horaInicio");
         return <redirect to="/login-admin" />;
       }
-      const confi = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        data: { token },
-      };
+
+      const confi = obtenerConfig();
+
       try {
-        const { data } = await urlAxios(
-          `/underwordliellanovels/panel-administracion`,
-          confi
-        );
+        const { data } = await urlAxios(`/admin/panel-administracion`, confi);
         setUserType(data.usuario.tipo);
         setAuth(data.usuario);
         setCont(data.totalUsuarios);

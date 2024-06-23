@@ -1,8 +1,8 @@
 import { useState } from "react";
-import "../css/slider.css";
-import useAdmin from "../hooks/useAdmin";
-import NavbarSlider from "./NavbarSlider";
-import useAuth from "../hooks/useAuth";
+import "@/css/slider.css";
+import useAdmin from "@/hooks/useAdmin";
+import NavbarSlider from "@/components/NavbarSlider";
+import useAuth from "@/hooks/useAuth";
 import { Link } from "react-router-dom";
 
 const Content_list = () => {

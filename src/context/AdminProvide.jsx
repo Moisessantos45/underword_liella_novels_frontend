@@ -1,8 +1,8 @@
 import { useState, createContext, useEffect } from "react";
-import urlAxios from "../config/urlAxios";
-import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css";
-import ApiRequester from "../config/ApiRequester";
+import urlAxios from "../config/urlAxios.js";
+import ApiRequester from "../config/ApiRequester.js";
+import { obtenerConfig, toastify } from "../utils/Utils.js";
+import { errorHandle } from "../Services/errorHandle.js";
 
 const AdminContext = createContext();
 
@@ -29,22 +29,17 @@ export const AdminProvider = ({ children }) => {
   const [mostrar_modal, setMostrar_modal] = useState(false);
   const [modalTime, setModalTime] = useState(false);
 
-  const toastify = (text, type) => {
-    Toastify({
-      text: `${text}`,
-      duration: 3000,
-      newWindow: true,
-      // close: true,
-      gravity: "top",
-      position: "right",
-      stopOnFocus: true,
-      style: {
-        background: type
-          ? "linear-gradient(to right, #00b09b, #96c93d)"
-          : "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
-        borderRadius: "10px",
-      },
-    }).showToast();
+  const TIPOS = {
+    CARDS: "cards",
+    CAPITULOS: "capitulos",
+    NOVELA: "novela",
+    USER: "user",
+  };
+
+  const URLS = {
+    NOVELAS: "/novelas",
+    VOLUMENES: "/novelas/cards",
+    CAPITULOS: "/capitulos",
   };
 
   useEffect(() => {
@@ -52,94 +47,114 @@ export const AdminProvider = ({ children }) => {
     setDark(mode_dark);
   }, []);
 
+  const handleDeleteRequest = async (url, id) => {
+    try {
+      await urlAxios.delete(url);
+      return { success: true };
+    } catch (error) {
+      errorHandle(error);
+      return { success: false };
+    }
+  };
+
   const editarCard = (card) => {
     setEditarCard(card);
   };
 
+  const actualizarEstado = (tipo, data) => {
+    switch (tipo) {
+      case TIPOS.CARDS:
+        setCarsVol((prev) =>
+          prev.map((vol) => (vol.id == data.id ? data : vol))
+        );
+        break;
+      case TIPOS.CAPITULOS:
+        setCapitulosInfo((prev) =>
+          prev.map((capi) => (capi.id == data.id ? data : capi))
+        );
+        break;
+      case TIPOS.NOVELA:
+        setNovelasInfo((prev) =>
+          prev.map((novela) => (novela.id == data.id ? data : novela))
+        );
+        break;
+      default:
+        break;
+    }
+  };
+
+  const agregarEstado = (tipo, data) => {
+    switch (tipo) {
+      case TIPOS.CARDS:
+        setCarsVol((prev) => [data, ...prev]);
+        break;
+      case TIPOS.CAPITULOS:
+        setCapitulosInfo((prev) => [data, ...prev]);
+        break;
+      case TIPOS.NOVELA:
+        setNovelasInfo((prev) => [data, ...prev]);
+        break;
+      default:
+        break;
+    }
+  };
+
   const enviarDatos = async (dato, tipo) => {
-    console.log("enviarDatos", dato, tipo);
     if (dato?.id) {
-      if (tipo == "cards") {
-        // const { id, ...newData } = dato;
-        try {
-          const data = await ApiRequester("put", "/novelas/cards", dato);
-          // const { data } = await urlAxios.put("/novelas/cards", dato);
-          const volActulizados = cardsVol.map((vol) =>
-            vol.id == data.id ? data : vol
-          );
-          setCarsVol(volActulizados);
-          toastify("Volumen actualizado", true);
-        } catch (error) {
-          toastify(error.response.data.msg, false);
-          // console.log(error);
-        }
-      } else if (tipo == "capitulos") {
-        // const { id, ...newData } = dato;
-        // console.log("actalizar",dato);
-        try {
-          const { data } = await urlAxios.put("/capitulo", dato);
-          const capitulosActualizados = capitulosInfo.map((capi) =>
-            capi.id == data.id ? data : capi
-          );
-          setCapitulosInfo(capitulosActualizados);
-          toastify("Capitulo actualizado", true);
-        } catch (error) {
-          toastify(error.response.data.msg, false);
-          // console.log(error);
-        }
-      } else if (tipo == "novela") {
-        // const { id, ...newData } = dato;
-        try {
-          const { data } = await urlAxios.put("/novelas", dato);
-          // console.log(data)
-          const novelasActulizados = novelasInfo.map((novela) =>
-            novela.id == data.id ? data : novela
-          );
-          setNovelasInfo(novelasActulizados);
-          toastify("Novela actulizada", true);
-        } catch (error) {
-          toastify(error.response.data.msg, false);
-          // console.log(error);
-        }
+      let url = "";
+      switch (tipo) {
+        case TIPOS.CARDS:
+          url = "/novelas/cards";
+          break;
+        case TIPOS.CAPITULOS:
+          url = "/capitulo";
+          break;
+        case TIPOS.NOVELA:
+          url = "/novelas";
+          break;
+        default:
+          return;
+      }
+
+      const response = await ApiRequester("put", url, dato);
+      if (response.success) {
+        actualizarEstado(tipo, response.data);
+        toastify(
+          `${tipo.charAt(0).toUpperCase() + tipo.slice(1)} actualizado`,
+          true
+        );
+      } else {
+        toastify(response.error.response.data.msg, false);
       }
     } else {
-      if (tipo == "cards") {
-        const { id, ...newData } = dato;
-        try {
-          const { data } = await urlAxios.post("/novelas/cards", newData);
-          setCarsVol([data, ...cardsVol]);
-          toastify("Volumen agregado", true);
-        } catch (error) {
-          toastify(error.response.data.msg, false);
-          // console.log(error);
-        }
-      } else if (tipo == "capitulos") {
-        const { id, ...newData } = dato;
-        try {
-          const data = await ApiRequester("post", "/capitulo", newData);
-          // const { data } = await urlAxios.post("/capitulo", newData);
-          setCapitulosInfo([data, ...capitulosInfo]);
-          toastify("Capitulo agregado", true);
-        } catch (error) {
-          toastify(error.response.data.msg, false);
-          // console.log(error);
-        }
-      } else if (tipo == "novela") {
-        const { id, ...newData } = dato;
-        try {
-          const { data } = await urlAxios.post("/novelas", newData);
-          setNovelasInfo([data, ...novelasInfo]);
-          toastify("Novela agregada", true);
-        } catch (error) {
-          toastify(error.response.data.msg, false);
-          // console.log(error);
-        }
+      const { id, ...newData } = dato;
+      let url = "";
+      switch (tipo) {
+        case TIPOS.CARDS:
+          url = "/novelas/cards";
+          break;
+        case TIPOS.CAPITULOS:
+          url = "/capitulos";
+          break;
+        case TIPOS.NOVELA:
+          url = "/novelas";
+          break;
+        default:
+          return;
+      }
+
+      const response = await ApiRequester("post", url, newData);
+      if (response.success) {
+        agregarEstado(tipo, response.data);
+        toastify(
+          `${tipo.charAt(0).toUpperCase() + tipo.slice(1)} agregado`,
+          true
+        );
       }
     }
   };
 
   const obtenerDatos = async (data) => {
-    // console.log("data de novel o capi", data);
     setDatos(data);
   };
 
@@ -147,132 +162,101 @@ export const AdminProvider = ({ children }) => {
     setDataUser(user);
   };
 
+  const actualizarEstadoDespuesDeEliminar = (tipo, id) => {
+    switch (tipo) {
+      case TIPOS.CARDS:
+        setCarsVol((prev) => prev.filter((item) => item.id !== id));
+        break;
+      case TIPOS.CAPITULOS:
+        setCapitulosInfo((prev) => prev.filter((item) => item.id !== id));
+        break;
+      case TIPOS.NOVELA:
+        setNovelasInfo((prev) => prev.filter((item) => item.id !== id));
+        break;
+      case TIPOS.USER:
+        setUsers((prev) => prev.filter((item) => item.id !== id));
+        break;
+      default:
+        break;
+    }
+  };
+
   const eliminarDatos = async (id, tipo) => {
-    if (tipo == "cards") {
-      // console.log("tipo", tipo);
-      try {
-        await urlAxios.delete(`/novelas/cards/${id}`);
-        const datosActulizados = cardsVol.filter((itens) => itens.id !== id);
-        setCarsVol(datosActulizados);
-        toastify("Volumen eliminado", true);
-      } catch (error) {
-        toastify(error.response.data.msg, false);
-        // console.log(error);
-      }
-    } else if (tipo == "capitulos") {
-      try {
-        await urlAxios.delete(`/capitulo/${id}`);
-        const datosActulizados = capitulosInfo.filter(
-          (itens) => itens.id !== id
-        );
-        setCapitulosInfo(datosActulizados);
-        toastify("Capitulo eliminado", true);
-      } catch (error) {
-        toastify(error.response.data.msg, false);
-        // console.log(error);
-      }
-    } else if (tipo == "novelas") {
-      // console.log(tipo);
-      try {
-        await urlAxios.delete(`/novelas/${id}`);
-        const datosActulizados = novelasInfo.filter((itens) => itens.id !== id);
-        setNovelasInfo(datosActulizados);
-        toastify("Novela eliminada", true);
-      } catch (error) {
-        toastify(error.response.data.msg, false);
-        // console.log(error);
-      }
-    } else if (tipo == "user") {
-      try {
-        await urlAxios.delete(`/underwordliellanovels/eliminar-user/${id}`);
-        const datosActualizados = users.filter((itens) => itens.id !== id);
-        setUsers(datosActualizados);
-        toastify(`${tipo} eliminado`, true);
-      } catch (error) {
-        toastify(error.response.data.msg, false);
-        // console.log(error);
-      }
+    let url = "";
+    switch (tipo) {
+      case TIPOS.CARDS:
+        url = `/novelas/cards/${id}`;
+        break;
+      case TIPOS.CAPITULOS:
+        url = `/capitulos/${id}`;
+        break;
+      case TIPOS.NOVELA:
+        url = `/novelas/${id}`;
+        break;
+      case TIPOS.USER:
+        url = `/admin/eliminar-user/${id}`;
+        break;
+      default:
+        return;
+    }
+
+    const response = await handleDeleteRequest(url, id);
+    if (response.success) {
+      actualizarEstadoDespuesDeEliminar(tipo, id);
+      toastify(
+        `${tipo.charAt(0).toUpperCase() + tipo.slice(1)} eliminado`,
+        true
+      );
     }
   };
 
   const registrar = async (user) => {
     const { email, password, tipo, id, foto_perfil, name_user } = user;
-    const token = localStorage.getItem("token");
-    const confi = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      data: { token },
+
+    const dataUser = {
+      email,
+      password,
+      tipo,
+      foto_perfil,
+      name_user,
     };
+
+    const config = obtenerConfig();
+
     if (!user.id_user) {
       try {
         await urlAxios.post(
-          `/underwordliellanovels/agregar-users`,
-          {
-            email,
-            password,
-            tipo,
-            id,
-            foto_perfil,
-            name_user,
-          },
-          confi
+          `/admin/agregar-users`,
+          { ...dataUser, id },
+          config
         );
         toastify(`${tipo} registrado`, true);
       } catch (error) {
-        toastify(error.response.data.msg, false);
-        // console.log(error);
+        errorHandle(error);
       }
     } else {
       try {
-        const { data } = await urlAxios.put(
-          `/underwordliellanovels/actulizar-datos`,
-          {
-            email,
-            password,
-            tipo,
-            foto_perfil,
-            name_user,
-          },
-          confi
-        );
-        toastify(`${tipo} actulizado`, true);
+        await urlAxios.put(`/admin/actualizar-datos`, dataUser, config);
+        toastify(`${tipo} actualizado`, true);
       } catch (error) {
-        toastify(error.response.data.msg, false);
-        // console.log(error);
+        errorHandle(error);
       }
     }
   };
 
+  const obtenerData = async (url, setData) => {
+    try {
+      const { data } = await urlAxios(url);
+      setData(data);
+    } catch (error) {
+      errorHandle(error);
+    }
+  };
+
   useEffect(() => {
-    const obtenerNovelas = async () => {
-      try {
-        const { data } = await urlAxios("/novelas");
-        setNovelasInfo(data);
-      } catch (error) {
-        toastify(error.response.data.msg, false);
-      }
-    };
-    const obtenerVolumenes = async () => {
-      try {
-        const { data } = await urlAxios("/novelas/cards");
-        setCarsVol(data);
-      } catch (error) {
-        toastify(error.response.data.msg, false);
-      }
-    };
-    const obtenerCaptiulos = async () => {
-      try {
-        const { data } = await urlAxios("/capitulo");
-        setCapitulosInfo(data);
-      } catch (error) {
-        toastify(error.response.data.msg, false);
-      }
-    };
-    obtenerNovelas();
-    obtenerVolumenes();
-    obtenerCaptiulos();
+    obtenerData(URLS.NOVELAS, setNovelasInfo);
+    obtenerData(URLS.VOLUMENES, setCarsVol);
+    obtenerData(URLS.CAPITULOS, setCapitulosInfo);
   }, []);
 
   return (
@@ -313,7 +297,7 @@ export const AdminProvider = ({ children }) => {
         mostrar_modal,
         setMostrar_modal,
         modalTime,
-        setModalTime
+        setModalTime,
       }}
     >
       {children}

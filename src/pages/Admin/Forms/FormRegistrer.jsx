@@ -1,34 +1,16 @@
 import { useEffect, useState } from "react";
-import useAdmin from "../hooks/useAdmin";
-import useAuth from "../hooks/useAuth";
-import NavbarSlider from "../components/NavbarSlider";
+import useAdmin from "@/hooks/useAdmin.jsx";
+import useAuth from "@/hooks/useAuth.jsx";
+import NavbarSlider from "@/components/NavbarSlider.jsx";
 import axios from "axios";
 import Swal from "sweetalert2";
-const apiKey = import.meta.env.VITE_URL_APIKEY;
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
-import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css";
+import { toastify } from "@/utils/Utils.js";
 
-const toastify = (text, type) => {
-  Toastify({
-    text: `${text}`,
-    duration: 3000,
-    newWindow: true,
-    // close: true,
-    gravity: "top",
-    position: "right",
-    stopOnFocus: true,
-    style: {
-      background: type
-        ? "linear-gradient(to right, #00b09b, #96c93d)"
-        : "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
-      borderRadius: "10px",
-    },
-  }).showToast();
-};
+const apiKey = import.meta.env.VITE_URL_APIKEY;
 
 const mostrarAlerta = (texto) => {
   Swal.fire({
@@ -44,7 +26,7 @@ const mostrarAlerta = (texto) => {
 
 const FormRegistrer = () => {
   const { registrar, activeDark, data_cuenta } = useAdmin();
-  const { userAuth, setAuth } = useAuth();
+  const { userAuth } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [tipo, setTipo] = useState("");
@@ -56,6 +38,7 @@ const FormRegistrer = () => {
 
   const [id, setId] = useState(null);
   const [id_user, setIdUser] = useState(null);
+
   useEffect(() => {
     if (data_cuenta?.id) {
       setEmail(data_cuenta.email);
@@ -71,9 +54,9 @@ const FormRegistrer = () => {
     const selectedFile = e.target.files[0];
     let img = URL.createObjectURL(selectedFile);
     setFotoPerfil(img);
-    // console.log(e.target);
     setFoto(selectedFile);
   };
+
   const handelSubmit = async (e) => {
     let foto_perfil = "";
     const id = userAuth.id;
@@ -140,6 +123,11 @@ const FormRegistrer = () => {
             }  shadow-lg rounded-lg m-auto`}
             onSubmit={handelSubmit}
           >
+            <div className=" w-12/12 m-1 p-4 mx-auto">
+              <h1 className=" text-2xl font-bold">
+                {id_user ? "Actualizar Usuario" : "Agregar Usuario"}
+              </h1>
+            </div>
             <div className="form_add_content">
               <label
                 htmlFor="name"

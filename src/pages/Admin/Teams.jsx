@@ -1,32 +1,14 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import useAuth from "../hooks/useAuth";
-import Loading from "../components/Loading";
-import urlAxios from "../config/urlAxios";
-import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css";
-import NavbarSlider from "../components/NavbarSlider";
-import useAdmin from "../hooks/useAdmin";
+import { useEffect } from "react";
+import useAuth from "@/hooks/useAuth";
+import Loading from "@/components/Loading";
+import urlAxios from "@/config/urlAxios.js";
+import NavbarSlider from "@/components/NavbarSlider";
+import useAdmin from "@/hooks/useAdmin";
 import { Link } from "react-router-dom";
-import ModalConfirm from "../components/ModalConfirm";
-
-const toastify = (text, type) => {
-  Toastify({
-    text: `${text}`,
-    duration: 3000,
-    newWindow: true,
-    // close: true,
-    gravity: "top",
-    position: "right",
-    stopOnFocus: true,
-    style: {
-      background: type
-        ? "linear-gradient(to right, #00b09b, #96c93d)"
-        : "linear-gradient(to right, rgb(255, 95, 109), rgb(255, 195, 113))",
-      borderRadius: "10px",
-    },
-  }).showToast();
-};
+import ModalConfirm from "@/components/ModalConfirm";
+import { errorHandle } from "@/Services/errorHandle";
+import { obtenerConfig, toastify } from "@/utils/Utils";
 
 const Teams = () => {
   const { userAuth, cargando, setCargando } = useAuth();
@@ -49,22 +31,17 @@ const Teams = () => {
         setCargando(false);
         return;
       }
-      const confi = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        data: { token },
-      };
+      const confi = obtenerConfig();
+      
       try {
         const { data } = await urlAxios(
-          `/underwordliellanovels/panel-administracion/colaboradores`,
+          `/admin/panel-administracion/colaboradores`,
           confi
         );
         // console.log(data);
         setUsers(data);
       } catch (error) {
-        toastify(error.response.data.msg, false);
+        errorHandle(error);
       }
       setCargando(false);
     };
@@ -73,13 +50,10 @@ const Teams = () => {
 
   const descativarUser = async (id, active) => {
     try {
-      const { data } = await urlAxios.put(
-        `/underwordliellanovels/desctivar-user`,
-        {
-          id,
-          active,
-        }
-      );
+      const { data } = await urlAxios.put(`/admin/desctivar-user`, {
+        id,
+        active,
+      });
       const datosActualizados = users.map((item) =>
         item.id == data.id ? data : item
       );
@@ -89,6 +63,7 @@ const Teams = () => {
       toastify(error.response.data.msg, false);
     }
   };
+
   if (cargando) return <Loading />;
   return (
     <>
