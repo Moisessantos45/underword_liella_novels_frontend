@@ -2,9 +2,13 @@ import { createBrowserRouter } from "react-router-dom";
 import { lazy } from "react";
 import LayoutInicio from "./layout/LayoutInicio";
 import Cards from "./components/Cards";
+import Matenimiento from "./pages/Matenimiento";
+import PaginasNovelas from "./pages/PaginasNovelas";
+import PaginasCapitulos from "./pages/PaginasCapitulos";
 
 const LayoutLogin = lazy(() => import("./layout/LayoutLogin"));
-const PaginasNovelas = lazy(() => import("./pages/PaginasNovelas"));
+// const PaginasNovelas = lazy(() => import("./pages/PaginasNovelas"));
+// const PaginasCapitulos = lazy(() => import("./pages/PaginasCapitulos"));
 const FormLogin = lazy(() => import("./pages/Admin/Forms/FormLogin"));
 const LayoutAdmin = lazy(() => import("./layout/LayoutAdmin"));
 const Container_card = lazy(() => import("./pages/Admin/Forms/Container_card"));
@@ -19,7 +23,6 @@ const Content_novelas = lazy(() => import("./pages/Admin/Content_novelas"));
 const Content_capitulos = lazy(() => import("./pages/Admin/Content_capitulos"));
 const FormRegistrer = lazy(() => import("./pages/Admin/Forms/FormRegistrer"));
 const SubirImagenes = lazy(() => import("./pages/Admin/Forms/SubirImagenes"));
-const PaginasCapitulos = lazy(() => import("./pages/PaginasCapitulos"));
 const Perfil = lazy(() => import("./pages/Admin/Perfil"));
 const Content_list = lazy(() => import("./pages/Admin/Content_list"));
 const Teams = lazy(() => import("./pages/Admin/Teams"));
@@ -42,11 +45,11 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "novela/:clave",
+    path: "novela/:idNovel",
     element: <PaginasNovelas />,
   },
   {
-    path: "capitulo/:clave/:capitulo",
+    path: "capitulo/:idNovel/:capitulo",
     element: <PaginasCapitulos />,
   },
   {
@@ -124,5 +127,9 @@ export const router = createBrowserRouter([
   {
     path: "*",
     element: <PageError />,
+  },
+  {
+    path: "/mantenimiento",
+    element: <Matenimiento />,
   },
 ]);

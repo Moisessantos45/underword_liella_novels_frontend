@@ -120,7 +120,7 @@ const UploadsFiles = () => {
           </div>
         )}
 
-        <div className="sm:w-[32rem] shadow-blue-100 mx-auto my-10 overflow-hidden rounded-2xl bg-white shadow-lg sm:max-w-lg w-11/12">
+        <div className="sm:w-[32rem] shadow-blue-100 mx-auto my-10 overflow-hidden rounded-2xl dark:bg-gray-800 shadow-lg sm:max-w-lg w-11/12">
           <h1 className="relative bg-blue-600 py-5 sm:pl-8 sm:text-xl text-base font-semibold uppercase tracking-wider text-white text-center">
             Subir archivos a Mega
           </h1>
@@ -251,6 +251,7 @@ const UploadsFiles = () => {
               ))}
             <button
               type="submit"
+              disabled={!files || files.length < 1}
               className="mt-4 rounded-full bg-blue-600 px-10 py-2 font-semibold text-white"
             >
               Submit

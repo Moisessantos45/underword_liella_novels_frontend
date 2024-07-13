@@ -8,7 +8,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const ContentCapit = ({ capi }) => {
-  // console.log(capi);
   const capitulosArray = Object.values(capi);
   const [expanded, setExpanded] = useState(false);
 
@@ -20,12 +19,12 @@ const ContentCapit = ({ capi }) => {
   for (let i = 0; i < capitulosArray.length; i += 10) {
     gruposDeCapitulos.push(capitulosArray.slice(i, i + 10));
   }
-  // console.log(capitulosArray);
+
   return (
     <>
-      <div className=" w-10/12 flex flex-col margin">
-        <div className="w-full flex justify-center m-2">
-          <h1 className=" text-xl font-bold">
+      <div className="w-10/12 flex flex-col margin text-white p-4 rounded-lg shadow-md bg-transparent">
+        <div className="w-full flex justify-center mb-4">
+          <h1 className="text-2xl font-bold text-center">
             Capitulos Disponibles &quot;Novela&quot;
           </h1>
         </div>
@@ -34,22 +33,22 @@ const ContentCapit = ({ capi }) => {
             key={i}
             sx={{
               backgroundColor: "#1A202C",
-              "&:active": { borderRadius: "0 0 10px 10px" },
               margin: "5px",
-              transition: "all",
+              borderRadius: expanded === `panel${i}` ? "0 0 10px 10px" : "10px",
+              transition: "all 0.3s",
             }}
             expanded={expanded === `panel${i}`}
             onChange={handleChange(`panel${i}`)}
           >
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1bh-content"
-              id="panel1bh-header"
+              expandIcon={<ExpandMoreIcon className="text-white" />}
+              aria-controls={`panel${i}bh-content`}
+              id={`panel${i}bh-header`}
+              className="bg-gray-900"
             >
               <Typography sx={{ width: "85%", flexShrink: 0, color: "white" }}>
                 {`Capitulos ${i * 10 + 1}-${i * 10 + 10}`}
               </Typography>
-              {/* <Typography sx={{ color: "white" }}>{char.titulo}</Typography> */}
             </AccordionSummary>
             {grupo.map((char) => (
               <AccordionDetails
@@ -59,11 +58,14 @@ const ContentCapit = ({ capi }) => {
                   borderRadius: "0 0 10px 10px",
                   margin: "5px auto",
                 }}
+                className="flex flex-col space-y-2 p-4"
               >
-                <Typography>
+                <Typography className="flex justify-between items-center">
                   <Link
-                    to={`/capitulo/${char.clave}/${char.capitulo}`}
-                    className="flex items-center text-sm text-white w-10/12 h-5"
+                    to={`/capitulo/${char.idNovel}/${
+                      char.capitulo
+                    }?novela=${encodeURIComponent(char.titulo)}`}
+                    className="text-white hover:text-gray-400"
                   >
                     {char.titulo}
                   </Link>

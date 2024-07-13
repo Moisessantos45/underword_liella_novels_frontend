@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import NabvarPrincipal from "../components/NabvarPrincipal";
 import Footer from "../components/Footer";
 import Comentarios from "../components/Comentarios";
@@ -8,14 +8,14 @@ import { useQuery } from "@tanstack/react-query";
 import { Suspense } from "react";
 
 const LayoutInicio = () => {
-  const { fecthDataSite } = useDataSiteHome();
+  const { fecthDataSite, isMaintenanceMode } = useDataSiteHome();
 
   const cargarDataSite = async () => {
     try {
       await fecthDataSite();
       return;
     } catch (error) {
-      <redirect to="/*" />;
+      <Navigate to="/error" />;
     }
   };
 
@@ -30,12 +30,18 @@ const LayoutInicio = () => {
   if (isLoading) return <Loading />;
   return (
     <>
-      <NabvarPrincipal />
-      <Suspense fallback={<Loading />}>
-        <Outlet />
-      </Suspense>
-      <Comentarios />
-      <Footer />
+      {isMaintenanceMode === "false" ? (
+        <Navigate to="/mantenimiento" replace={true}/>
+      ) : (
+        <>
+          <NabvarPrincipal />
+          <Suspense fallback={<Loading />}>
+            <Outlet />
+          </Suspense>
+          <Comentarios />
+          <Footer />
+        </>
+      )}
     </>
   );
 };

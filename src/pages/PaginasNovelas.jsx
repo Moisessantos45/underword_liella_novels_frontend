@@ -18,18 +18,19 @@ const PaginasNovelas = () => {
   const [capit, setCapi] = useState(false);
   const [cards, setCards] = useState([]);
   const params = useParams();
-  const { clave } = params;
+  const { idNovel } = params;
 
   const peticion = async () => {
     try {
-      const respuesta = await urlAxios(`/paginas/novela/${clave}`);
+      const respuesta = await urlAxios(`/paginas/novela/${idNovel}`);
+      // console.log(respuesta.data);
       setNovela(respuesta.data);
       const bg = `${respuesta.data.info.backgroud}`;
       setBackg(bg);
       setTitleNabvar({ title: respuesta.data.info.titulo });
       setCapi(respuesta.data.capi.length > 0);
       setCards(respuesta.data.info.scans);
-      // console.log(respuesta.data);
+
       return respuesta.data;
     } catch (error) {
       setNovela({});
@@ -38,7 +39,7 @@ const PaginasNovelas = () => {
   };
 
   const { isLoading } = useQuery({
-    queryKey: ["pageNovel", clave],
+    queryKey: ["pageNovel", idNovel],
     queryFn: peticion,
     refetchInterval: 60000,
     refetchOnWindowFocus: false,
@@ -47,7 +48,7 @@ const PaginasNovelas = () => {
 
   useEffect(() => {
     document.title = novela.info?.titulo || "UnderWordLiellaNovels";
-  }, [clave]);
+  }, [idNovel]);
 
   if (isLoading) return <Loading />;
   return (

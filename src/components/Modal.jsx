@@ -5,7 +5,6 @@ import imgClose from "../img/cerrar.png";
 
 const Modal = () => {
   const { setModal, cardEditar, setEditarCard, enviarDatos } = useAdmin();
-  const [nombreClave, setNombre] = useState("");
   const [volumen, setVolumen] = useState(0);
   const [imagen, setImagen] = useState("");
   const [captiuloActive, setDisponible] = useState("");
@@ -14,12 +13,12 @@ const Modal = () => {
   const [mediafire, setMediafire] = useState("");
   const [megaEpub, setMegaEpub] = useState("");
   const [mediafireEpub, setMediafireEpub] = useState("");
-  const [clave, setClave] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
+
   const [id, setId] = useState(null);
   const type = "cards";
   useEffect(() => {
     if (cardEditar?.clave) {
-      setNombre(cardEditar.nombreClave);
       setVolumen(cardEditar.volumen);
       setImagen(cardEditar.imagen);
       setDisponible(cardEditar.captiuloActive);
@@ -28,10 +27,11 @@ const Modal = () => {
       setMediafire(cardEditar.mediafire);
       setMegaEpub(cardEditar.megaEpub);
       setMediafireEpub(cardEditar.mediafireEpub);
-      setClave(cardEditar.clave);
       setId(cardEditar.id);
+      selectedId(cardEditar.idNovel);
     }
   }, [cardEditar]);
+
   const ocultarModal = () => {
     setModal(false);
   };
@@ -40,7 +40,6 @@ const Modal = () => {
     e.preventDefault();
     enviarDatos(
       {
-        nombreClave,
         volumen,
         imagen,
         captiuloActive,
@@ -49,12 +48,12 @@ const Modal = () => {
         mediafire,
         megaEpub,
         mediafireEpub,
-        clave,
         id,
+        idNovel: selectedId,
       },
       type
     );
-    setNombre("");
+
     setVolumen(0);
     setImagen("");
     setDisponible("");
@@ -63,7 +62,7 @@ const Modal = () => {
     setMediafire("");
     setMegaEpub("");
     setMediafireEpub("");
-    setClave("");
+    setSelectedId(null);
     setId(null);
     setEditarCard([]);
     setModal(false);
@@ -74,7 +73,7 @@ const Modal = () => {
         <div className="max-w-md bg-white shadow-lg rounded-lg md:max-w-xl mx-2">
           <img
             src={imgClose}
-            alt=""
+            alt="modal-close"
             className="absolute w-6 h-6 sm:top-6 sm:right-[29%] right-7 top-[18%] cursor-pointer"
             onClick={ocultarModal}
           />
@@ -84,15 +83,6 @@ const Modal = () => {
                 <h2 className="text-3xl text-green-400 font-semibold">
                   Actualizar datos
                 </h2>
-              </div>
-              <div className="relative pb-1">
-                <input
-                  type="text"
-                  className="border rounded h-10 w-full focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 mt-2 text-sm"
-                  placeholder="Nombre del volumen"
-                  value={nombreClave}
-                  onChange={(e) => setNombre(e.target.value)}
-                />
               </div>
               <div className="grid md:grid-cols-3 md:gap-2">
                 <input
@@ -151,13 +141,6 @@ const Modal = () => {
                 placeholder="Mediafire Epub"
                 value={mediafireEpub}
                 onChange={(e) => setMediafireEpub(e.target.value)}
-              />
-              <input
-                type="text"
-                className="border rounded h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-                placeholder="Clave"
-                value={clave}
-                onChange={(e) => setClave(e.target.value)}
               />
               <div className="flex justify-center items-center pt-2">
                 <button

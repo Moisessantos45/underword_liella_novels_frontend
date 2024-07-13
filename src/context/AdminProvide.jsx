@@ -253,6 +253,17 @@ export const AdminProvider = ({ children }) => {
     }
   };
 
+  const SesionLogout = async (email) => {
+    try {
+      await urlAxios.post("/admin/logout", {
+        email,
+      });
+      return;
+    } catch (error) {
+      return;
+    }
+  };
+
   useEffect(() => {
     obtenerData(URLS.NOVELAS, setNovelasInfo);
     obtenerData(URLS.VOLUMENES, setCarsVol);
@@ -298,6 +309,7 @@ export const AdminProvider = ({ children }) => {
         setMostrar_modal,
         modalTime,
         setModalTime,
+        SesionLogout,
       }}
     >
       {children}

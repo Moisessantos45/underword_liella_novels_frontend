@@ -72,7 +72,7 @@ const llenar = (
   const type = "cards";
   rows = data.map((item) => ({
     ...createData(
-      item.nombreClave,
+      item.idNovel,
       item.volumen,
       item?.mega?.substring(0, 40) + "....",
       item?.mediafire?.substring(0, 40) + "....",
@@ -115,26 +115,18 @@ const llenar = (
 
 const Content_cards = () => {
   const {
-    active,
     cardsVol,
     modal,
     setModal,
     editarCard,
     eliminarDatos,
     activeDark,
-    setConfirmar,
     confirmar_delate,
     mostrar_modal,
     setMostrar_modal,
   } = useAdmin();
   const { userType, userAuth } = useAuth();
-  const mouse = (valor) => {
-    // console.log("se paso el mouse", valor);
-  };
 
-  const solatar = (valor) => {
-    // console.log("se dejo el elemnto", valor);
-  };
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -147,10 +139,9 @@ const Content_cards = () => {
     setPage(0);
   };
   const handleEdit = (item) => {
-    // console.log(item);
     setModal(item);
   };
-  // console.log(cardsVol);
+
   const llenarAndSetRows = () => {
     llenar(
       cardsVol,
@@ -164,9 +155,7 @@ const Content_cards = () => {
     );
   };
 
-  // useEffect(() => {
-  //   llenarAndSetRows();
-  // }, [cardsVol]);
+
   llenarAndSetRows();
   const type = "cards";
   return (

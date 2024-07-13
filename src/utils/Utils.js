@@ -6,6 +6,7 @@ const toastify = (text, type) => {
     text: `${text}`,
     duration: 3000,
     newWindow: true,
+    // close: true,
     gravity: "top",
     position: "right",
     stopOnFocus: true,

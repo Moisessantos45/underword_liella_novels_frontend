@@ -3,31 +3,34 @@ import useAdmin from "../hooks/useAdmin";
 import "../css/slider.css";
 import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import TimeSesion from "../utils/TimeSesion";
+import TimeSesion from "../components/UI/TimeSesion";
 
 const NavbarSlider = () => {
   const { active, setActive, activeDark, setDark } = useAdmin();
   const [addClass, setClass] = useState(false);
   const [check, setCheck] = useState(false);
   const { count, userAuth } = useAuth();
-  // const [activeDark,setDark]=useState(false)
+
   const handelActive = () => {
     setClass(!addClass);
     setActive(!active);
   };
+
   const handelChange = (e) => {
     setDark(!activeDark);
     setCheck(e.target.checked);
     localStorage.setItem("modo_dark", !activeDark);
   };
+
   useEffect(() => {
     let mode_dark = JSON.parse(localStorage.getItem("modo_dark")) || false;
     setCheck(mode_dark);
   }, []);
+
   const handeSubmit = (e) => {
     e.preventDefault();
   };
-  // console.log(userAuth?.id)
+
   return (
     <>
       <nav>

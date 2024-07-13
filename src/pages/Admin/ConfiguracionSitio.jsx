@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import useAdmin from "@/hooks/useAdmin";
 import NavbarSlider from "@/components/NavbarSlider";
 import urlAxios from "@/config/urlAxios.js";
 import Loading from "@/components/Loading";
 import { toastify } from "@/utils/Utils.js";
 import { errorHandle } from "@/Services/errorHandle.js";
+import { useDataSiteHome } from "../../Store/DataSiteHome";
 
 const ConfiguracionSitio = () => {
   const { activeDark } = useAdmin();
+  const { changeStatusSite } = useDataSiteHome();
   const [loading, setLoading] = useState(true);
   const [tituloPagina, setTituloPagina] = useState("");
   const [encabezado, setEncabezado] = useState("");
@@ -23,6 +26,10 @@ const ConfiguracionSitio = () => {
   const [MensajeReclutamiento, setMensajeReclutamiento] = useState("");
   const [linksRedesSociales, setLinksRedesSociales] = useState("");
   const [activoReclutamiento, setActivoReclutamiento] = useState(true);
+  const [isMaintenanceMode, setIsMaintenanceMode] = useState("true");
+
+  const queryClient = useQueryClient();
+
   const redesSocialesIconos = {
     facebook: "fa-brands fa-facebook",
     instagram: "fa-brands fa-square-instagram",
@@ -50,11 +57,14 @@ const ConfiguracionSitio = () => {
         : "";
     setLinksRedesSociales(convertirLinks);
     setActivoReclutamiento(data.activoReclutamiento);
+    setIsMaintenanceMode(JSON.stringify(data.isMaintenanceMode));
   };
+
   useEffect(() => {
     const solicitarDatosSitio = async () => {
       try {
         const res = await urlAxios.get("/admin/configuracion-sitio");
+
         actulizatDatosSito(res.data);
       } catch (error) {
         toastify(error.response.data.msg, false);
@@ -105,6 +115,16 @@ const ConfiguracionSitio = () => {
     }
   };
 
+  const changesStatus = async (e) => {
+    if (e.target.value !== "") {
+      setIsMaintenanceMode(e.target.value);
+      await changeStatusSite(e.target.value);
+      queryClient.invalidateQueries({
+        queryKey: ["fetchSite"],
+      });
+    }
+  };
+
   if (loading) return <Loading />;
   return (
     <section className={`content p-2 bg-zinc-100 ${activeDark ? "dark" : ""}`}>
@@ -112,18 +132,18 @@ const ConfiguracionSitio = () => {
       <form
         className={`w-11/12 sm:w-8/12 p-2 ${
           activeDark ? "bg-gray-800" : "bg-white"
-        }  shadow-lg rounded-lg m-auto`}
+        } shadow-lg rounded-lg mx-auto`}
         onSubmit={handelSubmit}
       >
-        <div className="flex flex-row text-center justify-center items-center w-11/12">
-          <h2 className="text-3xl text-center flex justify-center items-center text-green-400 font-bold">
+        <div className="flex justify-center items-center w-11/12">
+          <h2 className="text-3xl text-center text-green-400 font-bold">
             Modificar datos del sitio
           </h2>
         </div>
-        <div className="form_add_content">
+        <div className=" w-11/12 mx-auto">
           <label
             htmlFor="titulo"
-            className={` font-bold w-12/12 ${
+            className={`font-bold w-full ${
               activeDark ? "text-white" : "text-slate-600"
             }`}
           >
@@ -131,17 +151,17 @@ const ConfiguracionSitio = () => {
           </label>
           <input
             type="text"
-            placeholder="nombre"
+            placeholder="Nombre"
             id="titulo"
-            className="border rounded h-10 w-12/12 focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
+            className="border rounded h-10 w-full focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
             value={tituloPagina}
             onChange={(e) => setTituloPagina(e.target.value.replace(/´/g, ""))}
           />
         </div>
-        <div className="form_add_content">
+        <div className="w-11/12 mx-auto">
           <label
-            htmlFor="titulo"
-            className={` font-bold w-12/12 ${
+            htmlFor="encabezado"
+            className={`font-bold w-full ${
               activeDark ? "text-white" : "text-slate-600"
             }`}
           >
@@ -149,173 +169,198 @@ const ConfiguracionSitio = () => {
           </label>
           <input
             type="text"
-            placeholder="encabezado"
-            id="titulo"
-            className="border rounded h-10 w-12/12 focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
+            placeholder="Encabezado"
+            id="encabezado"
+            className="border rounded h-10 w-full focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
             value={encabezado}
             onChange={(e) => setEncabezado(e.target.value.replace(/´/g, ""))}
           />
         </div>
-        <div className="form_add_content">
+        <div className="w-11/12 mx-auto">
           <label
-            htmlFor="titulo"
-            className={` font-bold w-12/12 ${
+            htmlFor="detalles"
+            className={`font-bold w-full ${
               activeDark ? "text-white" : "text-slate-600"
             }`}
           >
-            Detalles en ingles
+            Detalles en inglés
           </label>
           <input
             type="text"
-            placeholder="detalles"
-            id="titulo"
-            className="border rounded h-10 w-12/12 focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
+            placeholder="Detalles"
+            id="detalles"
+            className="border rounded h-10 w-full focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
             value={detalles}
             onChange={(e) => setDetalles(e.target.value.replace(/´/g, ""))}
           />
         </div>
-        <div className="form_add_content">
+        <div className="w-11/12 mx-auto">
           <label
-            htmlFor="titulo"
-            className={` font-bold w-12/12 ${
+            htmlFor="tituloNosotros"
+            className={`font-bold w-full ${
               activeDark ? "text-white" : "text-slate-600"
             }`}
           >
-            Titulo sobre Nosotros
+            Título sobre Nosotros
           </label>
           <input
             type="text"
-            placeholder="tituloNosotros"
-            id="titulo"
-            className="border rounded h-10 w-12/12 focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
+            placeholder="Título Nosotros"
+            id="tituloNosotros"
+            className="border rounded h-10 w-full focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
             value={tituloNosotros}
-            onChange={(e) => tituloNosotros(e.target.value.replace(/´/g, ""))}
+            onChange={(e) =>
+              setTituloNosotros(e.target.value.replace(/´/g, ""))
+            }
           />
         </div>
-        <div className="w-12/12 p-2 grid md:grid-cols-2 md:gap-2 m-auto">
+        <div className="grid md:grid-cols-2 md:gap-2 w-11/12 mx-auto py-2">
           <input
             type="text"
-            className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-            placeholder="fondo Nosotros"
+            placeholder="Fondo Nosotros"
+            className="border rounded h-10 w-full focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
             value={fondoNosotros}
             onChange={(e) => setFondoNosotros(e.target.value)}
           />
           <input
             type="text"
-            className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-            placeholder="fondo Pagina"
+            placeholder="Fondo Página"
+            className="border rounded h-10 w-full focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
             value={fondoPagina}
             onChange={(e) => setFondoPagina(e.target.value)}
           />
         </div>
-        <div className="form_add_content">
+        <div className="w-11/12 mx-auto">
           <label
-            htmlFor="generos"
-            className={`font-bold w-12/12 ${
+            htmlFor="acercaDeNosotros"
+            className={`font-bold w-full ${
               activeDark ? "text-white" : "text-slate-600"
             }`}
           >
-            AcercaDeNosotros
+            Acerca De Nosotros
           </label>
           <textarea
-            type="text"
-            placeholder="acercaDeNosotros"
-            id="generos"
-            className="border rounded h-36 w-12/12 focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm scrollbar"
+            placeholder="Acerca De Nosotros"
+            id="acercaDeNosotros"
+            className="border rounded h-36 w-full focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm scrollbar"
             value={acercaDeNosotros}
             onChange={(e) => setAcercaDeNosotros(e.target.value)}
           />
         </div>
-
-        <div className="w-12/12 p-2 grid md:grid-cols-2 md:gap-2 m-auto">
+        <div className="grid md:grid-cols-2 md:gap-2 w-11/12 mx-auto">
           <input
             type="text"
-            className="border rounded h-10 w-12/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-            placeholder="imagen Reclutamiento"
+            placeholder="Imagen Reclutamiento"
+            className="border rounded h-10 w-full focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
             value={imagenReclutamiento}
             onChange={(e) => setImagenReclutamiento(e.target.value)}
           />
           <input
             type="text"
-            className="border rounded h-10 w-12/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-            placeholder="imagen Facebook"
+            placeholder="Imagen Facebook"
+            className="border rounded h-10 w-full focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
             value={imagenFacebook}
             onChange={(e) => setImagenFacebook(e.target.value)}
           />
           <input
             type="text"
-            className="border rounded h-10 w-12/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-            placeholder="nombreRedSocial"
+            placeholder="Nombre Red Social"
+            className="border rounded h-10 w-full focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
             value={nombreRedSocial}
             onChange={(e) => setNombreRedSocial(e.target.value)}
           />
           <input
             type="text"
-            className="border rounded h-10 w-12/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-            placeholder="activoReclutamiento"
+            placeholder="Activo Reclutamiento"
+            className="border rounded h-10 w-full focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm"
             value={activoReclutamiento}
             onChange={(e) => setActivoReclutamiento(e.target.value)}
           />
         </div>
-        <div className="form_add_content">
+        <div className="w-11/12 mx-auto">
           <label
-            htmlFor="generos"
-            className={`font-bold w-12/12 ${
+            htmlFor="mensajeSeguirRedSocial"
+            className={`font-bold w-full ${
               activeDark ? "text-white" : "text-slate-600"
             }`}
           >
-            Mensaje Seguir RedSocial
+            Mensaje Seguir Red Social
           </label>
           <textarea
-            type="text"
-            placeholder="mensajeSeguirRedSocial"
-            id="generos"
-            className="border rounded h-12 w-12/12 focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm scrollbar"
+            placeholder="Mensaje Seguir Red Social"
+            id="mensajeSeguirRedSocial"
+            className="border rounded h-12 w-full focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm scrollbar"
             value={mensajeSeguirRedSocial}
             onChange={(e) => setMensajeSeguirRedSocial(e.target.value)}
           />
         </div>
-
-        <div className="form_add_content">
+        <div className="w-11/12 mx-auto">
           <label
-            htmlFor="generos"
-            className={`font-bold w-12/12 ${
+            htmlFor="mensajeReclutamiento"
+            className={`font-bold w-full ${
               activeDark ? "text-white" : "text-slate-600"
             }`}
           >
             Mensaje de Reclutamiento
           </label>
           <textarea
-            type="text"
-            placeholder="MensajeReclutamiento"
-            id="generos"
-            className="border rounded h-16 w-12/12 focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm scrollbar"
+            placeholder="Mensaje de Reclutamiento"
+            id="mensajeReclutamiento"
+            className="border rounded h-16 w-full focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm scrollbar"
             value={MensajeReclutamiento}
             onChange={(e) => setMensajeReclutamiento(e.target.value)}
           />
         </div>
-        <div className="form_add_content">
+        <div className="w-11/12 mx-auto">
           <label
-            htmlFor="generos"
-            className={`font-bold w-12/12 ${
+            htmlFor="linksRedesSociales"
+            className={`font-bold w-full ${
               activeDark ? "text-white" : "text-slate-600"
             }`}
           >
-            Links de la redes sociales
+            Links de las redes sociales
           </label>
           <textarea
-            type="text"
-            placeholder="LinksRedesSociales"
-            id="generos"
-            className="border rounded h-20 w-12/12 focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm scrollbar"
+            placeholder="Links de las redes sociales"
+            id="linksRedesSociales"
+            className="border rounded h-20 w-full focus:outline-none text-slate-400 focus:text-slate-700 focus:border-green-200 px-2 text-sm scrollbar"
             value={linksRedesSociales}
             onChange={(e) => setLinksRedesSociales(e.target.value)}
           />
         </div>
+        <div className="py-4 w-11/12 text-gray-50 placeholder-gray-50 font-medium outline-none bg-transparent focus:border-green-500 rounded-lg flex gap-4 items-center text-sm mx-auto">
+          <div className="w-full">
+            <h1>
+              Modo de mantenimiento
+              <span className="text-xs text-gray-300">
+                (Solo para administradores)
+              </span>
+            </h1>
+          </div>
+          <input
+            type="radio"
+            name="maintenanceMode"
+            id="disabledMode"
+            value="false"
+            checked={isMaintenanceMode === "false"}
+            onChange={changesStatus}
+            className="w-6 h-6 text-gray-50 border border-gray-400 hover:border-white focus:border-green-500 rounded-lg"
+          />
+          <label htmlFor="disabledMode">Deshabilitado</label>
+          <input
+            type="radio"
+            name="maintenanceMode"
+            id="enabledMode"
+            value="true"
+            checked={isMaintenanceMode === "true"}
+            onChange={changesStatus}
+            className="w-6 h-6 text-gray-50 border border-gray-400 hover:border-white focus:border-green-500 rounded-lg"
+          />
+          <label htmlFor="enabledMode">Habilitado</label>
+        </div>
         <div className="flex justify-center items-center pt-2">
           <button
             type="submit"
-            value="Actualizar datos"
             className="h-10 w-72 rounded font-medium text-xs bg-blue-500 text-white"
           >
             Actualizar datos

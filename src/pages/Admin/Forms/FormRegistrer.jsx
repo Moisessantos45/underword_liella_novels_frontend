@@ -119,55 +119,59 @@ const FormRegistrer = () => {
         <section className="flex justify-center sm:items-start items-center m-auto main__container_perfil">
           <form
             className={`w-11/12 sm:w-8/12 p-2 ${
-              activeDark ? "bg-gray-800" : "bg-white"
-            }  shadow-lg rounded-lg m-auto`}
+              activeDark ? "bg-gray-800 text-white" : "bg-white text-black"
+            } shadow-lg rounded-lg m-auto`}
             onSubmit={handelSubmit}
           >
-            <div className=" w-12/12 m-1 p-4 mx-auto">
-              <h1 className=" text-2xl font-bold">
+            <div className="w-11/12 m-1 p-4 mx-auto">
+              <h1 className="text-2xl font-bold">
                 {id_user ? "Actualizar Usuario" : "Agregar Usuario"}
               </h1>
             </div>
-            <div className="form_add_content">
+            <div className="form_add_content w-11/12 mx-auto">
               <label
                 htmlFor="name"
                 className={`font-bold ${
                   activeDark ? "text-white" : "text-slate-700"
                 }`}
               >
-                Name
+                Nombre
               </label>
               <input
-                type="name"
-                placeholder="name"
+                type="text"
+                placeholder="Nombre"
                 id="name"
-                className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                className={`border rounded h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm ${
+                  activeDark ? "bg-gray-700" : "bg-gray-50"
+                }`}
                 value={name_user}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
-            <div className="form_add_content">
+            <div className="form_add_content w-11/12 mx-auto">
               <label
                 htmlFor="email"
                 className={`font-bold ${
                   activeDark ? "text-white" : "text-slate-700"
                 }`}
               >
-                Email
+                Correo Electrónico
               </label>
               <input
                 type="email"
-                placeholder="email"
+                placeholder="Correo Electrónico"
                 id="email"
-                className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                className={`border rounded h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm ${
+                  activeDark ? "bg-gray-700" : "bg-gray-50"
+                }`}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div className="form_add_content">
+            <div className="form_add_content w-11/12 mx-auto">
               <label
                 htmlFor="password"
-                className={` font-bold ${
+                className={`font-bold ${
                   activeDark ? "text-white" : "text-slate-700"
                 }`}
               >
@@ -175,23 +179,28 @@ const FormRegistrer = () => {
               </label>
               <input
                 type="password"
-                placeholder="password"
+                placeholder="Contraseña"
                 id="password"
-                className="border rounded h-10 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                className={`border rounded h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm ${
+                  activeDark ? "bg-gray-700" : "bg-gray-50"
+                }`}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <div className="w-12/12 m-auto p-1 flex-wrap relative justify-evenly flex items-center">
+            <div className="w-11/12 mx-auto p-1 flex-wrap relative justify-evenly flex items-center">
               <Button
                 sx={{
                   display: "flex",
                   justifyContent: "center",
                   mt: 1,
-                  height: 25,
-                  width: "25%",
-                  background: "dodgerblue",
+                  height: 35,
+                  width: "30%",
+                  backgroundColor: "dodgerblue",
                   color: "white",
+                  "&:hover": {
+                    backgroundColor: "blue",
+                  },
                 }}
                 onClick={handleOpen}
               >
@@ -201,7 +210,7 @@ const FormRegistrer = () => {
                 sx={{
                   m: 1,
                   width: "50%",
-                  color: "#475569",
+                  color: activeDark ? "white" : "#475569",
                   fontWeight: "bold",
                   fontSize: "17px",
                   textAlign: "center",
@@ -217,43 +226,92 @@ const FormRegistrer = () => {
                 onClose={handleClose}
                 onOpen={handleOpen}
                 value={typeDataUser ? typeDataUser : tipo}
-                label="Age"
+                label="Tipo"
                 sx={{
-                  width: "90%",
+                  width: "95%",
                   height: 35,
                   margin: 1,
-                  color: `${activeDark ? "white" : "black"}`,
+                  color: activeDark ? "white" : "black",
+                  backgroundColor: activeDark ? "gray-700" : "white",
+                  border: activeDark ? "1px solid gray" : "1px solid lightgray",
+                  "&:hover": {
+                    backgroundColor: activeDark ? "gray-600" : "lightgray",
+                  },
+                  "& .MuiSelect-icon": {
+                    color: activeDark ? "white" : "black",
+                  },
                 }}
                 onChange={(e) => {
-                  setTipo(e.target.value), setTypeDataUser(e.target.value);
+                  setTipo(e.target.value);
+                  setTypeDataUser(e.target.value);
                 }}
               >
                 <MenuItem value="administrador">Administrador</MenuItem>
                 <MenuItem value="colaborador">Colaborador</MenuItem>
               </Select>
             </div>
-            <div className="form_add_content">
+
+            <div className="form_add_content w-11/12 mx-auto">
               <label
                 htmlFor="file-input"
-                className={` ${
-                  activeDark ? "text-white" : "text-white"
-                } label_file flex justify-center items-center rounded-lg`}
+                className={`font-bold flex justify-center items-center rounded-lg ${
+                  activeDark ? "text-white" : "text-black"
+                } mb-2`}
               >
-                Foto perfil
+                Foto de Perfil
               </label>
-              <input
-                type="file"
-                name="foto"
-                id="file-input"
-                onChange={handleFileChange}
-              />
+              <div className="flex items-center justify-center w-full">
+                <label
+                  htmlFor="file-input"
+                  className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer ${
+                    activeDark
+                      ? "border-gray-500 bg-gray-800 text-white"
+                      : "border-gray-300 bg-gray-50 text-gray-700"
+                  } hover:bg-gray-100 hover:border-gray-400`}
+                >
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg
+                      aria-hidden="true"
+                      className="w-8 h-8 mb-3 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M7 16V12M7 12V8m0 4h4m6 0a2 2 0 100-4 2 2 0 000 4zm2 8h2a2 2 0 002-2v-2a2 2 0 00-2-2h-4a2 2 0 00-2 2v4M7 16h10M4 16H2a2 2 0 00-2 2v2a2 2 0 002 2h4a2 2 0 002-2v-2a2 2 0 00-2-2H4z"
+                      ></path>
+                    </svg>
+                    <p className="mb-2 text-sm">
+                      <span className="font-semibold">
+                        Click para subir una foto
+                      </span>
+                      o arrastra y suelta
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      PNG, JPG, hasta 10MB
+                    </p>
+                  </div>
+                  <input
+                    type="file"
+                    id="file-input"
+                    name="foto"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </label>
+              </div>
             </div>
+
             {fotoPerfil && (
-              <div className="w-12/12 flex justify-center items-center p-2">
+              <div className="w-full flex justify-center items-center p-2">
                 <img
-                  className=" rounded-md w-40 h-40"
-                  src={fotoPerfil ? fotoPerfil : ""}
-                  alt=""
+                  className="rounded-md w-40 h-40"
+                  src={fotoPerfil}
+                  alt="Foto de Perfil"
                 />
               </div>
             )}
@@ -262,7 +320,7 @@ const FormRegistrer = () => {
                 type="submit"
                 className="h-10 w-72 rounded font-medium text-xs bg-blue-500 text-white"
               >
-                {id_user ? "Actulizar Usuario" : "Agrega un usuario"}
+                {id_user ? "Actualizar Usuario" : "Agregar Usuario"}
               </button>
             </div>
           </form>

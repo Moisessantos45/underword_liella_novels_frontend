@@ -44,6 +44,16 @@ const AuthProvider = ({ children }) => {
     autenticar();
   }, [dataActive]);
 
+  const extensSession = async () => {
+    try {
+      console.log(userAuth.email);
+      await urlAxios.patch(`/admin/extends-sesion?email=${userAuth.email}`);
+    } catch (error) {
+      setAuth({});
+      localStorage.removeItem("token");
+    }
+  };
+
   if (cargando) return <Loading />;
   return (
     <AuthContext.Provider
@@ -60,6 +70,7 @@ const AuthProvider = ({ children }) => {
         setCargando,
         visitas_actuales,
         setDataActive,
+        extensSession,
       }}
     >
       {children}

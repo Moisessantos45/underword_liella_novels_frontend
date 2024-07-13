@@ -74,24 +74,21 @@ const PaginasCapitulos = () => {
   const { setBackg, setTitleNabvar } = useAdmin();
   const [capit, setCapi] = useState([]);
   const [loader, setLoader] = useState(true);
-  const [cont, setCont] = useState();
   const [tamanio, setTamanio] = useState();
+
   const params = useParams();
-  const { clave, capitulo } = params;
-  const obtenerCapitulo = async (clave, capitulo) => {
+  const { idNovel, capitulo } = params;
+
+  const obtenerCapitulo = async (idNovel, capitulo) => {
     try {
-      const { data } = await urlAxios(
-        `/capitulo/${clave}/${capitulo.toString()}`
-      );
-      // console.log(data.data);
+      const { data } = await urlAxios(`/capitulo/${idNovel}/${capitulo}`);
       setTitleNabvar({ title: `${data.data?.titulo}` });
       setCapi(data.data);
-      setCont(Number(data.data.capitulo));
-      setTamanio(Number(data.cont));
+      setTamanio(+data.cont);
+
       setLoader(false);
     } catch (error) {
       setCapi([]);
-      // console.log(error);
     }
     setLoader(false);
   };
@@ -100,10 +97,9 @@ const PaginasCapitulos = () => {
   }, [capitulo]);
 
   useEffect(() => {
-    obtenerCapitulo(clave, capitulo);
-    setCont(capitulo);
+    obtenerCapitulo(idNovel, capitulo);
     setBackg("https://i.ibb.co/HVhttGK/texto-degradado.jpg");
-  }, [clave, capitulo]);
+  }, [idNovel, capitulo]);
 
   if (loader) return <Loading />;
   const contenidoFormateado = capit.titulo
@@ -125,18 +121,18 @@ const PaginasCapitulos = () => {
             {contenidoFormateado || <h1>Capitulo no disponible</h1>}
             <div className="line"></div>
             <div className="naveg">
-              {+cont > 1 ? (
+              {+capitulo > 1 && (
                 <button className="previuos">
                   <img src={previuos} alt="" />
                   <Link
                     className="btn_naveg font-bold"
-                    to={`/capitulo/${clave}/${+cont - 1}`}
+                    to={`/capitulo/${idNovel}/${
+                      +capitulo - 1
+                    }?novela=${encodeURIComponent(capit.titulo)}`}
                   >
                     Previous
                   </Link>
                 </button>
-              ) : (
-                ""
               )}
               <button className="home">
                 <Link className="btn_naveg btn_naveg-link font-bold" to={`/`}>
@@ -144,18 +140,18 @@ const PaginasCapitulos = () => {
                   <img src={home} alt="" />
                 </Link>
               </button>
-              {+cont !== tamanio ? (
+              {+capitulo < tamanio && (
                 <button className="next">
                   <Link
                     className="btn_naveg font-bold"
-                    to={`/capitulo/${clave}/${+cont + 1}`}
+                    to={`/capitulo/${idNovel}/${
+                      +capitulo + 1
+                    }?novela=${encodeURIComponent(capit.titulo)}`}
                   >
                     Previous
                   </Link>
                   <img src={next} alt="" />
                 </button>
-              ) : (
-                ""
               )}
             </div>
           </section>

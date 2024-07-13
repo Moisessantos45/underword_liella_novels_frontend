@@ -26,9 +26,12 @@ const Content_novelas = () => {
     setIsOpen(isOpen === index ? null : index);
   };
 
-  const handelClick = async (clave, active) => {
+  const handelClick = async (id, active) => {
     try {
-      const { data } = await urlAxios.put("/novelas/estado", { clave, active });
+      const { data } = await urlAxios.put("/novelas/estado", {
+        id,
+        active,
+      });
       const novelasActulizados = novelasInfo.map((novela) =>
         novela.id == data.id ? data : novela
       );

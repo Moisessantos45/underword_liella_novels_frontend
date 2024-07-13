@@ -7,7 +7,7 @@ import Loading from "./Loading";
 import urlAxios from "../config/urlAxios.js";
 
 const Slider = () => {
-  const { active, activeDark } = useAdmin();
+  const { active, activeDark, SesionLogout } = useAdmin();
   const { userType, userAuth, setAuth, cargando } = useAuth();
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -100,7 +100,7 @@ const Slider = () => {
   const handelClick = async () => {
     const email = userAuth.email;
     try {
-      await urlAxios.post("/admin/logout", { email });
+      await SesionLogout(email);
       localStorage.removeItem("token");
       localStorage.removeItem("horaInicio");
       setAuth({});
@@ -119,7 +119,7 @@ const Slider = () => {
       >
         <a href="#" className="logo">
           <i className="fab fa-slack"></i>
-          <span className="text">Admin Panel</span>
+          <span className="text dark:text-white">Admin Panel</span>
         </a>
 
         <ul className="side-menu top">
@@ -128,19 +128,19 @@ const Slider = () => {
               (item.tipo === "user" || userType === "administrador") && (
                 <li
                   key={index}
-                  className={
+                  className={`${
                     (lastPart === `${userAuth.id}` && item.text === "Inicio") ||
                     (lastPart === item.url && item.text !== "Inicio")
                       ? "actives"
                       : ""
-                  }
+                  }`}
                 >
                   <NavLink
                     to={item.url}
                     className="nav-link"
                     onClick={() => setActiveIndex(index)}
                   >
-                    <i className={item.icon}></i>
+                    <i className={`${item.icon} dark:text-gray-400`}></i>
                     <span
                       className={`${
                         activeDark
@@ -148,7 +148,7 @@ const Slider = () => {
                           : index === activeIndex
                           ? "text-blue-500 font-bold"
                           : "text-gray-500"
-                      } text-sm `}
+                      } text-sm dark:text-gray-400`}
                     >
                       {item.text}
                     </span>
@@ -161,14 +161,14 @@ const Slider = () => {
         <ul className="side-menu">
           <li>
             <NavLink to="configuracion-sitio">
-              <i className="fas fa-cog"></i>
-              <span className="text">Settings</span>
+              <i className="fas fa-cog dark:text-gray-400"></i>
+              <span className="text dark:text-white">Settings</span>
             </NavLink>
           </li>
           <li>
             <button onClick={handelClick} className="logout cursor-pointer">
-              <i className="fas fa-right-from-bracket"></i>
-              <span className="text">Logout</span>
+              <i className="fas fa-right-from-bracket dark:text-gray-400"></i>
+              <span className="text dark:text-white">Logout</span>
             </button>
           </li>
         </ul>

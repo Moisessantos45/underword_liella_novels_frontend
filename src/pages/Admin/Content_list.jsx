@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "@/css/slider.css";
 import useAdmin from "@/hooks/useAdmin";
 import NavbarSlider from "@/components/NavbarSlider";
@@ -7,7 +6,9 @@ import { Link } from "react-router-dom";
 
 const Content_list = () => {
   const { activeDark, novelasInfo } = useAdmin();
-  const { userCont, ultimosCapitulo, ultimosCards,visitas_actuales,userAuth } = useAuth();
+  const { userCont, ultimosCapitulo, ultimosCards, visitas_actuales } =
+    useAuth();
+
   const fecha = (fecha) => {
     const fechaActual = new Date(fecha);
     const dia = fechaActual.getDate().toString().padStart(2, "0");
@@ -90,7 +91,7 @@ const Content_list = () => {
                           </td>
                         </tr>
                       ))
-                    :null}
+                    : null}
                 </tbody>
               </table>
             </div>

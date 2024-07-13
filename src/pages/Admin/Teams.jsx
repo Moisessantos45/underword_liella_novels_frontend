@@ -32,7 +32,7 @@ const Teams = () => {
         return;
       }
       const confi = obtenerConfig();
-      
+
       try {
         const { data } = await urlAxios(
           `/admin/panel-administracion/colaboradores`,
@@ -74,8 +74,18 @@ const Teams = () => {
         <div className="mx-auto max-w-screen-lg px-4 py-8 sm:px-8">
           <div className="flex items-center justify-between pb-6">
             <div>
-              <h2 className="font-semibold text-gray-700">User Accounts</h2>
-              <span className="text-xs text-gray-500">
+              <h2
+                className={`font-semibold ${
+                  activeDark ? "text-gray-300" : "text-gray-700"
+                }`}
+              >
+                User Accounts
+              </h2>
+              <span
+                className={`text-xs ${
+                  activeDark ? "text-gray-500" : "text-gray-500"
+                }`}
+              >
                 Colaboradores registrados
               </span>
             </div>
@@ -83,7 +93,7 @@ const Teams = () => {
               <div className="ml-10 space-x-8 lg:ml-40">
                 <Link
                   to={`/dashboard/${userAuth.id}/agregar-user`}
-                  className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white focus:outline-none focus:ring hover:bg-blue-700"
+                  className="flex items-center gap-2 rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white focus:outline-none focus:ring hover:bg-green-700"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -108,28 +118,42 @@ const Teams = () => {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-blue-600 text-left text-xs font-semibold uppercase tracking-widest text-white">
+                  <tr className="bg-green-600 text-left text-xs font-semibold uppercase tracking-widest text-white">
                     <th className="px-5 py-3">ID</th>
                     <th className="px-5 py-3">Full Name</th>
                     <th className="px-5 py-3">User Role</th>
                     <th className="px-5 py-3">Status</th>
-                    <th className="px-5 py-3">Opcions</th>
+                    <th className="px-5 py-3">Options</th>
                   </tr>
                 </thead>
-                <tbody className="text-gray-500">
+                <tbody
+                  className={`text-${activeDark ? "gray-400" : "gray-700"}`}
+                >
                   {users.length > 0 &&
                     users.map((item) => (
                       <tr key={item.id}>
-                        <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                        <td
+                          className={`border-b border-${
+                            activeDark ? "gray-700" : "gray-200"
+                          } bg-${
+                            activeDark ? "gray-800" : "white"
+                          } px-5 py-5 text-sm`}
+                        >
                           <p className="whitespace-no-wrap">{item.id}</p>
                         </td>
-                        <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                        <td
+                          className={`border-b border-${
+                            activeDark ? "gray-700" : "gray-200"
+                          } bg-${
+                            activeDark ? "gray-800" : "white"
+                          } px-5 py-5 text-sm`}
+                        >
                           <div className="flex items-center">
                             <div className="h-10 w-10 flex-shrink-0">
                               <img
                                 className="h-full w-full rounded-full"
                                 src={item.foto_perfil}
-                                alt=""
+                                alt="Imagen de perfil"
                               />
                             </div>
                             <div className="ml-3">
@@ -139,14 +163,26 @@ const Teams = () => {
                             </div>
                           </div>
                         </td>
-                        <td className="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                        <td
+                          className={`border-b border-${
+                            activeDark ? "gray-700" : "gray-200"
+                          } bg-${
+                            activeDark ? "gray-800" : "white"
+                          } px-5 py-5 text-sm`}
+                        >
                           <p className="whitespace-no-wrap">{item.tipo}</p>
                         </td>
-                        <td className="border-b  border-gray-200 bg-white px-5 py-5 text-sm">
+                        <td
+                          className={`border-b border-${
+                            activeDark ? "gray-700" : "gray-200"
+                          } bg-${
+                            activeDark ? "gray-800" : "white"
+                          } px-5 py-5 text-sm`}
+                        >
                           <span
                             className={`rounded-full cursor-pointer ${
-                              item.acceso ? "bg-green-200" : "bg-yellow-200 "
-                            }  px-3 py-1 text-xs font-semibold text-green-900`}
+                              item.acceso ? "bg-green-200" : "bg-yellow-200"
+                            } px-3 py-1 text-xs font-semibold text-green-900`}
                             onClick={() => {
                               setMostrar_modal(true);
                               if (confirmar_delate) {
@@ -157,7 +193,13 @@ const Teams = () => {
                             {item.acceso ? "Active" : "Suspended"}
                           </span>
                         </td>
-                        <td className="border-b border-gray-200 flex justify-center flex-wrap bg-white px-0 py-6 text-sm">
+                        <td
+                          className={`border-b border-${
+                            activeDark ? "gray-700" : "gray-200"
+                          } flex justify-center flex-wrap bg-${
+                            activeDark ? "gray-800" : "white"
+                          } px-0 py-6 text-sm`}
+                        >
                           <Link
                             className="m-1 whitespace-no-wrap flex justify-center items-center text-white w-20 h-6 bg-blue-600 rounded-md"
                             to={`/dashboard/${userAuth.id}/agregar-user`}
@@ -185,10 +227,13 @@ const Teams = () => {
                 </tbody>
               </table>
             </div>
-            <div className="flex flex-col items-center border-t bg-white px-5 py-5 sm:flex-row sm:justify-between">
+            <div
+              className={`flex flex-col items-center border-t bg-${
+                activeDark ? "gray-800" : "white"
+              } px-5 py-5 sm:flex-row sm:justify-between`}
+            >
               <span className="text-xs text-gray-600 sm:text-sm">
-                {" "}
-                Showing 1 to 5 of 12 Entries{" "}
+                Showing 1 to 5 of 12 Entries
               </span>
               <div className="mt-2 inline-flex sm:mt-0">
                 <button className="mr-2 h-12 w-12 rounded-full border text-sm font-semibold text-gray-600 transition duration-150 hover:bg-gray-100">

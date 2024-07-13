@@ -49,7 +49,11 @@ const Cards = () => {
               <span className=" flex justify-center items-center h-5 w-9 bg-red-600 absolute top-1 left-1 rounded-md">
                 {item.tipo}
               </span>
-              <Link to={`/novela/${item.clave}`}>
+              <Link
+                to={`/novela/${item.id}?nombre=${encodeURIComponent(
+                  item.titulo
+                )}`}
+              >
                 <img src={item.imagen} alt="" className="img_bg" />
               </Link>
               <h4 className=" font-bold">{item.titulo}</h4>

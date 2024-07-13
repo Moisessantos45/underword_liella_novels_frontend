@@ -67,26 +67,6 @@ const SubirImagenes = () => {
     toastify("Imagenes subidas", true);
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   // Itera a través de los archivos seleccionados y realiza una solicitud para cada uno
-  //   const uploadedUrls = await Promise.all(
-  //     files.map(async (file) => {
-  //       const formData = new FormData();
-  //       formData.append("image", file);
-  //       const { data } = await axios.post(
-  //         `https://api.imgbb.com/1/upload?key=${apiKey}`,
-  //         formData
-  //       );
-  //       return data.data.url;
-  //     })
-  //   );
-
-  //   // Actualiza el estado con las URLs de las imágenes subidas
-  //   setUrls(uploadedUrls);
-  // };
-
   const detaleFile = (index) => {
     const newFiles = files.filter((file, i) => i !== index);
     setFiles(newFiles);
@@ -141,13 +121,15 @@ const SubirImagenes = () => {
             </div>
           )}
 
-          <div className="sm:w-[32rem] shadow-blue-100 mx-auto my-10 overflow-hidden rounded-2xl bg-white shadow-lg sm:max-w-lg w-11/12">
+          <div className="sm:w-[32rem] shadow-blue-100 mx-auto my-10 overflow-hidden rounded-2xl dark:bg-gray-800 shadow-lg sm:max-w-lg w-11/12">
             <h1 className="relative bg-blue-600 py-5 sm:pl-8 sm:text-xl text-base font-semibold uppercase tracking-wider text-white text-center">
               Subir imágenes a ImgBB
             </h1>
             <form onSubmit={handleSubmit} className="space-y-4 px-8 py-10">
               <div className="">
-                <span className="text-gray-600 font-bold">Imagen</span>
+                <span className="text-gray-600 dark:text-gray-300 font-bold">
+                  Imagen
+                </span>
                 <span className="float-right text-sm text-gray-400">
                   {uploadProgress / 100}MB
                 </span>
@@ -277,41 +259,13 @@ const SubirImagenes = () => {
 
               <button
                 type="submit"
+                disabled={!files || files.length < 1}
                 className="mt-4 rounded-full bg-blue-600 px-10 py-2 font-semibold text-white"
               >
                 Submit
               </button>
             </form>
           </div>
-
-          {/* <form
-            className="gap-3 justify-center items-center flex flex-col form_file"
-            onSubmit={handleSubmit}
-          >
-            <label
-              htmlFor="file-input"
-              className="label_file flex justify-center items-center rounded-lg"
-            >
-              Seleccionar imágenes
-            </label>
-            <input
-              type="file"
-              id="file-input"
-              multiple
-              onChange={handleFileChange}
-            />
-            <button id="upload-btn" type="submit">
-              Subir imágenes
-            </button>
-          </form> */}
-          {/* <div className=" w-full">
-            <button
-              className="mt-4 rounded-full bg-blue-600 px-10 py-2 font-semibold text-white cursor-pointer"
-              onClick={() => copyTodosUrl()}
-            >
-              Copiar todas
-            </button>
-          </div> */}
         </section>
       </section>
     </>

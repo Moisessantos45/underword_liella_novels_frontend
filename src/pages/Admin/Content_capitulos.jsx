@@ -134,9 +134,6 @@ const Content_capitulos = () => {
     );
   };
 
-  // useEffect(() => {
-  //   llenarAndSetRows();
-  // }, [cardsVol]);
   llenarAndSetRows();
   const type = "capitulos";
   return (

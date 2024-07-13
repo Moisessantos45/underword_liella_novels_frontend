@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import useAdmin from "../hooks/useAdmin";
 
 const NavbarPaginas = () => {
-  const { active, bgNovel, setBackg } = useAdmin();
+  const { bgNovel} = useAdmin();
   return (
     <>
       <Link to="/" className="logo_menu"></Link>

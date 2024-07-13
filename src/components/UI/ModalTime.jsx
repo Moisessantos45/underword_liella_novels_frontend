@@ -1,22 +1,25 @@
 import { useEffect } from "react";
-import useAdmin from "../hooks/useAdmin";
-import useAuth from "../hooks/useAuth";
+import useAdmin from "../../hooks/useAdmin";
+import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import SesionLogout from "./SesionLogout";
+import { toastify } from "../../utils/Utils";
 
 const ModalConfirm = () => {
-  const { setModalTime } = useAdmin();
-  const { userAuth, setCount, setAuth } = useAuth();
+  const { setModalTime, SesionLogout } = useAdmin();
+  const { userAuth, setCount, setAuth, extensSession } = useAuth();
   const navigate = useNavigate();
 
   const handelConfirmar = async (sesion) => {
     const email = userAuth.email;
     setCount(0);
-    if (sesion) {
-      localStorage.setItem("horaInicio", Date.now());
-      return;
-    }
     try {
+      if (sesion) {
+        localStorage.setItem("horaInicio", Date.now().toString());
+        await extensSession();
+        setModalTime(false);
+        return;
+      }
+
       await SesionLogout(email);
       localStorage.removeItem("token");
       localStorage.removeItem("horaInicio");
@@ -24,19 +27,18 @@ const ModalConfirm = () => {
       setModalTime(false);
       navigate("/login-admin");
     } catch (error) {
-      return;
+      toastify("Error al cerrar sesión", false);
     }
   };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setModalTime(false);
       handelConfirmar(false);
     }, 10000);
 
-    // Limpiar el temporizador si el componente se desmonta
     return () => clearTimeout(timer);
-  }, []);
-
+  }, [setModalTime]);
   return (
     <>
       <section className=" flex justify-center items-center top-0 left-0 modal_confirm">
