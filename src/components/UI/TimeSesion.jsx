@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import useAdmin from "../../hooks/useAdmin";
-import useAuth from "../../hooks/useAuth";
+import useAdmin from "@/hooks/useAdmin";
+import useAuth from "@/hooks/useAuth";
 import ModalTime from "./ModalTime";
 import { useEffect } from "react";
 

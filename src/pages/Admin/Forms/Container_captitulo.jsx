@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useAdmin from "@/hooks/useAdmin";
 import NavbarSlider from "@/components/NavbarSlider";
 import Swal from "sweetalert2";
-import CustomSelect from "../../../components/UI/CustomSelect";
+import CustomSelect from "@/components/UI/CustomSelect";
 
 const mostrarAlerta = (texto) => {
   Swal.fire({

@@ -1,10 +1,13 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useAdmin from "../hooks/useAdmin";
 import "../css/modal.css";
 import imgClose from "../img/cerrar.png";
+import FormAddContent from "./UI/FormAddContent";
+import CustomSelect from "./UI/CustomSelect";
 
 const Modal = () => {
-  const { setModal, cardEditar, setEditarCard, enviarDatos } = useAdmin();
+  const { novelasInfo, setModal, cardEditar, setEditarCard, enviarDatos } =
+    useAdmin();
   const [volumen, setVolumen] = useState(0);
   const [imagen, setImagen] = useState("");
   const [captiuloActive, setDisponible] = useState("");
@@ -13,9 +16,10 @@ const Modal = () => {
   const [mediafire, setMediafire] = useState("");
   const [megaEpub, setMegaEpub] = useState("");
   const [mediafireEpub, setMediafireEpub] = useState("");
+  const [inputValues, setInputValues] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
-
   const [id, setId] = useState(null);
+
   const type = "cards";
   useEffect(() => {
     if (cardEditar?.clave) {
@@ -28,9 +32,14 @@ const Modal = () => {
       setMegaEpub(cardEditar.megaEpub);
       setMediafireEpub(cardEditar.mediafireEpub);
       setId(cardEditar.id);
-      selectedId(cardEditar.idNovel);
+      setSelectedId(cardEditar.idNovel);
+      setInputValues(cardEditar.links);
     }
   }, [cardEditar]);
+
+  const handleFormAddContentChange = useCallback((value) => {
+    setInputValues(value);
+  }, []);
 
   const ocultarModal = () => {
     setModal(false);
@@ -50,6 +59,7 @@ const Modal = () => {
         mediafireEpub,
         id,
         idNovel: selectedId,
+        links: inputValues,
       },
       type
     );
@@ -70,11 +80,11 @@ const Modal = () => {
   return (
     <>
       <section className="flex p-2 justify-center items-center top-0 left-0 modal">
-        <div className="max-w-md bg-white shadow-lg rounded-lg md:max-w-xl mx-2">
+        <div className="max-w-md bg-gray-800 shadow-lg rounded-lg md:max-w-xl mx-2 relative">
           <img
             src={imgClose}
             alt="modal-close"
-            className="absolute w-6 h-6 sm:top-6 sm:right-[29%] right-7 top-[18%] cursor-pointer"
+            className="absolute w-6 h-6 top-2 right-2 cursor-pointer invert"
             onClick={ocultarModal}
           />
           <form className="md:flex" onSubmit={handelSubmit}>
@@ -84,6 +94,11 @@ const Modal = () => {
                   Actualizar datos
                 </h2>
               </div>
+              <CustomSelect
+                options={novelasInfo}
+                placeholder="Selecciona la novela"
+                onChange={(option) => setSelectedId(option)}
+              />
               <div className="grid md:grid-cols-3 md:gap-2">
                 <input
                   type="number"
@@ -114,6 +129,12 @@ const Modal = () => {
                 value={imagen}
                 onChange={(e) => setImagen(e.target.value)}
               />
+
+              <FormAddContent
+                onChange={handleFormAddContentChange}
+                initialValues={inputValues}
+              />
+
               <input
                 type="text"
                 className="border rounded h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"

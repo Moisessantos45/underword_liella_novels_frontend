@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useAdmin from "@/hooks/useAdmin.jsx";
 import useAuth from "@/hooks/useAuth.jsx";
-import urlAxios from "@/config/urlAxios.js";
+import ApiUsers from "@/config/ApiUsers";
 import NavbarSlider from "@/components/NavbarSlider.jsx";
 import { toastify } from "@/utils/Utils.js";
 import axios from "axios";
@@ -24,7 +24,6 @@ const Perfil = () => {
     const selectedFile = e.target.files[0];
     let img = URL.createObjectURL(selectedFile);
     setFotoRender(img);
-    // console.log(e.target);
     setFoto(selectedFile);
   };
 
@@ -46,7 +45,7 @@ const Perfil = () => {
       }
     }
     try {
-      const { data } = await urlAxios.put("/admin/actulizar-datos", {
+      const { data } = await ApiUsers.put("/admin/actulizar-datos", {
         email: userAuth.email,
         password,
         foto_perfil,

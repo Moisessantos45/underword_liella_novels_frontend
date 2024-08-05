@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -127,8 +127,8 @@ const Content_cards = () => {
   } = useAdmin();
   const { userType, userAuth } = useAuth();
 
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -155,9 +155,8 @@ const Content_cards = () => {
     );
   };
 
-
   llenarAndSetRows();
-  const type = "cards";
+
   return (
     <>
       <section

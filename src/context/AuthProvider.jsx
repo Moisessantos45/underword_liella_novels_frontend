@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from "react";
-import Loading from "../components/Loading";
 import urlAxios from "../config/urlAxios.js";
+import ApiUsers from "../config/ApiUsers.js";
+import Loading from "../components/Loading";
 import { obtenerConfig } from "../utils/Utils.js";
 
 const AuthContext = createContext();
@@ -26,15 +27,19 @@ const AuthProvider = ({ children }) => {
       }
 
       const confi = obtenerConfig();
-
-      try {
-        const { data } = await urlAxios(`/admin/panel-administracion`, confi);
-        setUserType(data.usuario.tipo);
-        setAuth(data.usuario);
-        setCont(data.totalUsuarios);
-        setEndChapters(data.ultimosCapitulos);
-        setEndCards(data.ultimasCards);
-        setVisitas(data.visistas_actuales);
+        try {
+        const [resUser, resSite] = await Promise.all([
+          ApiUsers("/admin/panel-administracion", confi),
+          urlAxios(`/admin/panel-administracion`, confi),
+        ]);
+         const dataUser = resUser.data;
+        const dataSite = resSite.data;
+        setUserType(dataUser.user.tipo);
+        setAuth(dataUser.user);
+        setCont(dataUser.totalUsers);
+        setEndChapters(dataSite.ultimosCapitulos);
+        setEndCards(dataSite.ultimasCards);
+        setVisitas(dataSite.visistas_actuales);
       } catch (error) {
         setAuth({});
         localStorage.removeItem("token");
@@ -46,8 +51,11 @@ const AuthProvider = ({ children }) => {
 
   const extensSession = async () => {
     try {
-      console.log(userAuth.email);
-      await urlAxios.patch(`/admin/extends-sesion?email=${userAuth.email}`);
+      const { data } = await ApiUsers.patch(
+        `/admin/extends-sesion?email=${userAuth.email}`
+      );
+
+      localStorage.setItem("token", data);
     } catch (error) {
       setAuth({});
       localStorage.removeItem("token");

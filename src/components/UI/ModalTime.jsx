@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import useAdmin from "../../hooks/useAdmin";
-import useAuth from "../../hooks/useAuth";
+import useAdmin from "@/hooks/useAdmin";
+import useAuth from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { toastify } from "../../utils/Utils";
+import { toastify } from "@/utils/Utils";
 
 const ModalConfirm = () => {
   const { setModalTime, SesionLogout } = useAdmin();

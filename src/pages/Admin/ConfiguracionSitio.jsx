@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import useAdmin from "@/hooks/useAdmin";
+import ApiUsers from "@/config/ApiUsers";
 import NavbarSlider from "@/components/NavbarSlider";
-import urlAxios from "@/config/urlAxios.js";
 import Loading from "@/components/Loading";
 import { toastify } from "@/utils/Utils.js";
 import { errorHandle } from "@/Services/errorHandle.js";
-import { useDataSiteHome } from "../../Store/DataSiteHome";
+import { useDataSiteHome } from "@/Store/DataSiteHome";
 
 const ConfiguracionSitio = () => {
   const { activeDark } = useAdmin();
@@ -63,9 +63,8 @@ const ConfiguracionSitio = () => {
   useEffect(() => {
     const solicitarDatosSitio = async () => {
       try {
-        const res = await urlAxios.get("/admin/configuracion-sitio");
-
-        actulizatDatosSito(res.data);
+        const res = await ApiUsers.get("/site/configuracion-sitio");
+        actulizatDatosSito(res.data.data);
       } catch (error) {
         toastify(error.response.data.msg, false);
       }
@@ -107,8 +106,8 @@ const ConfiguracionSitio = () => {
       activoReclutamiento,
     };
     try {
-      const res = await urlAxios.put("/admin/configuracion-sitio", { datos });
-      actulizatDatosSito(res.data);
+      const res = await ApiUsers.put("/site/configuracion-sitio", { datos });
+      actulizatDatosSito(res.data.data);
       toastify("Datos actualizados", true);
     } catch (error) {
       errorHandle(error);

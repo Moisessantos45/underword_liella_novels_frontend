@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import useAuth from "@/hooks/useAuth";
 import Loading from "@/components/Loading";
-import urlAxios from "@/config/urlAxios.js";
+import ApiUsers from "@/config/ApiUsers";
 import NavbarSlider from "@/components/NavbarSlider";
 import useAdmin from "@/hooks/useAdmin";
 import { Link } from "react-router-dom";
@@ -26,7 +26,6 @@ const Teams = () => {
   useEffect(() => {
     const data_users = async () => {
       const token = localStorage.getItem("token");
-      // setCargando(true)
       if (!token) {
         setCargando(false);
         return;
@@ -34,11 +33,10 @@ const Teams = () => {
       const confi = obtenerConfig();
 
       try {
-        const { data } = await urlAxios(
+        const { data } = await ApiUsers(
           `/admin/panel-administracion/colaboradores`,
           confi
         );
-        // console.log(data);
         setUsers(data);
       } catch (error) {
         errorHandle(error);
@@ -50,14 +48,16 @@ const Teams = () => {
 
   const descativarUser = async (id, active) => {
     try {
-      const { data } = await urlAxios.put(`/admin/desctivar-user`, {
+      await ApiUsers.patch(`/admin/desctivar-user`, {
         id,
         active,
       });
+
       const datosActualizados = users.map((item) =>
-        item.id == data.id ? data : item
+        item.id == id ? { ...item, active } : item
       );
-      toastify(`Colaborador ${data.acceso}`, true);
+
+      toastify(`Colaborador ${active}`, true);
       setUsers(datosActualizados);
     } catch (error) {
       toastify(error.response.data.msg, false);

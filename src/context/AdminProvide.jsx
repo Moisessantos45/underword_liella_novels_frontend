@@ -1,5 +1,6 @@
 import { useState, createContext, useEffect } from "react";
 import urlAxios from "../config/urlAxios.js";
+import ApiUsers from "../config/ApiUsers.js";
 import ApiRequester from "../config/ApiRequester.js";
 import { obtenerConfig, toastify } from "../utils/Utils.js";
 import { errorHandle } from "../Services/errorHandle.js";
@@ -49,6 +50,10 @@ export const AdminProvider = ({ children }) => {
 
   const handleDeleteRequest = async (url, id) => {
     try {
+      if (url.includes("eliminar-user")) {
+        await ApiUsers.delete(url);
+        return { success: true };
+      }
       await urlAxios.delete(url);
       return { success: true };
     } catch (error) {
@@ -223,9 +228,9 @@ export const AdminProvider = ({ children }) => {
 
     const config = obtenerConfig();
 
-    if (!user.id_user) {
+    if (!user.idUser) {
       try {
-        await urlAxios.post(
+        await ApiUsers.post(
           `/admin/agregar-users`,
           { ...dataUser, id },
           config
@@ -236,7 +241,7 @@ export const AdminProvider = ({ children }) => {
       }
     } else {
       try {
-        await urlAxios.put(`/admin/actualizar-datos`, dataUser, config);
+        await ApiUsers.put(`/admin/actualizar-datos`, dataUser, config);
         toastify(`${tipo} actualizado`, true);
       } catch (error) {
         errorHandle(error);
@@ -255,7 +260,7 @@ export const AdminProvider = ({ children }) => {
 
   const SesionLogout = async (email) => {
     try {
-      await urlAxios.post("/admin/logout", {
+      await ApiUsers.post("/admin/logout", {
         email,
       });
       return;

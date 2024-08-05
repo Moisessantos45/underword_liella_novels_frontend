@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import "@/css/ContainerAdmin.css";
 import useAdmin from "@/hooks/useAdmin";
 import NavbarSlider from "@/components/NavbarSlider";
@@ -34,6 +34,11 @@ const Container_card = () => {
   const [inputValues, setInputValues] = useState([]);
 
   const tipo = "cards";
+
+  const handleFormAddContentChange = useCallback((value) => {
+    setInputValues(value);
+  }, []);
+
   const handelSubmit = async (e) => {
     e.preventDefault();
     const campos = [volumen, imagen, selectedId];
@@ -108,7 +113,10 @@ const Container_card = () => {
               onChange={(e) => setImagen(e.target.value)}
             />
           </div>
-          <FormAddContent onChange={(value) => setInputValues(value)} />
+          <FormAddContent
+            onChange={handleFormAddContentChange}
+            initialValues={inputValues}
+          />
           <div className="grid grid-cols-1 gap-3 mt-2 w-11/12 mx-auto">
             <input
               type="text"

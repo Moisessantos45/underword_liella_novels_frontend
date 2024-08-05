@@ -26,7 +26,7 @@ const obtenerConfig = () => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    data: { token },
+    // data: { token },
   };
 };
 

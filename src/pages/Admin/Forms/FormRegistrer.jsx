@@ -40,12 +40,12 @@ const FormRegistrer = () => {
   const [id_user, setIdUser] = useState(null);
 
   useEffect(() => {
-    if (data_cuenta?.id) {
+    if (data_cuenta?.idUser) {
       setEmail(data_cuenta.email);
       setTipo(data_cuenta.tipo);
       setTypeDataUser(data_cuenta.tipo);
       setName(data_cuenta.name_user);
-      setIdUser(data_cuenta.id);
+      setIdUser(data_cuenta.idUser);
       setFotoPerfil(data_cuenta.foto_perfil);
     }
   }, [data_cuenta]);
@@ -59,7 +59,7 @@ const FormRegistrer = () => {
 
   const handelSubmit = async (e) => {
     let foto_perfil = "";
-    const id = userAuth.id;
+    const id = userAuth.idUser;
     e.preventDefault();
     if (foto !== null) {
       if (foto.type.startsWith("image/")) {

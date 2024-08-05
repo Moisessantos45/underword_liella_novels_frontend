@@ -17,7 +17,7 @@ const LayoutAdmin = () => {
   return (
     <>
       <Slider />
-      {userAuth?.id ? (
+      {userAuth?.idUser ? (
         <Suspense fallback={<Loading />}>
           <Outlet />
         </Suspense>

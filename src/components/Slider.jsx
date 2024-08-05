@@ -4,7 +4,6 @@ import useAdmin from "../hooks/useAdmin";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import Loading from "./Loading";
-import urlAxios from "../config/urlAxios.js";
 
 const Slider = () => {
   const { active, activeDark, SesionLogout } = useAdmin();
@@ -18,7 +17,7 @@ const Slider = () => {
     {
       text: "Inicio",
       icon: "fas fa-border-all",
-      url: `/dashboard/${userAuth.id}`,
+      url: `/dashboard/${userAuth.idUser}`,
       tipo: "user",
     },
     {
