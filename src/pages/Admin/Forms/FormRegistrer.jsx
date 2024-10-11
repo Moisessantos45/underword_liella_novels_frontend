@@ -1,16 +1,10 @@
 import { useEffect, useState } from "react";
 import useAdmin from "@/hooks/useAdmin.jsx";
 import useAuth from "@/hooks/useAuth.jsx";
-import NavbarSlider from "@/components/NavbarSlider.jsx";
-import axios from "axios";
 import Swal from "sweetalert2";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import Button from "@mui/material/Button";
 import { toastify } from "@/utils/Utils.js";
-
-const apiKey = import.meta.env.VITE_URL_APIKEY;
+import supabase from "@/config/supabase";
+import uploadFileImg from "@/Services/uploadImg";
 
 const mostrarAlerta = (texto) => {
   Swal.fire({
@@ -25,15 +19,13 @@ const mostrarAlerta = (texto) => {
 };
 
 const FormRegistrer = () => {
-  const { registrar, activeDark, data_cuenta } = useAdmin();
-  const { userAuth } = useAuth();
+  const { activeDark, data_cuenta } = useAdmin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [tipo, setTipo] = useState("");
   const [foto, setFoto] = useState(null);
   const [name_user, setName] = useState("");
   const [typeDataUser, setTypeDataUser] = useState("");
-  const [open, setOpen] = useState(false);
   const [fotoPerfil, setFotoPerfil] = useState();
 
   const [id, setId] = useState(null);
@@ -59,25 +51,21 @@ const FormRegistrer = () => {
 
   const handelSubmit = async (e) => {
     let foto_perfil = "";
-    const id = userAuth.idUser;
     e.preventDefault();
+
     if (foto !== null) {
-      if (foto.type.startsWith("image/")) {
-        const formData = new FormData();
-        formData.append("image", foto);
-        const { data } = await axios.post(
-          `https://api.imgbb.com/1/upload?key=${apiKey}`,
-          formData
-        );
-        foto_perfil = data.data.url;
-      }
+      const response = await uploadFileImg(foto);
+      foto_perfil = response;
     }
-    const campos = [name_user, email, tipo, id];
+
+    const campos = [name_user, email, id];
+
     if (!email.endsWith("@gmail.com")) {
       mostrarAlerta(`Correo invalido`);
       mostrarAlerta("Direccion valida @gmail.com");
       return;
     }
+
     if (id_user === null && password === "") {
       mostrarAlerta("Password vacio");
       return;
@@ -93,7 +81,23 @@ const FormRegistrer = () => {
       mostrarAlerta(`Hay campos vacios`);
       return;
     }
-    registrar({ email, password, tipo, id, foto_perfil, name_user, id_user });
+
+    const { _, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: name_user,
+          avatar_url: foto_perfil,
+        },
+      },
+    });
+
+    if (error) {
+      mostrarAlerta("Error al registrar el usuario");
+      return;
+    }
+
     setEmail("");
     setPassword("");
     setName("");
@@ -105,17 +109,10 @@ const FormRegistrer = () => {
     toastify("Usuario agregado", true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
   return (
     <>
       <section className={`content bg-zinc-100 ${activeDark ? "dark" : ""}`}>
-        <NavbarSlider />
+        {/* <NavbarSlider /> */}
         <section className="flex justify-center sm:items-start items-center m-auto main__container_perfil">
           <form
             className={`w-11/12 sm:w-8/12 p-2 ${
@@ -187,68 +184,6 @@ const FormRegistrer = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-            </div>
-            <div className="w-11/12 mx-auto p-1 flex-wrap relative justify-evenly flex items-center">
-              <Button
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  mt: 1,
-                  height: 35,
-                  width: "30%",
-                  backgroundColor: "dodgerblue",
-                  color: "white",
-                  "&:hover": {
-                    backgroundColor: "blue",
-                  },
-                }}
-                onClick={handleOpen}
-              >
-                Open
-              </Button>
-              <InputLabel
-                sx={{
-                  m: 1,
-                  width: "50%",
-                  color: activeDark ? "white" : "#475569",
-                  fontWeight: "bold",
-                  fontSize: "17px",
-                  textAlign: "center",
-                }}
-                id="demo-controlled-open-select-label"
-              >
-                Tipo
-              </InputLabel>
-              <Select
-                labelId="demo-controlled-open-select-label"
-                id="demo-controlled-open-select"
-                open={open}
-                onClose={handleClose}
-                onOpen={handleOpen}
-                value={typeDataUser ? typeDataUser : tipo}
-                label="Tipo"
-                sx={{
-                  width: "95%",
-                  height: 35,
-                  margin: 1,
-                  color: activeDark ? "white" : "black",
-                  backgroundColor: activeDark ? "gray-700" : "white",
-                  border: activeDark ? "1px solid gray" : "1px solid lightgray",
-                  "&:hover": {
-                    backgroundColor: activeDark ? "gray-600" : "lightgray",
-                  },
-                  "& .MuiSelect-icon": {
-                    color: activeDark ? "white" : "black",
-                  },
-                }}
-                onChange={(e) => {
-                  setTipo(e.target.value);
-                  setTypeDataUser(e.target.value);
-                }}
-              >
-                <MenuItem value="administrador">Administrador</MenuItem>
-                <MenuItem value="colaborador">Colaborador</MenuItem>
-              </Select>
             </div>
 
             <div className="form_add_content w-11/12 mx-auto">

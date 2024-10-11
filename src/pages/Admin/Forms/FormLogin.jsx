@@ -1,23 +1,32 @@
 import { useEffect, useState } from "react";
 import "@/css/styleForm.css";
-import ApiUsers from "@/config/ApiUsers";
 import { useNavigate } from "react-router-dom";
 import Loading from "@/components/Loading";
 import useAuth from "@/hooks/useAuth";
 import { toastify } from "@/utils/Utils.js";
 import { errorHandle } from "@/Services/errorHandle.js";
+import supabase from "@/config/supabase";
 
 const FormLogin = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const { userAuth, cargando, setAuth, setCargando, setDataActive } = useAuth();
+  const { cargando, setAuth, setCargando, setDataActive } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (userAuth?.activo) {
-      navigate(`/dashboard/${userAuth?.idUser}`);
+  const verifySession = async () => {
+    try {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) throw error;
+      setAuth(data.user);
+      navigate(`/dashboard/${data?.user.id}`);
+    } catch (error) {
+      return null;
     }
-  }, [userAuth, navigate]);
+  };
+
+  useEffect(() => {
+    verifySession();
+  }, []);
 
   const handelSubmit = async (e) => {
     e.preventDefault();
@@ -31,16 +40,17 @@ const FormLogin = () => {
       return;
     }
     try {
-      const { data } = await ApiUsers.post("/admin/login", {
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
-      setAuth(data);
-      localStorage.setItem("token", data.token);
+      if (error) throw error;
+      setAuth(data.user);
+      localStorage.setItem("token", data.session.access_token);
       toastify("Inicio exitoso", true);
       localStorage.setItem("horaInicio", Date.now());
       setDataActive(true);
-      navigate(`/dashboard/${data?.idUser}`);
+      navigate(`/dashboard/${data?.user.id}`);
       setCargando(false);
     } catch (error) {
       errorHandle(error);

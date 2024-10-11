@@ -1,66 +1,104 @@
 import { useState, useEffect, createContext } from "react";
-import urlAxios from "../config/urlAxios.js";
-import ApiUsers from "../config/ApiUsers.js";
 import Loading from "../components/Loading";
-import { obtenerConfig } from "../utils/Utils.js";
+import supabase from "../config/supabase.js";
+import { collection, getDocs } from "firebase/firestore/lite";
+import { dbFirebaseLite } from "../config/firebase.js";
+import { convertirADate } from "../Services/useService.js";
+import useVolumensStore from "../Store/VolumensStore.js";
+import useNovelasStore from "../Store/NovelasStore.js";
+import useChaptersStore from "../Store/ChaptersStore.js";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
+  const { setVolumens } = useVolumensStore();
+  const { setNovelas,addListNovels } = useNovelasStore();
+  const { setChapters } = useChaptersStore();
+
   const [userAuth, setAuth] = useState({});
   const [userCont, setCont] = useState(0);
-  const [ultimosCapitulo, setEndChapters] = useState([]);
-  const [ultimosCards, setEndCards] = useState([]);
+  const [latestEpisode, setEndChapters] = useState([]);
+  const [latestCards, setEndCards] = useState([]);
+  const [numeroColecciones, setNumeroColecciones] = useState(0);
   const [cargando, setCargando] = useState(true);
   const [userType, setUserType] = useState("");
   const [count, setCount] = useState(0);
-  const [visitas_actuales, setVisitas] = useState(0);
+  const [visit_count, setVisitas] = useState(0);
   const [dataActive, setDataActive] = useState(false);
+
+  const sortDateCollection = (snapshot) => {
+    const dataCollecction = snapshot.docs.map((doc) => doc.data());
+    const filterDataLatest = dataCollecction
+      .sort((a, b) => {
+        return convertirADate(b.createdAt) - convertirADate(a.createdAt);
+      })
+      .slice(0, 8);
+    return filterDataLatest;
+  };
+
+  const getCollection = async () => {
+    try {
+      const [coleccionRef, coleccionVolRef, coleccionCapRef] =
+        await Promise.allSettled([
+          getDocs(collection(dbFirebaseLite, "Novelas")),
+          getDocs(collection(dbFirebaseLite, "Volumenes")),
+          getDocs(collection(dbFirebaseLite, "Capitulos")),
+        ]);
+
+      if (coleccionRef.status === "fulfilled") {
+        const snapshot = coleccionRef.value;
+        const data = snapshot.docs.map((doc) => doc.data());
+        setNovelas(data);
+        addListNovels();
+        setNumeroColecciones(snapshot.size);
+      }
+      if (coleccionVolRef.status === "fulfilled") {
+        const snapshot = coleccionVolRef.value;
+        const data = snapshot.docs.map((doc) => doc.data());
+        setVolumens(data);
+        const newSnapshot = sortDateCollection(snapshot);
+
+        setEndCards(newSnapshot);
+      }
+
+      if (coleccionCapRef.status === "fulfilled") {
+        const snapshot = coleccionCapRef.value;
+        const data = snapshot.docs.map((doc) => doc.data());
+        setChapters(data);
+        const newSnapshot = sortDateCollection(snapshot);
+
+        setEndChapters(newSnapshot);
+      }
+    } catch (error) {
+      return;
+    }
+  };
 
   useEffect(() => {
     const autenticar = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setCargando(false);
-        localStorage.removeItem("horaInicio");
-        return <redirect to="/login-admin" />;
-      }
+      try {
+        const { data, error } = await supabase.auth.getUser();
+        if (error) throw error;
 
-      const confi = obtenerConfig();
-        try {
-        const [resUser, resSite] = await Promise.all([
-          ApiUsers("/admin/panel-administracion", confi),
-          urlAxios(`/admin/panel-administracion`, confi),
+        const [resUser, resUserSize] = await Promise.all([
+          supabase.from("profiles").select("*").eq("id", data.user.id).single(),
+          supabase.from("profiles").select("id"),
+          getCollection(),
         ]);
-         const dataUser = resUser.data;
-        const dataSite = resSite.data;
-        setUserType(dataUser.user.tipo);
-        setAuth(dataUser.user);
-        setCont(dataUser.totalUsers);
-        setEndChapters(dataSite.ultimosCapitulos);
-        setEndCards(dataSite.ultimasCards);
-        setVisitas(dataSite.visistas_actuales);
+
+        setAuth({ ...resUser.data, email: data.user.email });
+        setUserType(resUser.data.role);
+        setCont(resUserSize.data.length);
+        // setVisitas(dataSite.visistas_actuales);
       } catch (error) {
         setAuth({});
         localStorage.removeItem("token");
       }
       setCargando(false);
     };
+
     autenticar();
   }, [dataActive]);
-
-  const extensSession = async () => {
-    try {
-      const { data } = await ApiUsers.patch(
-        `/admin/extends-sesion?email=${userAuth.email}`
-      );
-
-      localStorage.setItem("token", data);
-    } catch (error) {
-      setAuth({});
-      localStorage.removeItem("token");
-    }
-  };
 
   if (cargando) return <Loading />;
   return (
@@ -71,14 +109,14 @@ const AuthProvider = ({ children }) => {
         cargando,
         userType,
         userCont,
-        ultimosCapitulo,
-        ultimosCards,
+        latestEpisode,
+        latestCards,
+        numeroColecciones,
         count,
         setCount,
         setCargando,
-        visitas_actuales,
+        visit_count,
         setDataActive,
-        extensSession,
       }}
     >
       {children}

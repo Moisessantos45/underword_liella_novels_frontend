@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore/lite";
+import { dbFirebaseLite } from "../config/firebase";
 import "@/css/Cards.css";
 import Banner_inferior from "./Banner_inferior";
-import urlAxios from "../config/urlAxios.js";
 import Loading from "./Loading";
 import Nosotros from "./Nosotros";
 import { useQuery } from "@tanstack/react-query";
@@ -12,7 +13,8 @@ const Cards = () => {
 
   const getCards = async () => {
     try {
-      const { data } = await urlAxios("/paginas");
+      const docs = await getDocs(collection(dbFirebaseLite, "Novelas"));
+      const data = docs.docs.map((doc) => doc.data());
       setData(data);
       return data;
     } catch (error) {

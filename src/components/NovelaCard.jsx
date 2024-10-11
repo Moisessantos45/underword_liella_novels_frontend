@@ -1,19 +1,31 @@
 import { NavLink } from "react-router-dom";
+import useInteractionStore from "../Store/InteractionStore";
+import useAuth from "../hooks/useAuth";
+import { useEffect, useRef, useState } from "react";
+import useNovelasStore from "../Store/NovelasStore";
 
-const NovelaCard = ({
-  item,
-  index,
-  isOpen,
-  toggleAccordion,
-  handelClick,
-  userType,
-  userAuth,
-  obtenerDatos,
-  setMostrar_modal,
-  confirmar_delate,
-  eliminarDatos,
-  type,
-}) => {
+const NovelaCard = ({ item, index, isOpen, toggleAccordion }) => {
+  const { setIsDrawerOpen, setConfirmDialog, confirmDialog } =
+    useInteractionStore();
+  const { setItemNovela, changeStatus, removeNovela } = useNovelasStore();
+  const { userAuth } = useAuth();
+
+  const [id, setId] = useState(null);
+  const isConfirmDialog = useRef(false);
+
+  const handleClick = async () => {
+    await removeNovela(id);
+    setId(null);
+  };
+
+  useEffect(() => {
+    isConfirmDialog.current = confirmDialog;
+    if (isConfirmDialog.current && userAuth.tipo === "administrador") {
+      handleClick();
+      setConfirmDialog(false);
+    }
+  }, [confirmDialog]);
+
   return (
     <div className="mb-2 sm:w-60 w-44 text_color relative" key={index}>
       <div className="w-full bg-gray-50 dark:bg-gray-800 relative flex justify-center flex-wrap rounded-lg items-center min-h-36">
@@ -27,7 +39,7 @@ const NovelaCard = ({
         </a>
         <button
           className="bg-blue-700 text-white rounded-lg h-7 w-10 flex items-center justify-center absolute right-1 top-1"
-          onClick={() => handelClick(item.id, !item.activo)}
+          onClick={() => changeStatus(item.id, item.activo)}
         >
           {item.activo ? (
             <i className="fa-solid fa-power-off"></i>
@@ -46,23 +58,21 @@ const NovelaCard = ({
         <NavLink
           className="bg-blue-600 text-white rounded-lg h-7 w-16 m-1 flex items-center justify-center"
           to={`/dashboard/${userAuth.id}/agregar-novela`}
-          onClick={() => obtenerDatos(item)}
+          onClick={() => setItemNovela(item)}
         >
           Editar
         </NavLink>
         <button
           className={`bg-rose-700 text-white rounded-lg h-7 w-18 m-1 flex justify-center items-center ${
-            userType === "administrador" ? "" : "bg-rose-400 cursor-not-allowed"
+            userAuth.role === "administrador"
+              ? ""
+              : "bg-rose-400 cursor-not-allowed"
           }`}
           onClick={() => {
-            if (userAuth.tipo === "administrador") {
-              setMostrar_modal(true);
-              if (confirmar_delate) {
-                eliminarDatos(item.id, type);
-              }
-            }
+            setIsDrawerOpen(true);
+            setId(item.id);
           }}
-          disabled={userType !== "administrador"}
+          disabled={userAuth.role !== "administrador"}
         >
           Eliminar
         </button>

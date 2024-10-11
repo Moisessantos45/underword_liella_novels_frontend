@@ -1,13 +1,22 @@
 import { Suspense, useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import Loading from "../components/Loading";
 import "../css/LoyoutAdmin.css";
 import Slider from "../components/Slider";
-import { Navigate } from "react-router-dom";
+import supabase from "../config/supabase";
 
 const LayoutAdmin = () => {
-  const { userAuth, cargando } = useAuth();
+  const { cargando } = useAuth();
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((_event, session) => {
+      if (!session) {
+        navigate("/login-admin");
+      }
+    });
+  }, []);
 
   useEffect(() => {
     document.title = "Panel de administracion";
@@ -17,13 +26,10 @@ const LayoutAdmin = () => {
   return (
     <>
       <Slider />
-      {userAuth?.idUser ? (
-        <Suspense fallback={<Loading />}>
-          <Outlet />
-        </Suspense>
-      ) : (
-        <Navigate to="/login-admin" />
-      )}
+
+      <Suspense fallback={<Loading />}>
+        <Outlet />
+      </Suspense>
     </>
   );
 };

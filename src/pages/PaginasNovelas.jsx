@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
-import urlAxios from "../config/urlAxios.js";
-import { useEffect, useState } from "react";
+import { doc, getDoc } from "firebase/firestore/lite";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
 import TablaInfo from "../components/TablaInfo";
 import CardsVol from "../components/CardsVol";
 import useAdmin from "../hooks/useAdmin";
@@ -9,31 +10,30 @@ import ContentCapit from "../components/ContentCapit";
 import Recomendaciones from "../components/Recomendaciones";
 import Comentarios from "../components/Comentarios";
 import NavbarPage from "../components/NavbarPage";
-import { useQuery } from "@tanstack/react-query";
 import CardsScans from "../components/CardsScans";
+import { dbFirebaseLite } from "../config/firebase.js";
 
 const PaginasNovelas = () => {
-  const [novela, setNovela] = useState({});
+  const novelData = useRef({});
   const { bgNovel, setBackg, setTitleNabvar } = useAdmin();
-  const [capit, setCapi] = useState(false);
   const [cards, setCards] = useState([]);
   const params = useParams();
   const { idNovel } = params;
 
   const peticion = async () => {
     try {
-      const respuesta = await urlAxios(`/paginas/novela/${idNovel}`);
-      // console.log(respuesta.data);
-      setNovela(respuesta.data);
-      const bg = `${respuesta.data.info.backgroud}`;
-      setBackg(bg);
-      setTitleNabvar({ title: respuesta.data.info.titulo });
-      setCapi(respuesta.data.capi.length > 0);
-      setCards(respuesta.data.info.scans);
+      const q = doc(dbFirebaseLite, "Novelas", idNovel);
+      const documents = await getDoc(q);
 
-      return respuesta.data;
+      if (!documents.exists()) return {};
+      const data = documents.data();
+      novelData.current = data;
+      const bg = `${data.backgroud}`;
+      setBackg(bg);
+      setTitleNabvar({ title: data.titulo });
+      setCards(data.scans);
+      return data;
     } catch (error) {
-      setNovela({});
       return {};
     }
   };
@@ -47,15 +47,19 @@ const PaginasNovelas = () => {
   });
 
   useEffect(() => {
-    document.title = novela.info?.titulo || "UnderWordLiellaNovels";
+    document.title = novelData.current?.titulo || "UnderWordLiellaNovels";
   }, [idNovel]);
 
   if (isLoading) return <Loading />;
   return (
     <>
-      <TablaInfo key={novela.info.nombre || ""} datos={novela.info} />
-      {capit ? <ContentCapit key={novela.info.id} capi={novela.capi} /> : ""}
-      {novela.info?.id && novela.info?.backgroud.startsWith("https") ? (
+      <TablaInfo
+        key={novelData.current.idNovel || ""}
+        datos={novelData.current}
+      />
+      <ContentCapit key={novelData.current.id} />
+      {novelData.current?.id &&
+      novelData.current?.backgroud.startsWith("https") ? (
         <figure className="backgraoud">
           <img src={bgNovel} alt="" />
         </figure>
@@ -64,8 +68,8 @@ const PaginasNovelas = () => {
       )}
       <CardsScans cards={cards} />
       <CardsVol />
-      <Recomendaciones />
-      <Comentarios />
+      {/* <Recomendaciones /> */}
+      {/* <Comentarios /> */}
       <NavbarPage />
     </>
   );

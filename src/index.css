@@ -19,12 +19,16 @@ html {
   scrollbar-width: none;
 }
 
-.scrollbar{
+.scrollbar {
   scrollbar-width: none;
 }
 
 .margin {
   margin: 15px auto;
+}
+
+.darkMode {
+  background: #20202c;
 }
 
 .mi-clase {

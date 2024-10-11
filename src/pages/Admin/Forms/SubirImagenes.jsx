@@ -1,18 +1,18 @@
 import { useState } from "react";
 import "@/css/uploadImg.css";
 import useAdmin from "@/hooks/useAdmin";
-import axios from "axios";
 import NavbarSlider from "@/components/NavbarSlider";
 import imageCompression from "browser-image-compression";
 import { toastify } from "@/utils/Utils";
 import { errorHandle } from "@/Services/errorHandle";
+import uploadFileImg from "@/Services/uploadImg";
+import { X } from "lucide-react";
 
 const SubirImagenes = () => {
-  const apiKey = import.meta.env.VITE_URL_APIKEY;
   const [files, setFiles] = useState([]);
   const [urls, setUrls] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const { active, activeDark } = useAdmin();
+  const { activeDark } = useAdmin();
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -25,9 +25,8 @@ const SubirImagenes = () => {
       return toastify("Seleccione un imagen", false);
     }
     const uploadedUrls = await Promise.all(
-      files.map(async (file, index) => {
+      files.map(async (file, _) => {
         let compressedFile = file;
-        const formData = new FormData();
         if (file.size > 1 * 1024 * 1024) {
           const options = {
             maxSizeMB: 1,
@@ -37,24 +36,9 @@ const SubirImagenes = () => {
           compressedFile = await imageCompression(file, options);
         }
         if (compressedFile === null) return toastify("Ocurrio un error", false);
-        formData.append("image", compressedFile);
         try {
-          const { data } = await axios.post(
-            `https://api.imgbb.com/1/upload?key=${apiKey}`,
-            formData,
-            {
-              onUploadProgress: (progressEvent) => {
-                const progress = Math.round(
-                  (progressEvent.loaded / progressEvent.total) * 100
-                );
-                // Actualiza el progreso teniendo en cuenta la cantidad total de archivos
-                setUploadProgress(
-                  ((index + 1) / files.length) * 100 + progress / files.length
-                );
-              },
-            }
-          );
-          return data.data.url;
+          const response = await uploadFileImg(compressedFile);
+          return response;
         } catch (error) {
           errorHandle(error);
         }
@@ -123,7 +107,7 @@ const SubirImagenes = () => {
 
           <div className="sm:w-[32rem] shadow-blue-100 mx-auto my-10 overflow-hidden rounded-2xl dark:bg-gray-800 shadow-lg sm:max-w-lg w-11/12">
             <h1 className="relative bg-blue-600 py-5 sm:pl-8 sm:text-xl text-base font-semibold uppercase tracking-wider text-white text-center">
-              Subir imágenes a ImgBB
+              Subir imágenes a cloudinary
             </h1>
             <form onSubmit={handleSubmit} className="space-y-4 px-8 py-10">
               <div className="">

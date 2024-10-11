@@ -7,17 +7,14 @@ import PaginasNovelas from "./pages/PaginasNovelas";
 import PaginasCapitulos from "./pages/PaginasCapitulos";
 
 const LayoutLogin = lazy(() => import("./layout/LayoutLogin"));
-// const PaginasNovelas = lazy(() => import("./pages/PaginasNovelas"));
-// const PaginasCapitulos = lazy(() => import("./pages/PaginasCapitulos"));
 const FormLogin = lazy(() => import("./pages/Admin/Forms/FormLogin"));
 const LayoutAdmin = lazy(() => import("./layout/LayoutAdmin"));
-const Container_card = lazy(() => import("./pages/Admin/Forms/Container_card"));
+const Container_card = lazy(() => import("./pages/Admin/Forms/CreateVolume"));
 const Container_captitulo = lazy(() =>
-  import("./pages/Admin/Forms/Container_captitulo")
+  import("./pages/Admin/Forms/CreateChapter")
 );
-const Container_novela = lazy(() =>
-  import("./pages/Admin/Forms/Container_novela")
-);
+const Container_novela = lazy(() => import("./pages/Admin/Forms/CreateNovel"));
+
 const Content_cards = lazy(() => import("./pages/Admin/Content_cards"));
 const Content_novelas = lazy(() => import("./pages/Admin/Content_novelas"));
 const Content_capitulos = lazy(() => import("./pages/Admin/Content_capitulos"));

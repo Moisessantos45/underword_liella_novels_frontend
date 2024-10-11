@@ -3,11 +3,16 @@ import { useDataSiteHome } from "../Store/DataSiteHome";
 
 const Banner_inferior = () => {
   const { dataSite } = useDataSiteHome();
-  const back = dataSite.imagenFacebook.toString();
-  const linksRedesSociales = JSON.parse(dataSite.enlacesRedesSociales);
+
+  const back = dataSite?.imagenFacebook
+    ? dataSite.imagenFacebook.toString()
+    : "";
+  const linksRedesSociales = dataSite?.id
+    ? JSON.parse(dataSite.enlacesRedesSociales)
+    : [];
   return (
     <>
-      <section className="w-full m-auto">
+      <section className={`w-full m-auto ${dataSite?.id ? "" : "hidden"} darkMode `}>
         <figure className="recluta rounded-lg overflow-hidden shadow-lg">
           <img
             className="recluta_img w-full"

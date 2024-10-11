@@ -5,9 +5,14 @@ import useAuth from "@/hooks/useAuth";
 import { Link } from "react-router-dom";
 
 const Content_list = () => {
-  const { activeDark, novelasInfo } = useAdmin();
-  const { userCont, ultimosCapitulo, ultimosCards, visitas_actuales } =
-    useAuth();
+  const { activeDark } = useAdmin();
+  const {
+    userCont,
+    latestEpisode,
+    latestCards,
+    visit_count,
+    numeroColecciones,
+  } = useAuth();
 
   const fecha = (fecha) => {
     const fechaActual = new Date(fecha);
@@ -43,7 +48,7 @@ const Content_list = () => {
             <li>
               <i className="fa-solid fa-users-viewfinder"></i>
               <span className="text">
-                <h3>{visitas_actuales}</h3>
+                <h3>{visit_count}</h3>
                 <p>visitas</p>
               </span>
             </li>
@@ -57,7 +62,7 @@ const Content_list = () => {
             <li>
               <i className="fa-solid fa-book-atlas"></i>
               <span className="text">
-                <h3>{novelasInfo.length}</h3>
+                <h3>{numeroColecciones}</h3>
                 <p>novelas</p>
               </span>
             </li>
@@ -79,19 +84,17 @@ const Content_list = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {ultimosCapitulo.length > 0
-                    ? ultimosCapitulo.map((item, i) => (
-                        <tr key={i}>
-                          <td>
-                            <p>{item.nombre}</p>
-                          </td>
-                          <td>{item?.createdAt}</td>
-                          <td>
-                            <span className="status complete">completo</span>
-                          </td>
-                        </tr>
-                      ))
-                    : null}
+                  {latestEpisode.map((item, i) => (
+                    <tr key={i}>
+                      <td>
+                        <p>{item.nombre}</p>
+                      </td>
+                      <td>{item?.createdAt}</td>
+                      <td>
+                        <span className="status complete">completo</span>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -105,20 +108,16 @@ const Content_list = () => {
               </div>
 
               <ul className="todo-list">
-                {ultimosCards.length > 0
-                  ? ultimosCards.map((item, i) => (
-                      <li className="not-completed" key={i}>
-                        <p
-                          className={`${
-                            activeDark ? "text-white" : "text-black"
-                          }`}
-                        >
-                          {item.nombreClave} vol {item.volumen}
-                        </p>
-                        <i className="fas fa-ellipsis-vertical"></i>
-                      </li>
-                    ))
-                  : ""}
+                {latestCards.map((item, i) => (
+                  <li className="not-completed" key={i}>
+                    <p
+                      className={`${activeDark ? "text-white" : "text-black"}`}
+                    >
+                      {item.nombreClave} vol {item.volumen}
+                    </p>
+                    <i className="fas fa-ellipsis-vertical"></i>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

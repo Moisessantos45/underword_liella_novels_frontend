@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, memo } from "react";
+import useAdmin from "@/hooks/useAdmin";
 
 const FormAddContent = ({ onChange, initialValues = [] }) => {
+  const { activeDark } = useAdmin();
   const [inputs, setInputs] = useState(initialValues);
 
   const handleClickAddInput = useCallback(() => {
@@ -28,12 +30,20 @@ const FormAddContent = ({ onChange, initialValues = [] }) => {
   }, [initialValues]);
 
   return (
-    <div className="form_add_content p-5">
+    <div className="flex w-full sm:w-12/12 flex-col sm:p-5 p-1">
       <div className="sm:w-full px-4 flex items-center flex-wrap sm:justify-start justify-evenly gap-2">
-        <span className="text-sm flex font-medium text-gray-100 textWidthFitContent">
+        <span
+          className={` ${
+            activeDark ? "text-gray-100" : "text-gray-600 "
+          } text-sm flex font-medium textWidthFitContent`}
+        >
           Agregar Links
         </span>
-        <span className="flex font-medium text-gray-100 textWidthFitContent">
+        <span
+          className={`flex font-medium ${
+            activeDark ? "text-gray-100 " : "text-gray-600 "
+          } textWidthFitContent`}
+        >
           <i
             className="fa-solid fa-plus cursor-pointer text-xl"
             onClick={handleClickAddInput}
@@ -52,24 +62,38 @@ const FormAddContent = ({ onChange, initialValues = [] }) => {
                 className="fa-solid fa-minus font-bold text-slate-300 text-3xl absolute right-2 md:-top-3 -top-4 cursor-pointer"
                 onClick={() => handleClickDeleteInput(index)}
               ></i>
-              <input
-                className="py-4 px-3 md:col-start-2 md:col-span-2 md:row-start-1 w-full text-sm text-gray-50 placeholder-gray-50 font-medium outline-none bg-transparent border border-gray-400 hover:border-white focus:border-green-500 rounded-lg"
-                type="text"
-                placeholder="link de descarga"
-                value={input.link}
-                onChange={(e) =>
-                  handleInputChange(index, "link", e.target.value)
-                }
-              />
-              <input
-                className="py-4 px-3 md:col-span-3 md:row-start-2 w-full text-sm text-gray-50 placeholder-gray-50 font-medium outline-none bg-transparent border border-gray-400 hover:border-white focus:border-green-500 rounded-lg"
-                type="text"
-                placeholder="texto"
-                value={input.texto}
-                onChange={(e) =>
-                  handleInputChange(index, "texto", e.target.value)
-                }
-              />
+
+              <div className="md:col-start-1 md:col-span-3 md:row-start-1 w-full">
+                <label htmlFor={`link-${index}`} className="sr-only">
+                  Link de descarga
+                </label>
+                <input
+                  id={`link-${index}`}
+                  className="sm:py-4 py-2 px-3 w-full text-sm text-gray-800 placeholder-gray-50 font-medium outline-none bg-transparent border border-gray-400 hover:border-white focus:border-green-500 rounded-lg"
+                  type="text"
+                  placeholder="Link de descarga"
+                  value={input.link}
+                  onChange={(e) =>
+                    handleInputChange(index, "link", e.target.value)
+                  }
+                />
+              </div>
+
+              <div className="md:col-span-3 md:row-start-2 w-full">
+                <label htmlFor={`texto-${index}`} className="sr-only">
+                  Texto
+                </label>
+                <input
+                  id={`texto-${index}`}
+                  className="sm:py-4 py-2 px-3 w-full text-sm text-gray-800 placeholder-gray-50 font-medium outline-none bg-transparent border border-gray-400 hover:border-white focus:border-green-500 rounded-lg"
+                  type="text"
+                  placeholder="Texto"
+                  value={input.texto}
+                  onChange={(e) =>
+                    handleInputChange(index, "texto", e.target.value)
+                  }
+                />
+              </div>
             </article>
           ))}
       </div>

@@ -3,24 +3,23 @@ import useAdmin from "@/hooks/useAdmin";
 import useAuth from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { toastify } from "@/utils/Utils";
+import supabase from "@/config/supabase";
 
 const ModalConfirm = () => {
-  const { setModalTime, SesionLogout } = useAdmin();
-  const { userAuth, setCount, setAuth, extensSession } = useAuth();
+  const { setModalTime } = useAdmin();
+  const { setCount, setAuth } = useAuth();
   const navigate = useNavigate();
 
   const handelConfirmar = async (sesion) => {
-    const email = userAuth.email;
     setCount(0);
     try {
       if (sesion) {
         localStorage.setItem("horaInicio", Date.now().toString());
-        await extensSession();
         setModalTime(false);
         return;
       }
 
-      await SesionLogout(email);
+      await supabase.auth.signOut();
       localStorage.removeItem("token");
       localStorage.removeItem("horaInicio");
       setAuth({});

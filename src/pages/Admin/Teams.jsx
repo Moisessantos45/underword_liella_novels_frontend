@@ -1,42 +1,37 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useState } from "react";
+import { useEffect, useRef } from "react";
+import { SelectPicker } from "rsuite";
 import useAuth from "@/hooks/useAuth";
 import Loading from "@/components/Loading";
-import ApiUsers from "@/config/ApiUsers";
 import NavbarSlider from "@/components/NavbarSlider";
 import useAdmin from "@/hooks/useAdmin";
 import { Link } from "react-router-dom";
 import ModalConfirm from "@/components/ModalConfirm";
 import { errorHandle } from "@/Services/errorHandle";
-import { obtenerConfig, toastify } from "@/utils/Utils";
+import { toastify } from "@/utils/Utils";
+import supabase from "@/config/supabase";
+import useInteractionStore from "@/Store/InteractionStore";
+
+const data = ["user", "administrador", "colaborador"].map((item) => ({
+  label: item,
+  value: item,
+}));
 
 const Teams = () => {
   const { userAuth, cargando, setCargando } = useAuth();
-  const {
-    activeDark,
-    obtenerDatosUser,
-    users,
-    setUsers,
-    eliminarDatos,
-    confirmar_delate,
-    mostrar_modal,
-    setMostrar_modal,
-  } = useAdmin();
-  const type = "user";
+  const { activeDark, obtenerDatosUser, users, setUsers } = useAdmin();
+  const { isDrawerOpen, confirmDialog, setIsDrawerOpen, setConfirmDialog } =
+    useInteractionStore();
+
+  const [id, setId] = useState(null);
+
+  const isConfirmDialog = useRef(false);
+
   useEffect(() => {
     const data_users = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        setCargando(false);
-        return;
-      }
-      const confi = obtenerConfig();
-
       try {
-        const { data } = await ApiUsers(
-          `/admin/panel-administracion/colaboradores`,
-          confi
-        );
+        const { data, error } = await supabase.from("profiles").select("*");
+        if (error) throw error;
         setUsers(data);
       } catch (error) {
         errorHandle(error);
@@ -46,23 +41,51 @@ const Teams = () => {
     data_users();
   }, []);
 
-  const descativarUser = async (id, active) => {
+  const changeDataUser = async (id, acceso, status = null, role = null) => {
     try {
-      await ApiUsers.patch(`/admin/desctivar-user`, {
-        id,
-        active,
-      });
+      const query = {};
+      const findUser = users.find((item) => item.id == id);
+
+      if (acceso !== findUser.acceso) {
+        query.acceso = acceso;
+      }
+
+      if (status && status !== findUser.status) {
+        query.status = status;
+      }
+
+      if (role && role !== findUser.role) {
+        query.role = role;
+      }
+
+      const { _, error } = await supabase
+        .from("profiles")
+        .update({ ...query })
+        .eq("id", id)
+        .select();
+
+      if (error) throw error;
 
       const datosActualizados = users.map((item) =>
-        item.id == id ? { ...item, active } : item
+        item.id == id ? { ...item, ...query } : item
       );
 
-      toastify(`Colaborador ${active}`, true);
+      toastify(acceso ? "Activado" : "Desactivado", true);
       setUsers(datosActualizados);
     } catch (error) {
-      toastify(error.response.data.msg, false);
+      toastify("Error al actualizar", false);
     }
+    setConfirmDialog(false);
   };
+
+  useEffect(() => {
+    isConfirmDialog.current = isDrawerOpen;
+    if (isConfirmDialog.current && userAuth.role === "administrador") {
+      changeDataUser(id, false, true);
+      setId(null);
+      setConfirmDialog(false);
+    }
+  }, [confirmDialog]);
 
   if (cargando) return <Loading />;
   return (
@@ -119,10 +142,11 @@ const Teams = () => {
               <table className="w-full">
                 <thead>
                   <tr className="bg-green-600 text-left text-xs font-semibold uppercase tracking-widest text-white">
-                    <th className="px-5 py-3">ID</th>
+                    {/* <th className="px-5 py-3">ID</th> */}
                     <th className="px-5 py-3">Full Name</th>
                     <th className="px-5 py-3">User Role</th>
                     <th className="px-5 py-3">Status</th>
+                    <th className="px-5 py-3">Firstsession</th>
                     <th className="px-5 py-3">Options</th>
                   </tr>
                 </thead>
@@ -139,26 +163,17 @@ const Teams = () => {
                             activeDark ? "gray-800" : "white"
                           } px-5 py-5 text-sm`}
                         >
-                          <p className="whitespace-no-wrap">{item.id}</p>
-                        </td>
-                        <td
-                          className={`border-b border-${
-                            activeDark ? "gray-700" : "gray-200"
-                          } bg-${
-                            activeDark ? "gray-800" : "white"
-                          } px-5 py-5 text-sm`}
-                        >
                           <div className="flex items-center">
                             <div className="h-10 w-10 flex-shrink-0">
                               <img
                                 className="h-full w-full rounded-full"
-                                src={item.foto_perfil}
+                                src={item.avatar_url}
                                 alt="Imagen de perfil"
                               />
                             </div>
                             <div className="ml-3">
                               <p className="whitespace-no-wrap">
-                                {item.name_user}
+                                {item.full_name}
                               </p>
                             </div>
                           </div>
@@ -170,7 +185,19 @@ const Teams = () => {
                             activeDark ? "gray-800" : "white"
                           } px-5 py-5 text-sm`}
                         >
-                          <p className="whitespace-no-wrap">{item.tipo}</p>
+                          {userAuth.role === "administrador" ? (
+                            <SelectPicker
+                              label="User"
+                              data={data}
+                              value={item.role}
+                              style={{ width: 224 }}
+                              onChange={(e) =>
+                                changeDataUser(item.id, null, null, e)
+                              }
+                            />
+                          ) : (
+                            <p className="whitespace-no-wrap">{item.role}</p>
+                          )}
                         </td>
                         <td
                           className={`border-b border-${
@@ -184,13 +211,30 @@ const Teams = () => {
                               item.acceso ? "bg-green-200" : "bg-yellow-200"
                             } px-3 py-1 text-xs font-semibold text-green-900`}
                             onClick={() => {
-                              setMostrar_modal(true);
-                              if (confirmar_delate) {
-                                descativarUser(item.id, !item.acceso);
+                              setIsDrawerOpen(true);
+                              if (confirmDialog) {
+                                changeDataUser(item.id, !item.status);
                               }
                             }}
                           >
                             {item.acceso ? "Active" : "Suspended"}
+                          </span>
+                        </td>
+                        <td
+                          className={`border-b border-${
+                            activeDark ? "gray-700" : "gray-200"
+                          } bg-${
+                            activeDark ? "gray-800" : "white"
+                          } px-5 py-5 text-sm`}
+                        >
+                          <span
+                            className={`rounded-full cursor-pointer ${
+                              item.firstsession
+                                ? "bg-green-200"
+                                : "bg-yellow-200"
+                            } px-3 py-1 text-xs font-semibold text-green-900`}
+                          >
+                            {item.firstsession ? "Yes" : "No"}
                           </span>
                         </td>
                         <td
@@ -210,12 +254,8 @@ const Teams = () => {
                           <button
                             className="m-1 whitespace-no-wrap flex justify-center items-center text-white w-20 h-6 bg-rose-700 rounded-md"
                             onClick={() => {
-                              if (userAuth.tipo === "administrador") {
-                                setMostrar_modal(true);
-                                if (confirmar_delate) {
-                                  eliminarDatos(item.id, type);
-                                }
-                              }
+                              setIsDrawerOpen(true);
+                              setId(item.id);
                             }}
                           >
                             Eliminar
@@ -247,7 +287,7 @@ const Teams = () => {
           </div>
         </div>
       </section>
-      {mostrar_modal && <ModalConfirm />}
+      {isDrawerOpen && <ModalConfirm />}
     </>
   );
 };

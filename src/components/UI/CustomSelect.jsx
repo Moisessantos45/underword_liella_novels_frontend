@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
 
-const CustomSelect = ({ options, placeholder, onChange }) => {
+const CustomSelect = ({ options, placeholder, onChange, initValue = null }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
-  //   console.log(options);
+  const [selectedOption, setSelectedOption] = useState(initValue);
+
+  useEffect(() => {
+    if (initValue) {
+      setSelectedOption(initValue);
+    }
+  }, []);
+
   const handleSelect = (option) => {
     const { titulo, id } = option;
     setSelectedOption({ titulo, id });
@@ -16,7 +22,7 @@ const CustomSelect = ({ options, placeholder, onChange }) => {
     <div className="relative w-full mb-4">
       <button
         type="button"
-        className={`relative w-full py-3 pl-3 pr-10 text-left bg-white dark:bg-gray-800 rounded-lg shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-opacity-75 ${
+        className={`relative w-full py-2 sm:py-3 pl-3 pr-10 text-left bg-white dark:bg-gray-800 rounded-lg shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-opacity-75 ${
           selectedOption
             ? "text-slate-700 dark:text-slate-200"
             : "text-slate-400"

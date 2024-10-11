@@ -65,3 +65,38 @@ const fromToJsonMapSite = async (data) => {
     tituloPagina: data["tituloPagina"] || "",
   };
 };
+
+// Función para convertir la cadena de fecha en un objeto Date
+const convertirADate = (fechaStr) => {
+  const [dia, mes, año, horas, minutos, segundos] = fechaStr
+    .split("-")
+    .map(Number);
+  return new Date(año, mes - 1, dia, horas, minutos, segundos); // mes - 1 porque los meses en JavaScript son 0-indexados
+};
+
+const sortDate = (fechas) => {
+  // Ordenar el array de fechas
+  const fechasOrdenadas = fechas.sort((a, b) => {
+    return convertirADate(b) - convertirADate(a); // Ordenar del más reciente al más antiguo
+  });
+
+  return fechasOrdenadas;
+};
+
+const extractIllustrations = (items) => {
+  return items.reduce((ilustraciones, item) => {
+    ["imagen", "backgroud"].forEach((key) => {
+      if (
+        item[key] &&
+        (key !== "backgroud" ||
+          item[key].startsWith("https://i.ibb.co") ||
+          item[key].startsWith("https://res.cloudinary"))
+      ) {
+        ilustraciones.push({ imagen: item[key] });
+      }
+    });
+    return ilustraciones;
+  }, []);
+};
+
+export { sortDate, convertirADate, extractIllustrations };

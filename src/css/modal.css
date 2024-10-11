@@ -1,48 +1,33 @@
 .modal {
   position: fixed;
-  height: 100vh;
+  top: 0;
+  left: 0;
   width: 100%;
-  z-index: 7000;
-  background: rgba(0, 0, 0,.5);
-  /* background: rgba(255, 255, 255, 0.5); */
-  /* backdrop-filter: blur(15px); */
-  overflow: auto;
-  scrollbar-width: none;
+  height: 100%;
+  z-index: 2500;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
 }
 
-.form_modal {
-  max-height: 200px;
+.modal > div {
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .form_modal::-webkit-scrollbar {
   width: 0px;
+  background: transparent;
 }
 
-.form_add_content {
-  width: 95%;
-  margin: 5px;
-}
-
-.input_from {
-  border: 3px;
-  height: 25px;
-  margin: 0;
-  outline: 0.5px solid rgb(171, 168, 168);
-}
-
-/* .btn_submit{
-    height: 40px;
-} */
 @media only screen and (max-width: 765px) {
-  .main_container {
-    margin-top: 0;
-    height: 92vh;
+  .modal {
+    padding: 0;
   }
 
-  .form_modal {
-    overflow: initial;
-    min-height: 700px;
-    min-width: initial;
+  .modal > div {
     width: 95%;
   }
 }

@@ -4,22 +4,56 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useRef } from "react";
+import { Link, useParams } from "react-router-dom";
+import { collection, getDocs, query, where } from "firebase/firestore/lite";
+import { dbFirebaseLite } from "../config/firebase";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "./Loading";
 
-const ContentCapit = ({ capi }) => {
-  const capitulosArray = Object.values(capi);
+const ContentCapit = () => {
+  const params = useParams();
+  const { idNovel } = params;
+  const capitulosGrupo = useRef([]);
   const [expanded, setExpanded] = useState(false);
+
+  const tranformarCapitulos = (capitulos) => {
+    const capitulosArray = Object.values(capitulos);
+    capitulosArray.sort((a, b) => Number(a.capitulo) - Number(b.capitulo));
+    for (let i = 0; i < capitulosArray.length; i += 10) {
+      capitulosGrupo.current.push(capitulosArray.slice(i, i + 10));
+    }
+  };
+
+  const getCapitulos = async () => {
+    try {
+      const q = query(
+        collection(dbFirebaseLite, "Capitulos"),
+        where("idNovel", "==", idNovel)
+      );
+      const documents = await getDocs(q);
+      const data = documents.docs.map((doc) => doc.data());
+      if (data.length === 0) return [];
+      tranformarCapitulos(data);
+      return data;
+    } catch (error) {
+      return [];
+    }
+  };
+
+  const { isLoading } = useQuery({
+    queryKey: ["contentCapit"],
+    queryFn: getCapitulos,
+    refetchInterval: 60000,
+    refetchOnWindowFocus: false,
+    retry: 0,
+  });
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  capitulosArray.sort((a, b) => Number(a.capitulo) - Number(b.capitulo));
-  const gruposDeCapitulos = [];
-  for (let i = 0; i < capitulosArray.length; i += 10) {
-    gruposDeCapitulos.push(capitulosArray.slice(i, i + 10));
-  }
 
+  if (isLoading) return <Loading />;
   return (
     <>
       <div className="w-10/12 flex flex-col margin text-white p-4 rounded-lg shadow-md bg-transparent">
@@ -28,7 +62,7 @@ const ContentCapit = ({ capi }) => {
             Capitulos Disponibles &quot;Novela&quot;
           </h1>
         </div>
-        {gruposDeCapitulos.map((grupo, i) => (
+        {capitulosGrupo.current.map((grupo, i) => (
           <Accordion
             key={i}
             sx={{

@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import useAdmin from "@/hooks/useAdmin";
-import ApiUsers from "@/config/ApiUsers";
 import NavbarSlider from "@/components/NavbarSlider";
 import Loading from "@/components/Loading";
 import { toastify } from "@/utils/Utils.js";
 import { errorHandle } from "@/Services/errorHandle.js";
 import { useDataSiteHome } from "@/Store/DataSiteHome";
+import supabase from "@/config/supabase";
+import { isBoolean } from "@/utils/Utils";
 
 const ConfiguracionSitio = () => {
   const { activeDark } = useAdmin();
   const { changeStatusSite } = useDataSiteHome();
   const [loading, setLoading] = useState(true);
+  const [id, setId] = useState(null);
   const [tituloPagina, setTituloPagina] = useState("");
   const [encabezado, setEncabezado] = useState("");
   const [detalles, setDetalles] = useState("");
@@ -37,6 +39,7 @@ const ConfiguracionSitio = () => {
     discord: "fa-brands fa-discord",
   };
   const actulizatDatosSito = (data) => {
+    setId(data.id);
     setTituloPagina(data.tituloPagina);
     setEncabezado(data.encabezado);
     setDetalles(data.detalles);
@@ -56,15 +59,21 @@ const ConfiguracionSitio = () => {
             .join("\n")
         : "";
     setLinksRedesSociales(convertirLinks);
-    setActivoReclutamiento(data.activoReclutamiento);
+    setActivoReclutamiento(JSON.stringify(data.activoReclutamiento));
     setIsMaintenanceMode(JSON.stringify(data.isMaintenanceMode));
   };
 
   useEffect(() => {
     const solicitarDatosSitio = async () => {
       try {
-        const res = await ApiUsers.get("/site/configuracion-sitio");
-        actulizatDatosSito(res.data.data);
+        let { data, error } = await supabase
+          .from("InicioWebInfo")
+          .select("*")
+          .single();
+
+        if (error) throw error;
+
+        actulizatDatosSito(data);
       } catch (error) {
         toastify(error.response.data.msg, false);
       }
@@ -103,11 +112,19 @@ const ConfiguracionSitio = () => {
       mensajeSeguirRedSocial,
       MensajeReclutamiento,
       enlacesRedesSociales,
-      activoReclutamiento,
+      activoReclutamiento: isBoolean(activoReclutamiento),
+      isMaintenanceMode: isBoolean(isMaintenanceMode),
     };
     try {
-      const res = await ApiUsers.put("/site/configuracion-sitio", { datos });
-      actulizatDatosSito(res.data.data);
+      const { data, error } = await supabase
+        .from("InicioWebInfo")
+        .update(datos)
+        .eq("id", id)
+        .single();
+
+      if (error) throw error;
+
+      actulizatDatosSito(data);
       toastify("Datos actualizados", true);
     } catch (error) {
       errorHandle(error);
@@ -329,11 +346,12 @@ const ConfiguracionSitio = () => {
         </div>
         <div className="py-4 w-11/12 text-gray-50 placeholder-gray-50 font-medium outline-none bg-transparent focus:border-green-500 rounded-lg flex gap-4 items-center text-sm mx-auto">
           <div className="w-full">
-            <h1>
+            <h1
+              className={` ${
+                activeDark ? "text-slate-200" : "text-slate-900"
+              } text-xs `}
+            >
               Modo de mantenimiento
-              <span className="text-xs text-gray-300">
-                (Solo para administradores)
-              </span>
             </h1>
           </div>
           <input
@@ -345,7 +363,12 @@ const ConfiguracionSitio = () => {
             onChange={changesStatus}
             className="w-6 h-6 text-gray-50 border border-gray-400 hover:border-white focus:border-green-500 rounded-lg"
           />
-          <label htmlFor="disabledMode">Deshabilitado</label>
+          <label
+            htmlFor="disabledMode"
+            className={`${activeDark ? "text-slate-300" : "text-slate-900"} `}
+          >
+            Deshabilitado
+          </label>
           <input
             type="radio"
             name="maintenanceMode"
@@ -355,7 +378,12 @@ const ConfiguracionSitio = () => {
             onChange={changesStatus}
             className="w-6 h-6 text-gray-50 border border-gray-400 hover:border-white focus:border-green-500 rounded-lg"
           />
-          <label htmlFor="enabledMode">Habilitado</label>
+          <label
+            htmlFor="enabledMode"
+            className={`${activeDark ? "text-slate-300" : "text-slate-900"} `}
+          >
+            Habilitado
+          </label>
         </div>
         <div className="flex justify-center items-center pt-2">
           <button

@@ -80,7 +80,7 @@ body {
   top: 0;
   left: 0;
   z-index: 500;
-  padding-bottom: 20px;
+  /* padding-bottom: 20px; */
   box-sizing: content-box;
   color: var(--blue);
   background: var(--light);
@@ -95,7 +95,7 @@ body {
 
 .sidebar .side-menu {
   width: 100%;
-  margin-top: 48px;
+  margin-top: 15px;
 }
 
 .sidebar.dark .side-menu {

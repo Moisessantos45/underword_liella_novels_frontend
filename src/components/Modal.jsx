@@ -1,68 +1,110 @@
 import { useCallback, useEffect, useState } from "react";
-import useAdmin from "../hooks/useAdmin";
 import "../css/modal.css";
 import imgClose from "../img/cerrar.png";
 import FormAddContent from "./UI/FormAddContent";
 import CustomSelect from "./UI/CustomSelect";
+import useInteractionStore from "@/Store/InteractionStore";
+import useVolumensStore from "@/Store/VolumensStore";
+import useNovelasStore from "@/Store/NovelasStore";
+import { isBoolean, isNumber, toastify } from "../utils/Utils";
 
 const Modal = () => {
-  const { novelasInfo, setModal, cardEditar, setEditarCard, enviarDatos } =
-    useAdmin();
-  const [volumen, setVolumen] = useState(0);
-  const [imagen, setImagen] = useState("");
-  const [captiuloActive, setDisponible] = useState("");
-  const [capitulo, setCapitulos] = useState("");
-  const [mega, setMega] = useState("");
-  const [mediafire, setMediafire] = useState("");
-  const [megaEpub, setMegaEpub] = useState("");
-  const [mediafireEpub, setMediafireEpub] = useState("");
-  const [inputValues, setInputValues] = useState([]);
-  const [selectedId, setSelectedId] = useState(null);
-  const [id, setId] = useState(null);
+  const { setIsVisibleModal } = useInteractionStore();
+  const { listNovelas } = useNovelasStore();
+  const { itemVolumen, setItemVolumen, updateVolumen } = useVolumensStore();
 
-  const type = "cards";
+  const [capitulo, setCapitulos] = useState("");
+  const [captiuloActive, setDisponible] = useState("");
+  const [clave, setClave] = useState("");
+  const [idNovel, setIdNovel] = useState(null);
+  const [imagen, setImagen] = useState("");
+  const [link, setLink] = useState("");
+  const [links, setLinks] = useState([]);
+  const [mediafire, setMediafire] = useState("");
+  const [mediafireEpub, setMediafireEpub] = useState("");
+  const [mega, setMega] = useState("");
+  const [megaEpub, setMegaEpub] = useState("");
+  const [nombreClave, setNombreClave] = useState("");
+  const [volumen, setVolumen] = useState(0);
+
+  const [selectedId, setSelectedId] = useState(null);
+
   useEffect(() => {
-    if (cardEditar?.clave) {
-      setVolumen(cardEditar.volumen);
-      setImagen(cardEditar.imagen);
-      setDisponible(cardEditar.captiuloActive);
-      setCapitulos(cardEditar.capitulo);
-      setMega(cardEditar.mega);
-      setMediafire(cardEditar.mediafire);
-      setMegaEpub(cardEditar.megaEpub);
-      setMediafireEpub(cardEditar.mediafireEpub);
-      setId(cardEditar.id);
-      setSelectedId(cardEditar.idNovel);
-      setInputValues(cardEditar.links);
+    const findNovel = listNovelas.find(
+      (novel) => novel.id === itemVolumen.idNovel
+    );
+    setSelectedId(findNovel);
+  }, []);
+
+  useEffect(() => {
+    if (itemVolumen?.id) {
+      setCapitulos(itemVolumen.capitulo);
+      setDisponible(itemVolumen.captiuloActive);
+      setClave(itemVolumen.clave);
+      setIdNovel(itemVolumen.id);
+      setImagen(itemVolumen.imagen);
+      setLink(itemVolumen.link);
+      setLinks(itemVolumen.links);
+      setMediafire(itemVolumen.mediafire);
+      setMega(itemVolumen.mega);
+      setMegaEpub(itemVolumen.megaEpub);
+      setMediafireEpub(itemVolumen.mediafireEpub);
+      setVolumen(itemVolumen.volumen);
+      setNombreClave(itemVolumen.nombreClave);
     }
-  }, [cardEditar]);
+  }, [itemVolumen]);
 
   const handleFormAddContentChange = useCallback((value) => {
-    setInputValues(value);
+    setLinks(value);
   }, []);
 
   const ocultarModal = () => {
-    setModal(false);
+    setIsVisibleModal(false);
+    setItemVolumen({});
   };
 
   const handelSubmit = async (e) => {
     e.preventDefault();
-    enviarDatos(
-      {
-        volumen,
-        imagen,
-        captiuloActive,
-        capitulo,
-        mega,
-        mediafire,
-        megaEpub,
-        mediafireEpub,
-        id,
-        idNovel: selectedId,
-        links: inputValues,
-      },
-      type
-    );
+
+    let newNameClave = "";
+    let newClave = "";
+    if (selectedId.id !== itemVolumen.idNovel) {
+      newClave = selectedId.titulo
+        .split(" ")
+        .slice(0, 3)
+        .join("_")
+        .toLowerCase();
+      newNameClave = selectedId.titulo
+        .split(" ")
+        .slice(0, 4)
+        .join(" ")
+        .toLowerCase();
+    }
+
+    const isValidateActive = isBoolean(captiuloActive);
+    const validateVolumen = isNumber(volumen);
+
+    if (validateVolumen) {
+      toastify("El volumen debe ser un número", "error");
+      return;
+    }
+
+    await updateVolumen({
+      capitulo,
+      captiuloActive: isValidateActive,
+      clave: newClave || clave,
+      id: itemVolumen.id,
+      idNovel,
+      imagen,
+      link,
+      links,
+      mediafire,
+      mega,
+      megaEpub,
+      mediafireEpub,
+      nombreClave: newNameClave || nombreClave,
+      volumen: Number(volumen),
+    });
 
     setVolumen(0);
     setImagen("");
@@ -73,14 +115,15 @@ const Modal = () => {
     setMegaEpub("");
     setMediafireEpub("");
     setSelectedId(null);
-    setId(null);
-    setEditarCard([]);
-    setModal(false);
+    setLinks([]);
+    setIsVisibleModal(false);
+    setItemVolumen({});
   };
+
   return (
     <>
       <section className="flex p-2 justify-center items-center top-0 left-0 modal">
-        <div className="max-w-md bg-gray-800 shadow-lg rounded-lg md:max-w-xl mx-2 relative">
+        <div className=" w-12/12 sm:max-w-md bg-gray-800 shadow-lg rounded-lg md:max-w-xl mx-2 relative">
           <img
             src={imgClose}
             alt="modal-close"
@@ -95,74 +138,147 @@ const Modal = () => {
                 </h2>
               </div>
               <CustomSelect
-                options={novelasInfo}
+                options={listNovelas}
                 placeholder="Selecciona la novela"
                 onChange={(option) => setSelectedId(option)}
+                initValue={selectedId}
               />
               <div className="grid md:grid-cols-3 md:gap-2">
-                <input
-                  type="number"
-                  className="border rounded h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-                  placeholder="Volumen"
-                  value={volumen}
-                  onChange={(e) => setVolumen(e.target.value)}
-                />
+                <div className="flex flex-col">
+                  <label className="text-sm text-slate-600" htmlFor="volumen">
+                    Volumen
+                  </label>
+                  <input
+                    id="volumen"
+                    type="number"
+                    className="border rounded h-7 sm:h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                    placeholder="Volumen"
+                    value={volumen}
+                    onChange={(e) => setVolumen(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label className="text-sm text-slate-600" htmlFor="capitulos">
+                    Si hay capítulos
+                  </label>
+                  <input
+                    id="capitulos"
+                    type="text"
+                    className="border rounded h-7 sm:h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                    placeholder="Si hay capítulos"
+                    value={capitulo}
+                    onChange={(e) => setCapitulos(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label
+                    className="text-sm text-slate-600"
+                    htmlFor="capituloActivo"
+                  >
+                    Capítulo activo
+                  </label>
+                  <input
+                    id="capituloActivo"
+                    type="text"
+                    className="border rounded h-7 sm:h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                    placeholder="Capítulo activo"
+                    value={captiuloActive}
+                    onChange={(e) => setDisponible(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col">
+                <label className="text-sm text-slate-600" htmlFor="imagenbg">
+                  Imagen
+                </label>
                 <input
                   type="text"
-                  className="border rounded h-10 w-full text-slate-400 focus:text-slate-700  focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-                  placeholder="Si hay capitulos"
-                  value={capitulo}
-                  onChange={(e) => setCapitulos(e.target.value)}
-                />
-                <input
-                  type="text"
-                  className="border rounded h-10 w-full text-slate-400 focus:text-slate-700  focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-                  placeholder="Capitulo activo"
-                  value={captiuloActive}
-                  onChange={(e) => setDisponible(e.target.value)}
+                  name="imagenbg"
+                  className="border rounded h-7 sm:h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                  placeholder="Imagen"
+                  value={imagen}
+                  onChange={(e) => setImagen(e.target.value)}
                 />
               </div>
-              <input
-                type="text"
-                className="border rounded h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-                placeholder="Imagen"
-                value={imagen}
-                onChange={(e) => setImagen(e.target.value)}
-              />
 
               <FormAddContent
                 onChange={handleFormAddContentChange}
-                initialValues={inputValues}
+                initialValues={links}
               />
+              <div className="flex flex-col">
+                <label className="text-sm text-slate-600" htmlFor="link-scan">
+                  Link del scan
+                </label>
+                <input
+                  type="text"
+                  name="link-scan"
+                  className="border rounded h-7 sm:h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                  placeholder="link del scan"
+                  value={link}
+                  onChange={(e) => setLink(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col">
+                <label className="text-sm text-slate-600" htmlFor="megaUrl">
+                  Mega
+                </label>
+                <input
+                  type="text"
+                  name="megaUrl"
+                  className="border rounded h-7 sm:h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                  placeholder="Mega"
+                  value={mega}
+                  onChange={(e) => setMega(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col">
+                <label
+                  className="text-sm text-slate-600"
+                  htmlFor="urlMediafire"
+                >
+                  Mediafire
+                </label>
+                <input
+                  type="text"
+                  name="urlMediafire"
+                  className="border rounded h-7 sm:h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                  placeholder="Mediafire"
+                  value={mediafire}
+                  onChange={(e) => setMediafire(e.target.value)}
+                />
+              </div>
 
-              <input
-                type="text"
-                className="border rounded h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-                placeholder="Mega"
-                value={mega}
-                onChange={(e) => setMega(e.target.value)}
-              />
-              <input
-                type="text"
-                className="border rounded h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-                placeholder="Mediafire"
-                value={mediafire}
-                onChange={(e) => setMediafire(e.target.value)}
-              />
-              <input
-                type="text"
-                className="border rounded h-10 w-full text-slate-400 focus:text-slate-700  focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-                placeholder="Mega Epub"
-                value={megaEpub}
-                onChange={(e) => setMegaEpub(e.target.value)}
-              />
-              <input
-                type="text"
-                className="border rounded h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
-                placeholder="Mediafire Epub"
-                value={mediafireEpub}
-                onChange={(e) => setMediafireEpub(e.target.value)}
-              />
+              <div className="flex flex-col">
+                <label className="text-sm text-slate-600" htmlFor="megaEpub">
+                  Mega Epub
+                </label>
+                <input
+                  type="text"
+                  name="megaEpub"
+                  className="border rounded h-7 sm:h-10 w-full text-slate-400 focus:text-slate-700  focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                  placeholder="Mega Epub"
+                  value={megaEpub}
+                  onChange={(e) => setMegaEpub(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col">
+                <label
+                  className="text-sm text-slate-600"
+                  htmlFor="mediafireEpub"
+                >
+                  Mediafire Epub
+                </label>
+                <input
+                  type="text"
+                  name="mediafireEpub"
+                  className="border rounded h-7 sm:h-10 w-full text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm"
+                  placeholder="Mediafire Epub"
+                  value={mediafireEpub}
+                  onChange={(e) => setMediafireEpub(e.target.value)}
+                />
+              </div>
+
               <div className="flex justify-center items-center pt-2">
                 <button
                   type="submit"

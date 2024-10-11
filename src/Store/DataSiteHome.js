@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import ApiUsers from "../config/ApiUsers.js";
 import { toastify } from "../utils/Utils.js";
+import supabase from "../config/supabase.js";
 
 const useDataSiteHome = create((set) => ({
   dataSite: {},
@@ -9,8 +10,14 @@ const useDataSiteHome = create((set) => ({
   setMaintenanceMode: (isMaintenanceMode) => set({ isMaintenanceMode }),
   fecthDataSite: async () => {
     try {
-      const res = await ApiUsers.get("/site/configuracion-sitio");
-      const dataSite = res.data.data;
+      let { data, error } = await supabase
+        .from("InicioWebInfo")
+        .select("*")
+        .single();
+
+      if (error) throw error;
+
+      const dataSite = data;
       set({ dataSite });
       set({ isMaintenanceMode: JSON.stringify(dataSite.isMaintenanceMode) });
       return dataSite;

@@ -1,12 +1,21 @@
 import { useState } from "react";
+import { Uploader } from "rsuite";
+import AvatarIcon from "@rsuite/icons/legacy/Avatar";
 import useAdmin from "@/hooks/useAdmin.jsx";
 import useAuth from "@/hooks/useAuth.jsx";
-import ApiUsers from "@/config/ApiUsers";
 import NavbarSlider from "@/components/NavbarSlider.jsx";
 import { toastify } from "@/utils/Utils.js";
-import axios from "axios";
 import { errorHandle } from "@/Services/errorHandle.js";
-const apiKey = import.meta.env.VITE_URL_APIKEY;
+import supabase from "@/config/supabase";
+import uploadFileImg from "@/Services/uploadImg";
+
+function previewFile(file, callback) {
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    callback(reader.result);
+  };
+  reader.readAsDataURL(file);
+}
 
 const Perfil = () => {
   const { userAuth } = useAuth();
@@ -14,17 +23,20 @@ const Perfil = () => {
   const [email, setEmail] = useState(userAuth?.email);
   const [password, setPassword] = useState("");
   const [foto, setFoto] = useState([]);
-  const [name_user, setName] = useState(userAuth?.name_user);
-  const [tipo, setTipo] = useState(userAuth?.tipo);
+  const [name_user, setName] = useState(userAuth?.full_name);
+  const [role, setTipo] = useState(userAuth?.role);
   const [id, setId] = useState(userAuth?.id);
-  const [foto_perfil, setFotoPerfil] = useState(userAuth?.foto_perfil);
+  const [foto_perfil, setFotoPerfil] = useState(userAuth?.avatar_url);
   const [fotoRender, setFotoRender] = useState(foto_perfil);
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    let img = URL.createObjectURL(selectedFile);
-    setFotoRender(img);
-    setFoto(selectedFile);
+  const handleChange = (fileList) => {
+    if (fileList.length > 0) {
+      const file = fileList[0]; // Obtén el primer archivo
+      previewFile(file.blobFile, (value) => {
+        setFotoRender(value);
+      });
+      setFoto(file.blobFile);
+    }
   };
 
   const handlSubtmit = async (e) => {
@@ -34,25 +46,33 @@ const Perfil = () => {
       return;
     }
     if (foto.length >= 1) {
-      if (foto.type.startsWith("image/")) {
-        const formData = new FormData();
-        formData.append("image", foto);
-        const { data } = await axios.post(
-          `https://api.imgbb.com/1/upload?key=${apiKey}`,
-          formData
-        );
-        setFotoPerfil(data.data.url);
-      }
+      const uploadImg = await uploadFileImg(foto);
+      setFotoPerfil(uploadImg);
     }
+
+    const query = {
+      full_name: name_user,
+      avatar_url: foto_perfil,
+      role,
+    };
+
+    const newDataUser = {};
+    if (email !== userAuth?.email) newDataUser.email = email;
+    if (password.length >= 7) newDataUser.password = password;
+
     try {
-      const { data } = await ApiUsers.put("/admin/actulizar-datos", {
-        email: userAuth.email,
-        password,
-        foto_perfil,
-        name_user,
-        tipo,
-        id,
-      });
+      const { data, error } = await supabase
+        .from("profiles")
+        .update(query)
+        .eq("id", userAuth?.id)
+        .single();
+
+      if (error) throw error;
+
+      if (newDataUser.email || newDataUser.password) {
+        const { _, error } = await supabase.auth.updateUser(newDataUser);
+        if (error) throw error;
+      }
       setEmail(data.email);
       setName(data.name_user);
       toastify("Datos actualizados", true);
@@ -95,8 +115,9 @@ const Perfil = () => {
               <input
                 placeholder="Tipo"
                 className="w-full rounded-md border bg-gray-50 px-2 py-2 outline-none ring-green-600 focus:ring-1"
-                value={tipo}
-                readOnly
+                value={role}
+                // readOnly={userAuth?.role !== "administrador"}
+                // onChange={(e) => setTipo(e.target.value)}
               />
             </div>
             <div className="flex flex-col gap-4 border-b py-4 sm:flex-row">
@@ -122,31 +143,25 @@ const Perfil = () => {
                 <p className="text-sm text-gray-600">Sube tu perfil</p>
               </div>
               <div className="flex h-56 w-full flex-col items-center justify-center gap-4 rounded-xl border border-dashed border-gray-300 p-5 text-center">
-                {fotoRender && (
-                  <img
-                    src={fotoRender || foto_perfil}
-                    className="h-24 w-24 rounded-lg shadow-lg"
-                  />
-                )}
-                <p className="text-sm text-gray-600">
-                  Selecciona su foto de perfil
-                </p>
-                <div className="form_add_content">
-                  <label
-                    htmlFor="file-input"
-                    className={`flex justify-center items-center rounded-lg ${
-                      activeDark ? "text-white" : "text-black"
-                    }`}
-                  >
-                    Foto perfil
-                  </label>
-                  <input
-                    type="file"
-                    name="foto"
-                    id="file-input"
-                    onChange={handleFileChange}
-                  />
-                </div>
+                <Uploader
+                  fileListVisible={false}
+                  listType="picture"
+                  action=""
+                  onChange={handleChange} // Maneja el cambio de archivo
+                >
+                  <button style={{ width: 150, height: 150 }}>
+                    {fotoRender ? (
+                      <img
+                        src={fotoRender}
+                        width="100%"
+                        height="100%"
+                        alt="Preview"
+                      />
+                    ) : (
+                      <AvatarIcon style={{ fontSize: 80 }} />
+                    )}
+                  </button>
+                </Uploader>
               </div>
             </div>
           </form>

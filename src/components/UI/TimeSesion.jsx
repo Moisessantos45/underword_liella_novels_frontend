@@ -3,10 +3,11 @@ import useAdmin from "@/hooks/useAdmin";
 import useAuth from "@/hooks/useAuth";
 import ModalTime from "./ModalTime";
 import { useEffect } from "react";
+import supabase from "@/config/supabase";
 
 const TimeSession = () => {
   const { setCount, userAuth, setAuth } = useAuth();
-  const { modalTime, setModalTime, SesionLogout } = useAdmin();
+  const { modalTime, setModalTime } = useAdmin();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,7 +16,7 @@ const TimeSession = () => {
 
       if (!horaInicio) {
         clearInterval(intervalId);
-        await SesionLogout(userAuth.email);
+        await supabase.auth.signOut();
         localStorage.removeItem("token");
         localStorage.removeItem("horaInicio");
         setAuth({});
@@ -43,7 +44,6 @@ const TimeSession = () => {
     userAuth,
     setAuth,
     setModalTime,
-    SesionLogout,
     navigate,
     modalTime,
   ]);

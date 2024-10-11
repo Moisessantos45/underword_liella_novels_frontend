@@ -1,8 +1,8 @@
-import { useState, createContext, useEffect } from "react";
+import { useState, createContext, useEffect, useRef } from "react";
 import urlAxios from "../config/urlAxios.js";
 import ApiUsers from "../config/ApiUsers.js";
 import ApiRequester from "../config/ApiRequester.js";
-import { obtenerConfig, toastify } from "../utils/Utils.js";
+import { toastify } from "../utils/Utils.js";
 import { errorHandle } from "../Services/errorHandle.js";
 
 const AdminContext = createContext();
@@ -29,12 +29,12 @@ export const AdminProvider = ({ children }) => {
   const [confirmar_delate, setConfirmar] = useState(false);
   const [mostrar_modal, setMostrar_modal] = useState(false);
   const [modalTime, setModalTime] = useState(false);
+  const removeConfirm = useRef(false);
 
   const TIPOS = {
     CARDS: "cards",
     CAPITULOS: "capitulos",
     NOVELA: "novela",
-    USER: "user",
   };
 
   const URLS = {
@@ -178,9 +178,6 @@ export const AdminProvider = ({ children }) => {
       case TIPOS.NOVELA:
         setNovelasInfo((prev) => prev.filter((item) => item.id !== id));
         break;
-      case TIPOS.USER:
-        setUsers((prev) => prev.filter((item) => item.id !== id));
-        break;
       default:
         break;
     }
@@ -198,9 +195,6 @@ export const AdminProvider = ({ children }) => {
       case TIPOS.NOVELA:
         url = `/novelas/${id}`;
         break;
-      case TIPOS.USER:
-        url = `/admin/eliminar-user/${id}`;
-        break;
       default:
         return;
     }
@@ -215,65 +209,11 @@ export const AdminProvider = ({ children }) => {
     }
   };
 
-  const registrar = async (user) => {
-    const { email, password, tipo, id, foto_perfil, name_user } = user;
-
-    const dataUser = {
-      email,
-      password,
-      tipo,
-      foto_perfil,
-      name_user,
-    };
-
-    const config = obtenerConfig();
-
-    if (!user.idUser) {
-      try {
-        await ApiUsers.post(
-          `/admin/agregar-users`,
-          { ...dataUser, id },
-          config
-        );
-        toastify(`${tipo} registrado`, true);
-      } catch (error) {
-        errorHandle(error);
-      }
-    } else {
-      try {
-        await ApiUsers.put(`/admin/actualizar-datos`, dataUser, config);
-        toastify(`${tipo} actualizado`, true);
-      } catch (error) {
-        errorHandle(error);
-      }
-    }
-  };
-
-  const obtenerData = async (url, setData) => {
-    try {
-      const { data } = await urlAxios(url);
-      setData(data);
-    } catch (error) {
-      errorHandle(error);
-    }
-  };
-
-  const SesionLogout = async (email) => {
-    try {
-      await ApiUsers.post("/admin/logout", {
-        email,
-      });
-      return;
-    } catch (error) {
-      return;
-    }
-  };
-
-  useEffect(() => {
-    obtenerData(URLS.NOVELAS, setNovelasInfo);
-    obtenerData(URLS.VOLUMENES, setCarsVol);
-    obtenerData(URLS.CAPITULOS, setCapitulosInfo);
-  }, []);
+  // useEffect(() => {
+  //   obtenerData(URLS.NOVELAS, setNovelasInfo);
+  //   obtenerData(URLS.VOLUMENES, setCarsVol);
+  //   obtenerData(URLS.CAPITULOS, setCapitulosInfo);
+  // }, []);
 
   return (
     <AdminContext.Provider
@@ -301,7 +241,6 @@ export const AdminProvider = ({ children }) => {
         datosEdit,
         setDatos,
         eliminarDatos,
-        registrar,
         activeDark,
         setDark,
         data_cuenta,
@@ -310,11 +249,11 @@ export const AdminProvider = ({ children }) => {
         setUsers,
         setConfirmar,
         confirmar_delate,
+        removeConfirm,
         mostrar_modal,
         setMostrar_modal,
         modalTime,
         setModalTime,
-        SesionLogout,
       }}
     >
       {children}

@@ -1,13 +1,21 @@
 import useAdmin from "../hooks/useAdmin";
-import urlAxios from "../config/urlAxios.js";
 import { Link, useParams } from "react-router-dom";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  limit,
+} from "firebase/firestore/lite";
+import axios from "axios";
 import home from "../img/home.png";
 import previuos from "../img/previuos.png";
 import next from "../img/next.png";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Loading from "../components/Loading";
 import "../css/capitulos.css";
 import NavbarChapters from "../components/NavbarChapters";
+import { dbFirebaseLite } from "../config/firebase.js";
 
 const unirSimbolos = (texto) => {
   const symbols = ["◊◊◊", "◊◊", "◊", "$$$", "$$", "$", "**", "*"];
@@ -79,12 +87,43 @@ const PaginasCapitulos = () => {
   const params = useParams();
   const { idNovel, capitulo } = params;
 
+  const getContentUrl = async (url) => {
+    try {
+      const { data } = await axios(url);
+      return data;
+    } catch (error) {
+      return "";
+    }
+  };
+
   const obtenerCapitulo = async (idNovel, capitulo) => {
     try {
-      const { data } = await urlAxios(`/capitulo/${idNovel}/${capitulo}`);
-      setTitleNabvar({ title: `${data.data?.titulo}` });
-      setCapi(data.data);
-      setTamanio(+data.cont);
+      const q = query(
+        collection(dbFirebaseLite, "Capitulos"),
+        where("idNovel", "==", idNovel),
+        where("capitulo", "==", +capitulo),
+        limit(1)
+      );
+      const qChapters = query(
+        collection(dbFirebaseLite, "Capitulos"),
+        where("idNovel", "==", idNovel)
+      );
+      const [chapter, Chapters] = await Promise.all([
+        getDocs(q),
+        getDocs(qChapters),
+      ]);
+
+      const data = chapter.docs.map((doc) => doc.data());
+
+      const size = Chapters.size;
+      if (size === 0) throw new Error("No hay datos");
+
+      const [chapterData] = data;
+      const text = await getContentUrl(chapterData.contenido);
+      chapterData.contenido = text;
+      setTitleNabvar({ title: `${chapterData?.titulo}` });
+      setCapi(chapterData);
+      setTamanio(size);
 
       setLoader(false);
     } catch (error) {

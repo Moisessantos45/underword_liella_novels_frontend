@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import "../css/MenuHeader.css";
 import "../css/styles.css";
 import icon_logo from "../img/Marca.png";
@@ -7,11 +8,13 @@ const NabvarPrincipal = () => {
   const { dataSite } = useDataSiteHome();
   return (
     <>
-      <img
-        src={icon_logo}
-        alt=""
-        className="absolute w-32 h-20 cursor-pointer hover:scale-105 btn_logo"
-      />
+      <NavLink to="/">
+        <img
+          src={icon_logo}
+          alt=""
+          className="absolute w-32 h-20 cursor-pointer hover:scale-105 btn_logo"
+        />
+      </NavLink>
       <header
         className="header m-auto relative top-0 left-0"
         style={{

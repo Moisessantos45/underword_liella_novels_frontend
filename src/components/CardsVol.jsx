@@ -1,22 +1,31 @@
 import { Link, useParams } from "react-router-dom";
-import "../css/CardsVol.css";
-import urlAxios from "../config/urlAxios.js";
+import { collection, getDocs, query, where } from "firebase/firestore/lite";
 import { useQuery } from "@tanstack/react-query";
+import "../css/CardsVol.css";
+import { dbFirebaseLite } from "../config/firebase.js";
+import Loading from "./Loading.jsx";
 
 const CardsVol = () => {
   const params = useParams();
   const { idNovel } = params;
+
   const getCards = async () => {
     try {
-      const respuesta = await urlAxios(`/paginas/novela/volumen/${idNovel}`);
-      console.log(respuesta.data);
-      return respuesta.data;
+      const q = query(
+        collection(dbFirebaseLite, "Volumenes"),
+        where("idNovel", "==", idNovel)
+      );
+      const documents = await getDocs(q);
+      const data = documents.docs.map((doc) => doc.data());
+      if (data.length === 0) return [];
+
+      return data;
     } catch (error) {
       return [];
     }
   };
 
-  const { data: volumen } = useQuery({
+  const { isLoading, data: volumen } = useQuery({
     queryKey: ["cardsVol"],
     queryFn: getCards,
     refetchInterval: 60000,
@@ -24,6 +33,7 @@ const CardsVol = () => {
     retry: 0,
   });
 
+  if (isLoading) return <Loading />;
   if (volumen && volumen.length > 0)
     return (
       <section className="flex flex-wrap justify-center items-start bg-[#2f2f2f] p-4 rounded-lg shadow-sm">

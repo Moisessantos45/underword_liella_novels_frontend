@@ -4,102 +4,115 @@ import useAdmin from "../hooks/useAdmin";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import Loading from "./Loading";
+import supabase from "../config/supabase";
+
+import {
+  Home,
+  UserPlus,
+  Upload,
+  BookOpen,
+  Layers,
+  FileText,
+  RefreshCw,
+  Image,
+  FileImage,
+  Upload as UploadIcon,
+  Users,
+  Settings,
+  LogOut,
+} from "lucide-react";
 
 const Slider = () => {
-  const { active, activeDark, SesionLogout } = useAdmin();
+  const { active, activeDark } = useAdmin();
   const { userType, userAuth, setAuth, cargando } = useAuth();
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(-1);
   const location = useLocation();
   const pathParts = location.pathname.split("/");
   const lastPart = pathParts[pathParts.length - 1];
+
   const menuItems = [
     {
       text: "Inicio",
-      icon: "fas fa-border-all",
+      icon: Home,
       url: `/dashboard/${userAuth.idUser}`,
       tipo: "user",
     },
     {
       text: "Agregar usuario",
-      icon: "fa-solid fa-user-plus",
+      icon: UserPlus,
       url: "agregar-user",
       tipo: "administrador",
     },
     {
       text: "Agregar Novela",
-      icon: "fa-solid fa-cloud-arrow-up",
+      icon: BookOpen,
       url: "agregar-novela",
       tipo: "user",
     },
     {
       text: "Agregar volumen",
-      icon: "fa-solid fa-cloud-arrow-up",
+      icon: Layers,
       url: "agregar-volumen",
       tipo: "user",
     },
     {
       text: "Agregar capitulo",
-      icon: "fa-solid fa-cloud-arrow-up",
+      icon: FileText,
       url: "agregar-capitulo",
       tipo: "user",
     },
     {
       text: "Gestionar novelas",
-      icon: "fa-solid fa-rotate",
+      icon: RefreshCw,
       url: "actulizar-novelas",
       tipo: "user",
     },
     {
       text: "Gestionar Volumenes",
-      icon: "fa-solid fa-rotate",
+      icon: RefreshCw,
       url: "volumenes-activos",
       tipo: "user",
     },
     {
       text: "Gestionar Capitulos",
-      icon: "fa-solid fa-rotate",
+      icon: RefreshCw,
       url: "capitulos-activos",
       tipo: "user",
     },
     {
       text: "Gestionar Ilustraciones",
-      icon: "fa-regular fa-images",
+      icon: Image,
       url: "ilustraciones_activas",
       tipo: "user",
     },
     {
       text: "Upload Ilustraciones",
-      icon: "fa-solid fa-file-image",
+      icon: FileImage,
       url: "subir_imagenes",
       tipo: "user",
     },
     {
       text: "Upload File Mega",
-      icon: "fas fa-file-upload",
+      icon: UploadIcon,
       url: "subir_file_mega",
       tipo: "user",
     },
     {
       text: "Team",
-      icon: "fas fa-people-group",
+      icon: Users,
       tipo: "administrador",
       url: "colaboradores",
     },
   ];
+
   useEffect(() => {
     document.title = "Panel de administracion";
   }, []);
-  useEffect(() => {
-    if (!userAuth?.activo) {
-      navigate("/login-admin");
-    }
-  }, [userAuth, navigate]);
 
   const handelClick = async () => {
-    const email = userAuth.email;
     try {
-      await SesionLogout(email);
+      await supabase.auth.signOut();
       localStorage.removeItem("token");
       localStorage.removeItem("horaInicio");
       setAuth({});
@@ -108,6 +121,7 @@ const Slider = () => {
       return;
     }
   };
+
   if (cargando) return <Loading />;
   return (
     <>
@@ -139,7 +153,13 @@ const Slider = () => {
                     className="nav-link"
                     onClick={() => setActiveIndex(index)}
                   >
-                    <i className={`${item.icon} dark:text-gray-400`}></i>
+                    <i>
+                      <item.icon
+                        className={`${
+                          activeDark ? "text-gray-400" : "text-gray-500"
+                        }`}
+                      />
+                    </i>
                     <span
                       className={`${
                         activeDark

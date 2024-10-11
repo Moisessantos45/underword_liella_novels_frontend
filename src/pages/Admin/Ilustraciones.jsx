@@ -1,21 +1,31 @@
 import useAdmin from "@/hooks/useAdmin.jsx";
 import NavbarSlider from "@/components/NavbarSlider.jsx";
 import { useState } from "react";
-import urlAxios from "@/config/urlAxios.js";
 import Loading from "@/components/Loading.jsx";
 import { useQuery } from "@tanstack/react-query";
 import { toastify } from "@/utils/Utils.js";
+import useNovelasStore from "@/Store/NovelasStore";
+import useVolumensStore from "@/Store/VolumensStore";
+import { extractIllustrations } from "@/Services/useService";
 
 const Ilustraciones = () => {
   const { activeDark } = useAdmin();
+  const { novelas } = useNovelasStore();
+  const { volumens } = useVolumensStore();
+
   const [imagenesWeb, setIlustraciones] = useState([]);
-  // const [loading, setLoading] = useState(true);
 
   const solicitarIlustraciones = async () => {
     try {
-      const { data } = await urlAxios("/admin/solicitud_ilustraciones");
-      setIlustraciones(data);
-      return data;
+      const illustrationsList = [
+        ...extractIllustrations(novelas),
+        ...extractIllustrations(volumens),
+      ];
+      setIlustraciones(illustrationsList);
+
+      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      await delay(1000);
+      return illustrationsList;
     } catch (error) {
       setIlustraciones([]);
       return [];
@@ -46,7 +56,7 @@ const Ilustraciones = () => {
       <div className="grid grid-cols-3 md:grid-cols-5 p-3 sm:p-2 gap-4 w-11/12 m-auto sm:h-auto h-screen">
         {imagenesWeb.length > 0 ? (
           imagenesWeb.map(({ imagen }, i) => (
-            <div key={i} className="grid gap-4 relative">
+            <div key={i + 1} className="grid gap-4 relative">
               <img
                 onClick={() => copyUrl(imagen)}
                 className="h-auto max-w-full rounded-lg cursor-pointer"

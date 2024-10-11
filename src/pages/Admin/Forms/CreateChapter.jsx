@@ -1,26 +1,18 @@
 import { useEffect, useState } from "react";
 import useAdmin from "@/hooks/useAdmin";
 import NavbarSlider from "@/components/NavbarSlider";
-import Swal from "sweetalert2";
 import CustomSelect from "@/components/UI/CustomSelect";
-
-const mostrarAlerta = (texto) => {
-  Swal.fire({
-    icon: "error",
-    width: 300,
-    title: texto,
-    timer: 1500,
-    customClass: {
-      title: "mi-clase",
-    },
-  });
-};
+import useNovelasStore from "@/Store/NovelasStore";
+import useChaptersStore from "@/Store/ChaptersStore";
+import { isNumber } from "@/utils/Utils";
+import { showAlert } from "@/utils/Utils";
 
 const Container_captitulo = () => {
-  const { novelasInfo, enviarDatos, datosEdit, activeDark, setDatos } =
-    useAdmin();
+  const { listNovelas } = useNovelasStore();
+  const { itemChapter, setIsChanging, addChapter, updateChapter } =
+    useChaptersStore();
+  const { activeDark, setDatos } = useAdmin();
 
-  const [nombre, setNombre] = useState("");
   const [titulo, setTitulo] = useState("");
   const [contenido, setContenido] = useState("");
   const [capitulo, setCapitulos] = useState(0);
@@ -28,49 +20,71 @@ const Container_captitulo = () => {
   const [selectedId, setSelectedId] = useState(null);
 
   useEffect(() => {
-    if (datosEdit?.id && datosEdit?.contenido) {
-      setTitulo(datosEdit.titulo);
-      setContenido(datosEdit.contenido);
-      setCapitulos(datosEdit.capitulo);
-      setNombre(datosEdit.nombre);
-      setId(datosEdit.id);
-      setSelectedId(datosEdit.idNovel);
-    }
-  }, [datosEdit]);
+    const findNovel = listNovelas.find(
+      (novel) => novel.id === itemChapter.idNovel
+    );
+    setSelectedId(findNovel);
+  }, []);
 
-  const tipo = "capitulos";
+  useEffect(() => {
+    if (itemChapter?.id && itemChapter?.idNovel) {
+      setTitulo(itemChapter.titulo);
+      setContenido(itemChapter.contenido);
+      setCapitulos(itemChapter.capitulo);
+      setId(itemChapter.id);
+    }
+  }, [itemChapter]);
+
   const handelSubmit = async (e) => {
     e.preventDefault();
-    const campos = [nombre, titulo, contenido, capitulo, selectedId.id];
-    const camposVacios = Object.entries(campos)
-      .filter(
-        ([nombre, valor]) => typeof valor === "string" && valor.trim() === ""
-      )
-      .map(([nombre, valor]) => nombre)
-      .join(", ");
+    const campos = [titulo, contenido, capitulo, selectedId.id];
+    const camposVacios = Object.entries(campos).filter(
+      ([_, valor]) => typeof valor === "string" && valor.trim() === ""
+    );
 
     if (camposVacios.length > 0) {
-      mostrarAlerta(`Los siguientes campos están vacíos: ${camposVacios}`);
+      showAlert(`Los siguientes campos están vacíos: ${camposVacios}`);
       return;
     }
-    enviarDatos(
-      {
-        nombre,
-        titulo,
-        contenido,
-        capitulo,
-        id,
-        idNovel: id ? selectedId : selectedId.id,
-      },
-      tipo
-    );
+    const isValidNumber = isNumber(capitulo);
+    if (isValidNumber) {
+      showAlert("El campo capitulo debe ser un número");
+      return;
+    }
+
+    const newName = selectedId.titulo
+      .split(" ")
+      .slice(0, 4)
+      .join(" ")
+      .toLowerCase();
+    const clave = selectedId.titulo
+      .split(" ")
+      .slice(0, 3)
+      .join("_")
+      .toLowerCase();
+    const newData = {
+      idNovel: selectedId.id,
+      id,
+      nombre: newName,
+      clave,
+      titulo,
+      contenido,
+      capitulo: Number(capitulo),
+    };
+    
+    if (!itemChapter?.id) {
+      await addChapter(newData);
+    } else {
+      await updateChapter(newData);
+    }
+
     setTitulo("");
     setContenido("");
     setCapitulos(0);
-    setNombre("");
     setSelectedId(null);
     setId(null);
     setDatos({});
+    setIsChanging(false);
   };
 
   return (
@@ -78,16 +92,17 @@ const Container_captitulo = () => {
       <section className={`content bg-zinc-100 ${activeDark ? "dark" : ""}`}>
         <NavbarSlider />
         <form
-          className={`w-11/12 sm:w-8/12 p-2 md:mt-10 lg:mt-0 ${
+          className={`w-11/12 sm:w-8/12 p-2 md:mt-10 lg:mt-5 ${
             activeDark ? "bg-gray-800" : "bg-white"
           } shadow-lg rounded-lg m-auto`}
           onSubmit={handelSubmit}
         >
           <div className="w-full m-auto p-1 flex-col relative justify-center items-center">
             <CustomSelect
-              options={novelasInfo}
+              options={listNovelas}
               placeholder="Selecciona la novela"
               onChange={(option) => setSelectedId(option)}
+              initValue={selectedId}
             />
           </div>
           <div className="form_add_content">
@@ -142,7 +157,10 @@ const Container_captitulo = () => {
               id="contenido"
               className="border rounded sm:h-40 h-84 w-11/12 text-slate-400 focus:text-slate-700 focus:outline-none focus:border-green-200 px-2 mt-2 text-sm scrollbar"
               value={contenido}
-              onChange={(e) => setContenido(e.target.value)}
+              onChange={(e) => {
+                setContenido(e.target.value);
+                setIsChanging(true);
+              }}
             />
           </div>
 
