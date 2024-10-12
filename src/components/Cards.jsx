@@ -41,8 +41,8 @@ const Cards = () => {
     <>
       <Nosotros />
       <section className="col-novels">
-        <div className=" w-full flex justify-center items-center text-2xl">
-          <h1 className="title1">Novelas Ligeras en Traduccion</h1>
+        <div className=" w-full flex justify-center items-center text-center">
+          <h1 className=" text-3xl sm:text-4xl">Novelas Ligeras en Traduccion</h1>
         </div>
 
         {datos.length > 0 &&

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import useAdmin from "@/hooks/useAdmin.jsx";
-import useAuth from "@/hooks/useAuth.jsx";
 import Swal from "sweetalert2";
 import { toastify } from "@/utils/Utils.js";
 import supabase from "@/config/supabase";
 import uploadFileImg from "@/Services/uploadImg";
+import NavbarSlider from "@/components/NavbarSlider";
 
 const mostrarAlerta = (texto) => {
   Swal.fire({
@@ -112,7 +112,7 @@ const FormRegistrer = () => {
   return (
     <>
       <section className={`content bg-zinc-100 ${activeDark ? "dark" : ""}`}>
-        {/* <NavbarSlider /> */}
+        <NavbarSlider />
         <section className="flex justify-center sm:items-start items-center m-auto main__container_perfil">
           <form
             className={`w-11/12 sm:w-8/12 p-2 ${

@@ -45,7 +45,7 @@ const CustomSelect = ({ options, placeholder, onChange, initValue = null }) => {
           {options.map((option) => (
             <li
               key={option.id}
-              className={`cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-green-100 dark:hover:bg-green-700 ${
+              className={`cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-green-100 dark:hover:bg-green-700 text-black ${
                 selectedOption && selectedOption.titulo === option.titulo
                   ? "bg-green-200 dark:bg-green-600"
                   : ""

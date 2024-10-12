@@ -14,7 +14,7 @@ const TablaInfo = ({ datos }) => {
   } = datos;
   return (
     <>
-      <div className="container mx-auto p-4">
+      <div className="sm:container w-12/12 mx-auto p-4">
         <section className="minfo bg-[#2f2f2f] p-4 rounded-lg shadow-sm">
           <div className="minfo_title flex items-center justify-between my-4">
             <div className="line3 bg-white h-1 w-10/12"></div>
@@ -27,7 +27,7 @@ const TablaInfo = ({ datos }) => {
             <img
               src={imagen}
               alt={titulo}
-              className="w-64 rounded-lg shadow-md"
+              className="sm:w-64 w-48 rounded-lg shadow-md"
             />
             <div className="web mt-4 text-white">
               <h4 className="font-bold">Géneros: {generos}</h4>

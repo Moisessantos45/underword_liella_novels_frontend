@@ -5,7 +5,7 @@ const Nosotros = () => {
   const { dataSite } = useDataSiteHome();
   return (
     <section className="w-11/12 flex flex-col justify-center items-center gap-2 text-center mx-auto my-4">
-      <h1 className="sm:text-xl">{dataSite.encabezado}</h1>
+      <h1 className="sm:text-2xl text-xl">{dataSite.encabezado}</h1>
       <p>{dataSite.detalles}</p>
       <img
         className="sm:w-7/12 w-11/12 self-center m-2 h-80 sm:h-80 object-cover rounded-lg shadow-lg"
